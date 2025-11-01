@@ -1,0 +1,1371 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rentoo — Бери, сдавай, зарабатывай</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary-orange: #FF9B71;
+            --primary-purple: #8B7FD9;
+            --primary-blue: #4A5FDC;
+            --dark-blue: #3444B8;
+            --light-purple: #E8E5F7;
+            --peach: #FFB399;
+            --text-dark: #1A1A2E;
+            --text-gray: #64748B;
+            --white: #ffffff;
+            --bg-light: #FAFBFC;
+            --gradient-bg: linear-gradient(135deg, #FFB399 0%, #E8B5D9 50%, #B5C8F0 100%);
+            --gradient-cta: linear-gradient(135deg, #FF9B71 0%, #8B7FD9 100%);
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Inter', 'Roboto', sans-serif;
+            color: var(--text-dark);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background: var(--white);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            z-index: 1000;
+            padding: 1.2rem 3rem;
+            border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+
+        .nav-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-size: 1.8rem;
+            font-weight: 800;
+            background: var(--gradient-cta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--primary-purple);
+        }
+
+        .nav-cta {
+            padding: 0.7rem 1.5rem;
+            background: var(--gradient-cta);
+            color: var(--white);
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .nav-cta:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(139, 127, 217, 0.3);
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient-bg);
+            padding: 8rem 2rem 6rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(139, 127, 217, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -300px;
+            right: -200px;
+            animation: float 25s ease-in-out infinite;
+        }
+
+        .hero::after {
+            content: '';
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            background: radial-gradient(circle, rgba(255, 155, 113, 0.15) 0%, transparent 70%);
+            border-radius: 50%;
+            bottom: -200px;
+            left: -150px;
+            animation: float 20s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(-40px, 40px) scale(1.15); }
+        }
+
+        .hero-content {
+            max-width: 900px;
+            z-index: 1;
+            animation: fadeInUp 1.2s ease-out;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-badge {
+            display: inline-block;
+            padding: 0.6rem 1.5rem;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary-purple);
+            margin-bottom: 2rem;
+            animation: fadeInUp 1s ease-out 0.2s backwards;
+        }
+
+        .logo {
+            font-size: clamp(3.5rem, 10vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -0.03em;
+            margin-bottom: 1.5rem;
+            background: var(--gradient-cta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.8rem);
+            font-weight: 700;
+            letter-spacing: -0.02em;
+            margin-bottom: 1.5rem;
+            color: var(--text-dark);
+            animation: fadeInUp 1s ease-out 0.4s backwards;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
+            color: var(--text-gray);
+            margin-bottom: 1rem;
+            line-height: 1.7;
+            animation: fadeInUp 1s ease-out 0.5s backwards;
+        }
+
+        .hero-features {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2.5rem 0 3rem;
+            flex-wrap: wrap;
+            animation: fadeInUp 1s ease-out 0.6s backwards;
+        }
+
+        .hero-feature {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1rem;
+            color: var(--text-dark);
+            font-weight: 500;
+        }
+
+        .hero-feature::before {
+            content: '✓';
+            width: 24px;
+            height: 24px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary-purple);
+            font-weight: 700;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 1.3rem 3rem;
+            background: var(--gradient-cta);
+            color: var(--white);
+            text-decoration: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 12px 35px rgba(139, 127, 217, 0.35);
+            animation: fadeInUp 1s ease-out 0.7s backwards;
+        }
+
+        .hero-cta:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 18px 50px rgba(139, 127, 217, 0.5);
+        }
+
+        .hero-note {
+            margin-top: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-gray);
+            animation: fadeInUp 1s ease-out 0.8s backwards;
+        }
+
+        /* Section Styles */
+        section {
+            padding: 8rem 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        h2 {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 1rem;
+            letter-spacing: -0.03em;
+            color: var(--text-dark);
+        }
+
+        .section-subtitle {
+            text-align: center;
+            color: var(--text-gray);
+            font-size: 1.3rem;
+            margin-bottom: 5rem;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+            line-height: 1.7;
+        }
+
+        /* How It Works */
+        .how-it-works {
+            background: var(--bg-light);
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 3.5rem;
+            margin-top: 5rem;
+        }
+
+        .step-card {
+            padding: 3.5rem 2.5rem;
+            background: var(--white);
+            border-radius: 24px;
+            text-align: center;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--gradient-cta);
+            transform: scaleX(0);
+            transition: transform 0.5s ease;
+        }
+
+        .step-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .step-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 25px 70px rgba(139, 127, 217, 0.2);
+            border-color: var(--light-purple);
+        }
+
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background: var(--light-purple);
+            color: var(--primary-purple);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            font-weight: 900;
+            margin: 0 auto 2rem;
+            transition: all 0.4s ease;
+        }
+
+        .step-card:hover .step-number {
+            background: var(--gradient-cta);
+            color: var(--white);
+            transform: scale(1.1) rotate(-5deg);
+        }
+
+        .step-card h3 {
+            font-size: 1.7rem;
+            margin-bottom: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .step-card p {
+            color: var(--text-gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Benefits */
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 3rem;
+            margin-top: 5rem;
+        }
+
+        .benefit-card {
+            background: var(--white);
+            padding: 3rem 2.5rem;
+            border-radius: 20px;
+            transition: all 0.4s ease;
+            border: 2px solid #E2E8F0;
+        }
+
+        .benefit-card:hover {
+            border-color: var(--primary-purple);
+            transform: translateY(-8px);
+            box-shadow: 0 20px 50px rgba(139, 127, 217, 0.15);
+        }
+
+        .benefit-icon {
+            width: 70px;
+            height: 70px;
+            background: var(--light-purple);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin-bottom: 1.8rem;
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover .benefit-icon {
+            background: var(--gradient-cta);
+            transform: scale(1.1);
+        }
+
+        .benefit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .benefit-card p {
+            color: var(--text-gray);
+            line-height: 1.8;
+            font-size: 1.05rem;
+        }
+
+        /* Testimonials */
+        .testimonials {
+            background: var(--bg-light);
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2.5rem;
+            margin-top: 4rem;
+        }
+
+        .testimonial-card {
+            background: var(--white);
+            padding: 2.5rem;
+            border-radius: 20px;
+            border: 2px solid #E2E8F0;
+            transition: all 0.3s ease;
+        }
+
+        .testimonial-card:hover {
+            border-color: var(--primary-purple);
+            transform: translateY(-5px);
+        }
+
+        .testimonial-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .testimonial-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: var(--gradient-cta);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .testimonial-info h4 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .testimonial-info p {
+            font-size: 0.9rem;
+            color: var(--text-gray);
+        }
+
+        .testimonial-text {
+            color: var(--text-gray);
+            line-height: 1.7;
+            font-size: 1rem;
+            font-style: italic;
+        }
+
+        .testimonial-rating {
+            margin-top: 1rem;
+            color: #FFA500;
+            font-size: 1.2rem;
+        }
+
+        /* Interface Demo */
+        .interface-demo {
+            text-align: center;
+        }
+
+        .demo-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            margin-top: 5rem;
+            align-items: center;
+        }
+
+        .phone-mockup {
+            width: 340px;
+            height: 680px;
+            background: #1F2937;
+            border-radius: 45px;
+            padding: 16px;
+            box-shadow: 0 35px 100px rgba(0, 0, 0, 0.35);
+            margin: 0 auto;
+            transition: all 0.5s ease;
+        }
+
+        .phone-mockup:hover {
+            transform: scale(1.05) rotateY(5deg);
+            box-shadow: 0 45px 130px rgba(139, 127, 217, 0.5);
+        }
+
+        .phone-notch {
+            width: 160px;
+            height: 32px;
+            background: #1F2937;
+            border-radius: 0 0 22px 22px;
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 10;
+        }
+
+        .phone-screen {
+            width: 100%;
+            height: 100%;
+            background: var(--gradient-bg);
+            border-radius: 35px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            padding: 55px 22px 18px;
+            color: var(--text-dark);
+            font-size: 0.8rem;
+            font-weight: 700;
+        }
+
+        .notifications-area {
+            padding: 22px;
+            animation: slideInNotifications 1.2s ease-out;
+        }
+
+        @keyframes slideInNotifications {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .notification-card {
+            background: var(--white);
+            border-radius: 18px;
+            padding: 18px;
+            margin-bottom: 14px;
+            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+            animation: popIn 0.6s ease-out;
+            animation-fill-mode: backwards;
+        }
+
+        .notification-card:nth-child(1) { animation-delay: 0.3s; }
+        .notification-card:nth-child(2) { animation-delay: 0.5s; }
+        .notification-card:nth-child(3) { animation-delay: 0.7s; }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: scale(0.85) translateY(-15px);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1) translateY(0);
+            }
+        }
+
+        .notification-header {
+            display: flex;
+            align-items: center;
+        }
+
+        .notification-icon {
+            width: 45px;
+            height: 45px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            margin-right: 14px;
+            flex-shrink: 0;
+        }
+
+        .icon-booking {
+            background: linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 100%);
+        }
+
+        .icon-payment {
+            background: linear-gradient(135deg, #FED7AA 0%, #FDBA74 100%);
+        }
+
+        .icon-message {
+            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
+        }
+
+        .notification-content {
+            flex: 1;
+        }
+
+        .notification-title {
+            font-weight: 700;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-bottom: 4px;
+        }
+
+        .notification-text {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+
+        .notification-time {
+            font-size: 0.75rem;
+            color: var(--text-gray);
+            margin-top: 6px;
+        }
+
+        .calendar-mockup {
+            background: var(--white);
+            border-radius: 28px;
+            padding: 3.5rem;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
+            border: 2px solid #E2E8F0;
+        }
+
+        .calendar-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2.5rem;
+            padding-bottom: 2rem;
+            border-bottom: 2px solid #E2E8F0;
+        }
+
+        .calendar-header h4 {
+            font-size: 1.6rem;
+            color: var(--text-dark);
+            font-weight: 700;
+        }
+
+        .calendar-nav {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .calendar-nav button {
+            padding: 0.7rem 1.4rem;
+            border: 2px solid var(--primary-purple);
+            background: transparent;
+            color: var(--primary-purple);
+            border-radius: 10px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            font-size: 0.95rem;
+        }
+
+        .calendar-nav button:hover {
+            background: var(--primary-purple);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 1.2rem;
+            margin-top: 2rem;
+        }
+
+        .calendar-day {
+            aspect-ratio: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            border: 2px solid transparent;
+            font-size: 1rem;
+        }
+
+        .calendar-day.available {
+            background: var(--bg-light);
+            color: var(--text-dark);
+        }
+
+        .calendar-day.available:hover {
+            background: var(--light-purple);
+            border-color: var(--primary-purple);
+            transform: scale(1.08);
+        }
+
+        .calendar-day.booked {
+            background: #FEE2E2;
+            color: #991B1B;
+            cursor: not-allowed;
+            opacity: 0.65;
+        }
+
+        .calendar-day.selected {
+            background: var(--gradient-cta);
+            color: var(--white);
+            transform: scale(1.05);
+        }
+
+        .calendar-legend {
+            display: flex;
+            justify-content: center;
+            gap: 2.5rem;
+            margin-top: 2.5rem;
+            font-size: 0.95rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            font-weight: 600;
+        }
+
+        .legend-box {
+            width: 24px;
+            height: 24px;
+            border-radius: 8px;
+        }
+
+        /* Trust Section */
+        .trust-section {
+            background: var(--bg-light);
+            text-align: center;
+        }
+
+        .trust-badges {
+            display: flex;
+            justify-content: center;
+            gap: 4rem;
+            margin-top: 4rem;
+            flex-wrap: wrap;
+        }
+
+        .trust-badge {
+            text-align: center;
+        }
+
+        .trust-badge-icon {
+            width: 80px;
+            height: 80px;
+            background: var(--white);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            margin: 0 auto 1rem;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .trust-badge h4 {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .trust-badge p {
+            color: var(--text-gray);
+            font-size: 0.95rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            background: var(--gradient-cta);
+            color: var(--white);
+            border-radius: 40px;
+            padding: 7rem 3rem;
+            margin: 6rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            width: 400px;
+            height: 400px;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            border-radius: 50%;
+            top: -150px;
+            right: -100px;
+        }
+
+        .cta-section h2,
+        .cta-section p {
+            color: var(--white);
+            position: relative;
+            z-index: 1;
+        }
+
+        .cta-form {
+            max-width: 550px;
+            margin: 3.5rem auto 0;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .form-input {
+            padding: 1.4rem 1.8rem;
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 14px;
+            font-size: 1.05rem;
+            color: var(--white);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(12px);
+            font-weight: 500;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.75);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: var(--white);
+            background: rgba(255, 255, 255, 0.2);
+            transform: scale(1.02);
+        }
+
+        .submit-button {
+            padding: 1.4rem 2.5rem;
+            background: var(--white);
+            color: var(--primary-purple);
+            border: none;
+            border-radius: 14px;
+            font-weight: 800;
+            font-size: 1.15rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .submit-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 35px rgba(255, 255, 255, 0.4);
+        }
+
+        .cta-note {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: rgba(255, 255, 255, 0.85);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-light);
+            color: var(--text-gray);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .footer-logo {
+            font-size: 2rem;
+            font-weight: 800;
+            background: var(--gradient-cta);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 1rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 2rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: var(--text-gray);
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: var(--primary-purple);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .demo-container {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-links {
+                gap: 1.5rem;
+            }
+
+            .nav-links a:not(.nav-cta) {
+                display: none;
+            }
+
+            section {
+                padding: 5rem 1.5rem;
+            }
+
+            .hero {
+                padding: 7rem 1.5rem 5rem;
+            }
+
+            .hero-features {
+                flex-direction: column;
+                gap: 1rem;
+            }
+
+            .phone-mockup {
+                width: 300px;
+                height: 600px;
+            }
+
+            .calendar-mockup {
+                padding: 2rem 1.5rem;
+            }
+
+            .calendar-grid {
+                gap: 0.6rem;
+            }
+
+            .calendar-header {
+                flex-direction: column;
+                gap: 1.2rem;
+            }
+
+            .cta-section {
+                margin: 3rem 1rem;
+                padding: 5rem 2rem;
+                border-radius: 28px;
+            }
+
+            .steps,
+            .benefits-grid,
+            .testimonials-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .trust-badges {
+                gap: 2rem;
+            }
+        }
+
+        /* Smooth Scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Loading Animation */
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <div class="nav-logo">Rentoo</div>
+            <div class="nav-links">
+                <a href="#how-it-works">Как это работает</a>
+                <a href="#benefits">Преимущества</a>
+                <a href="#testimonials">Отзывы</a>
+                <a href="#registration" class="nav-cta">Попробовать</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🚀 Платформа, которой доверяют</div>
+            <div class="logo">Rentoo</div>
+            <h1>Бери — экономь, сдавай — зарабатывай</h1>
+            <p class="hero-subtitle">Безопасная платформа для аренды вещей между людьми. Бронируйте что нужно за минуты. Зарабатывайте на том, что есть.</p>
+            
+            <div class="hero-features">
+                <div class="hero-feature">Защита сделок</div>
+                <div class="hero-feature">Моментальное бронирование</div>
+                <div class="hero-feature">Проверенные пользователи</div>
+            </div>
+
+            <a href="#registration" class="hero-cta">
+                Оставить предзаказ →
+            </a>
+            
+            <p class="hero-note">Бесплатно на первый месяц · Без комиссий · Полная страховка</p>
+        </div>
+    </section>
+
+    <!-- How It Works -->
+    <section id="how-it-works" class="how-it-works">
+        <h2>Как работает Rentoo</h2>
+        <p class="section-subtitle">Три простых шага до первой аренды</p>
+        
+        <div class="steps">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Найдите нужную вещь</h3>
+                <p>Ищите среди тысяч предложений от проверенных пользователей. Фильтры по цене, локации и доступности помогут найти идеальный вариант за секунды.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Забронируйте онлайн</h3>
+                <p>Выберите удобные даты в интерактивном календаре и оформите безопасное бронирование. Оплата защищена, страховка включена автоматически.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Используйте с комфортом</h3>
+                <p>Получите вещь, пользуйтесь по назначению и верните владельцу. Все детали в приложении, поддержка 24/7, полная прозрачность процесса.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Benefits -->
+    <section id="benefits">
+        <h2>Преимущества платформы</h2>
+        <p class="section-subtitle">Современные технологии для максимального комфорта и безопасности</p>
+        
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🔒</div>
+                <h3>Безопасность сделок</h3>
+                <p>Верификация всех пользователей, защищённые платежи через эскроу и полное страхование каждой аренды от повреждений.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📅</div>
+                <h3>Умный календарь</h3>
+                <p>Видите доступность в реальном времени, бронируете за секунды, получаете автоматические напоминания о датах.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">💎</div>
+                <h3>Полная прозрачность</h3>
+                <p>Рейтинги, отзывы, история сделок и детальные профили пользователей — вы всегда знаете, с кем взаимодействуете.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">📱</div>
+                <h3>Отслеживание в реальном времени</h3>
+                <p>Push-уведомления о новых бронированиях, сообщениях и платежах. Вся информация в одном приложении.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="testimonials" class="testimonials">
+        <h2>Что говорят пользователи</h2>
+        <p class="section-subtitle">Реальные истории людей, которые уже пользуются Rentoo</p>
+        
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">А</div>
+                    <div class="testimonial-info">
+                        <h4>Анна Петрова</h4>
+                        <p>Москва</p>
+                    </div>
+                </div>
+                <p class="testimonial-text">"Забронировала профессиональную камеру для свадьбы через Rentoo — быстро, безопасно и в 5 раз дешевле покупки. Теперь постоянно пользуюсь!"</p>
+                <div class="testimonial-rating">★★★★★</div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">Д</div>
+                    <div class="testimonial-info">
+                        <h4>Дмитрий Соколов</h4>
+                        <p>Санкт-Петербург</p>
+                    </div>
+                </div>
+                <p class="testimonial-text">"Сдаю свою дрель и велосипед, когда не пользуюсь. За полгода заработал уже 45 000 ₽. Платформа надёжная, деньги приходят моментально."</p>
+                <div class="testimonial-rating">★★★★★</div>
+            </div>
+            
+            <div class="testimonial-card">
+                <div class="testimonial-header">
+                    <div class="testimonial-avatar">Е</div>
+                    <div class="testimonial-info">
+                        <h4>Екатерина Волкова</h4>
+                        <p>Казань</p>
+                    </div>
+                </div>
+                <p class="testimonial-text">"Идеальное решение для путешествий! Арендовала палатку на выходные — всё прошло гладко. Календарь бронирований очень удобный, рекомендую всем!"</p>
+                <div class="testimonial-rating">★★★★★</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interface Demo -->
+    <section class="interface-demo">
+        <h2>Удобство на каждом шаге</h2>
+        <p class="section-subtitle">Интуитивный интерфейс и мгновенные уведомления о всех событиях</p>
+        
+        <div class="demo-container">
+            <div class="phone-mockup">
+                <div class="phone-notch"></div>
+                <div class="phone-screen">
+                    <div class="status-bar">
+                        <span>9:41</span>
+                        <span>● ● ● ●</span>
+                    </div>
+                    <div class="notifications-area">
+                        <div class="notification-card">
+                            <div class="notification-header">
+                                <div class="notification-icon icon-booking">📅</div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Новое бронирование</div>
+                                    <div class="notification-text">Анна забронировала вашу камеру Canon на 5-7 ноября</div>
+                                    <div class="notification-time">2 минуты назад</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification-card">
+                            <div class="notification-header">
+                                <div class="notification-icon icon-payment">💰</div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Платёж получен</div>
+                                    <div class="notification-text">Зачислено 2 500 ₽ за аренду дрели Makita</div>
+                                    <div class="notification-time">1 час назад</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="notification-card">
+                            <div class="notification-header">
+                                <div class="notification-icon icon-message">💬</div>
+                                <div class="notification-content">
+                                    <div class="notification-title">Новое сообщение</div>
+                                    <div class="notification-text">Дмитрий: "В какое время можно забрать велосипед?"</div>
+                                    <div class="notification-time">3 часа назад</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="calendar-mockup">
+                <div class="calendar-header">
+                    <h4>Ноябрь 2025</h4>
+                    <div class="calendar-nav">
+                        <button>← Назад</button>
+                        <button>Вперёд →</button>
+                    </div>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-day">Пн</div>
+                    <div class="calendar-day">Вт</div>
+                    <div class="calendar-day">Ср</div>
+                    <div class="calendar-day">Чт</div>
+                    <div class="calendar-day">Пт</div>
+                    <div class="calendar-day">Сб</div>
+                    <div class="calendar-day">Вс</div>
+                    
+                    <div class="calendar-day available">1</div>
+                    <div class="calendar-day booked">2</div>
+                    <div class="calendar-day booked">3</div>
+                    <div class="calendar-day available">4</div>
+                    <div class="calendar-day available">5</div>
+                    <div class="calendar-day available">6</div>
+                    <div class="calendar-day available">7</div>
+                    <div class="calendar-day selected">8</div>
+                    <div class="calendar-day selected">9</div>
+                    <div class="calendar-day available">10</div>
+                    <div class="calendar-day available">11</div>
+                    <div class="calendar-day booked">12</div>
+                    <div class="calendar-day booked">13</div>
+                    <div class="calendar-day available">14</div>
+                    <div class="calendar-day available">15</div>
+                    <div class="calendar-day available">16</div>
+                    <div class="calendar-day available">17</div>
+                    <div class="calendar-day available">18</div>
+                    <div class="calendar-day available">19</div>
+                    <div class="calendar-day available">20</div>
+                    <div class="calendar-day available">21</div>
+                </div>
+                
+                <div class="calendar-legend">
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: var(--bg-light);"></div>
+                        <span>Доступно</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: #FEE2E2;"></div>
+                        <span>Забронировано</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box" style="background: var(--gradient-cta);"></div>
+                        <span>Выбрано</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust Section -->
+    <section class="trust-section">
+        <h2>Вам можно доверять</h2>
+        <p class="section-subtitle">Защита и поддержка на каждом этапе</p>
+        
+        <div class="trust-badges">
+            <div class="trust-badge">
+                <div class="trust-badge-icon">🛡️</div>
+                <h4>Страхование до 500 000 ₽</h4>
+                <p>Каждая аренда застрахована</p>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">✓</div>
+                <h4>Верификация пользователей</h4>
+                <p>Проверка документов и номера</p>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">💳</div>
+                <h4>Безопасные платежи</h4>
+                <p>Защита через эскроу-счета</p>
+            </div>
+            <div class="trust-badge">
+                <div class="trust-badge-icon">🎧</div>
+                <h4>Поддержка 24/7</h4>
+                <p>Всегда на связи в чате</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="registration">
+        <h2>Станьте первыми пользователями</h2>
+        <p class="section-subtitle">Оставьте заявку и получите ранний доступ с эксклюзивными бонусами</p>
+        
+        <form class="cta-form" onsubmit="return handleSubmit(event)">
+            <input type="text" class="form-input" placeholder="Ваше имя" required>
+            <input type="email" class="form-input" placeholder="Email для доступа" required>
+            <input type="text" class="form-input" placeholder="Telegram (опционально)">
+            <button type="submit" class="submit-button">Получить ранний доступ →</button>
+        </form>
+        
+        <p class="cta-note">🎁 Первые 1000 пользователей получат бесплатную подписку Premium на год</p>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Rentoo</div>
+            <p>Платформа шеринга вещей нового поколения</p>
+            <div class="footer-links">
+                <a href="#how-it-works">Как работает</a>
+                <a href="#benefits">Преимущества</a>
+                <a href="#testimonials">Отзывы</a>
+                <a href="#registration">Регистрация</a>
+            </div>
+            <p style="margin-top: 2rem;">© 2025 Rentoo. Бери — экономь, сдавай — зарабатывай.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Form submission handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            alert('🎉 Спасибо за регистрацию! Мы отправим вам приглашение на email в ближайшее время.');
+            event.target.reset();
+            return false;
+        }
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Calendar interaction
+        document.querySelectorAll('.calendar-day.available').forEach(day => {
+            day.addEventListener('click', function() {
+                this.classList.toggle('selected');
+            });
+        });
+
+        // Scroll animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.step-card, .benefit-card, .testimonial-card').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(30px)';
+            el.style.transition = 'all 0.6s ease-out';
+            observer.observe(el);
+        });
+
+        // Navigation scroll effect
+        let lastScroll = 0;
+        const nav = document.querySelector('nav');
+
+        window.addEventListener('scroll', () => {
+            const currentScroll = window.pageYOffset;
+            
+            if (currentScroll > 100) {
+                nav.style.boxShadow = '0 4px 20px rgba(0, 0, 0, 0.08)';
+            } else {
+                nav.style.boxShadow = 'none';
+            }
+            
+            lastScroll = currentScroll;
+        });
+    </script>
+</body>
+</html>
