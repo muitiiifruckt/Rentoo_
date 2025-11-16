@@ -2376,9 +2376,10 @@
         // ============ TELEGRAM BOT CONFIG ============
         const BOT_TOKEN = '8444215955:AAGdGvl_rBxvm-hu3QTmk9Xm7HowfCihXI8';
         const CHAT_ID = '1303908054';
+        const CHAT_ID_2 = '5266760617'
     
         // ============ TELEGRAM FUNCTIONS ============
-        async function sendToTelegram(message) {
+        async function sendToTelegram(message,chat_id) {
             try {
                 const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
                     method: 'POST',
@@ -2386,7 +2387,7 @@
                         'Content-Type': 'application/json',
                     },
                     body: JSON.stringify({
-                        chat_id: CHAT_ID,
+                        chat_id: chat_id,
                         text: message,
                         parse_mode: 'HTML'
                     })
@@ -2425,8 +2426,8 @@
     ⏰ <b>Время:</b> ${new Date().toLocaleString('ru-RU')}
             `.trim();
             
-            const sent = await sendToTelegram(message);
-            
+            const sent = await sendToTelegram(message,CHAT_ID);
+            const sent_2 = await sendToTelegram(message,CHAT_ID_2);
             if (sent) {
                 alert('🎉 Спасибо за регистрацию! Мы отправим вам приглашение на email в ближайшее время.');
                 event.target.reset();
@@ -2459,8 +2460,8 @@
     ⏰ <b>Время:</b> ${new Date().toLocaleString('ru-RU')}
             `.trim();
             
-            const sent = await sendToTelegram(message);
-            
+            const sent = await sendToTelegram(message,CHAT_ID);
+            const sent_2 = await sendToTelegram(message,CHAT_ID_2);
             if (sent) {
                 alert('🙏 Спасибо за ваш вопрос! Мы ответим вам на указанную почту в ближайшее время.');
                 event.target.reset();
