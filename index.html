@@ -121,6 +121,18 @@
             box-shadow: 0 8px 20px rgba(139, 127, 217, 0.3);
         }
 
+        .nav-cta:visited,
+        .nav-cta:focus,
+        .nav-cta:active {
+            color: var(--white) !important;
+        }
+
+        .nav-cta:visited:hover,
+        .nav-cta:focus:hover,
+        .nav-cta:active:hover {
+            color: var(--white) !important;
+        }
+
         /* Page Toggle */
         .page-toggle {
             display: flex;
@@ -308,6 +320,15 @@
             cursor: pointer;
             box-shadow: 0 12px 35px rgba(139, 127, 217, 0.35);
             animation: fadeInUp 1s ease-out 0.7s backwards;
+            touch-action: manipulation;
+            -webkit-tap-highlight-color: rgba(139, 127, 217, 0.3);
+            user-select: none;
+        }
+
+        .hero-cta:visited,
+        .hero-cta:focus,
+        .hero-cta:active {
+            color: var(--white) !important;
         }
 
         .role-toggle {
@@ -1266,12 +1287,23 @@
 
             .hero-features {
                 flex-direction: column;
-                gap: 0.8rem;
+                gap: 1.2rem;
                 margin: 2rem 0;
+                width: 100%;
+                align-items: flex-start;
             }
 
             .hero-feature {
-                font-size: 0.9rem;
+                font-size: 1rem;
+                line-height: 1.6;
+                text-align: left;
+                width: 100%;
+                padding: 0.8rem 0;
+            }
+
+            .hero-feature::before {
+                flex-shrink: 0;
+                margin-right: 0.8rem;
             }
 
             .hero-cta {
@@ -1537,17 +1569,32 @@
             .role-toggle {
                 gap: 12px;
                 margin-top: 30px;
+                display: flex;
+                flex-direction: column;
+                width: 100%;
+                z-index: 100;
+                position: relative;
             }
-
+            
             .hero-features {
                 gap: 1rem;
                 margin: 1.5rem 0 2rem;
+                width: 100%;
+                padding: 0 0.5rem;
+            }
+  
+            .hero-feature {
+                font-size: 0.95rem;
+                text-align: left;
+                line-height: 1.7;
+                width: 100%;
+                display: flex;
+                align-items: flex-start;
+                word-break: break-word;
             }
 
-                
-            .hero-feature {
-                font-size: 0.85rem;
-                text-align: left;
+            .hero-feature::before {
+                margin-top: 0.2rem;
             }
 
             .hero-badge {
@@ -1573,6 +1620,9 @@
                 font-size: 1rem;
                 width: 100%;
                 justify-content: center;
+                min-height: 48px; /* минимальная область касания */
+                display: flex;
+                pointer-events: auto;
             }
 
             .phone-mockup {
@@ -1869,8 +1919,8 @@
             </div>
     
             <div class="role-toggle">
-                <a href="#" class="hero-cta" onclick="switchPage('owner')">Я арендодатель</a>
-                <a href="#" class="hero-cta" onclick="switchPage('renter')">Я арендатор</a>
+                <a href="javascript:void(0)" class="hero-cta" onclick="switchPage('owner')">Я арендодатель</a>
+                <a href="javascript:void(0)" class="hero-cta" onclick="switchPage('renter')">Я арендатор</a>
             </div>
         </div>
     </section>
@@ -2599,6 +2649,11 @@
         }
     
         function switchPage(page) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
             currentPage = page;
             
             document.querySelectorAll('.toggle-btn').forEach((btn, index) => {
@@ -2654,44 +2709,52 @@
             window.scrollTo({ top: 0, behavior: 'instant' });
         }
     
-        // ============ SMOOTH SCROLL ============
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const href = this.getAttribute('href');
-                const target = document.querySelector(href);
-                if (target) {
-                    if (href.includes('renter') && currentPage !== 'renter') {
-                        switchPage('renter');
-                        setTimeout(() => {
-                            const updatedTarget = document.querySelector(href);
-                            if (updatedTarget) {
-                                updatedTarget.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }
-                        }, 100);
-                    } else if (href.includes('owner') && currentPage !== 'owner') {
-                        switchPage('owner');
-                        setTimeout(() => {
-                            const updatedTarget = document.querySelector(href);
-                            if (updatedTarget) {
-                                updatedTarget.scrollIntoView({
-                                    behavior: 'smooth',
-                                    block: 'start'
-                                });
-                            }
-                        }, 100);
-                    } else {
-                        target.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
+        // SMOOTH SCROLL
+        function handleAnchorClick(e, href) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const target = document.querySelector(href);
+            
+            if (target) {
+                if (href.includes('renter') && currentPage !== 'renter') {
+                    switchPage('renter');
+                    setTimeout(() => {
+                        const updatedTarget = document.querySelector(href);
+                        if (updatedTarget) {
+                            updatedTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 300);
+                } else if (href.includes('owner') && currentPage !== 'owner') {
+                    switchPage('owner');
+                    setTimeout(() => {
+                        const updatedTarget = document.querySelector(href);
+                        if (updatedTarget) {
+                            updatedTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
+                    }, 300);
+                } else {
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
+            }
+        }
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            // Обработка клика для десктопа
+            anchor.addEventListener('click', function (e) {
+                const href = this.getAttribute('href');
+                handleAnchorClick(e, href);
             });
+            
+            // Обработка touch для мобильных (только для ссылок БЕЗ onclick)
+            if (!anchor.hasAttribute('onclick')) {
+                anchor.addEventListener('touchend', function (e) {
+                    const href = this.getAttribute('href');
+                    handleAnchorClick(e, href);
+                }, { passive: false });
+            }
         });
+
     
         // ============ CALENDAR INTERACTION ============
         document.querySelectorAll('.calendar-day.available').forEach(day => {
@@ -2740,6 +2803,24 @@
     
         // ============ INITIALIZE ============
         updateNavigationLinks(currentPage);
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // Обрабатываем ТОЛЬКО кнопки с атрибутом onclick
+            const roleButtons = document.querySelectorAll('.role-toggle .hero-cta[onclick]');
+            
+            roleButtons.forEach(button => {
+                button.addEventListener('touchend', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    const onclick = this.getAttribute('onclick');
+                    const match = onclick.match(/switchPage\('(\w+)'\)/);
+                    if (match) {
+                        switchPage(match[1]);
+                    }
+                }, { passive: false });
+            });
+        }, { once: true });
+
     </script>
     
 </body>
