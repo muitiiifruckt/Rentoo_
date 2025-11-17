@@ -1544,6 +1544,8 @@
         @media (max-width: 480px) {
             nav {
                 padding: 0.7rem 0.7rem;
+                position: relative;
+                z-index: 1000; /* Добавлено для предотвращения перекрытия */
             }
 
             .nav-logo {
@@ -1553,6 +1555,11 @@
             .nav-cta {
                 padding: 0.5rem 1rem;
                 font-size: 0.85rem;
+                min-height: 44px; /* Минимальная область касания */
+                display: inline-flex;
+                align-items: center;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.1);
             }
 
             section {
@@ -1560,10 +1567,13 @@
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
+                position: relative; /* Добавлено */
             }
 
             .hero {
                 padding: 4rem 1rem 3rem;
+                position: relative;
+                z-index: 1; /* Добавлено */
             }
 
             .role-toggle {
@@ -1582,7 +1592,7 @@
                 width: 100%;
                 padding: 0 0.5rem;
             }
-  
+        
             .hero-feature {
                 font-size: 0.95rem;
                 text-align: left;
@@ -1600,6 +1610,10 @@
             .hero-badge {
                 font-size: 0.75rem;
                 padding: 0.4rem 1rem;
+                min-height: 44px; /* Добавлено */
+                display: inline-flex;
+                align-items: center;
+                touch-action: manipulation;
             }
 
             .logo {
@@ -1616,13 +1630,19 @@
             }
 
             .hero-cta {
-                padding: 1rem 2rem;
+                padding: 1rem 2rem; /* ИСПРАВЛЕНО: был только вертикальный padding */
                 font-size: 1rem;
                 width: 100%;
                 justify-content: center;
-                min-height: 48px; /* минимальная область касания */
+                min-height: 48px; /* Увеличено до 48px согласно рекомендациям Material Design */
                 display: flex;
+                align-items: center; /* Добавлено */
                 pointer-events: auto;
+                cursor: pointer; /* Добавлено */
+                touch-action: manipulation; /* Добавлено для предотвращения двойного касания */
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2); /* Добавлено */
+                position: relative; /* Добавлено */
+                z-index: 10; /* Добавлено */
             }
 
             .phone-mockup {
@@ -1703,6 +1723,9 @@
             .calendar-nav button {
                 padding: 0.3rem 0.7rem;
                 font-size: 0.75rem;
+                min-height: 44px; /* Добавлено */
+                min-width: 44px; /* Добавлено */
+                touch-action: manipulation;
             }
 
             .calendar-grid {
@@ -1756,9 +1779,15 @@
             }
 
             .toggle-btn {
-                padding: 0.5rem 0.5rem;
+                padding: 0.7rem 1rem; /* ИСПРАВЛЕНО: увеличен горизонтальный padding */
                 font-size: 0.7rem;
                 max-width: 150px;
+                min-height: 44px; /* Добавлено */
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.1);
             }
 
             .cta-section {
@@ -1768,10 +1797,14 @@
                 width: calc(100% - 1.4rem);
                 max-width: 100%;
                 box-sizing: border-box;
+                position: relative; /* Добавлено */
+                z-index: 1; /* Добавлено */
             }
 
             .cta-form {
                 gap: 0.8rem;
+                position: relative; /* Добавлено */
+                z-index: 2; /* Добавлено */
             }
 
             .form-input {
@@ -1779,14 +1812,27 @@
                 font-size: 0.95rem;
                 width: 100%;
                 box-sizing: border-box;
+                min-height: 48px; /* Добавлено */
+                touch-action: manipulation; /* Добавлено */
             }
 
             .submit-button {
-                padding: 1.1rem 0;
+                padding: 1.1rem 1.5rem; /* КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: добавлен горизонтальный padding */
                 font-size: 1.1rem;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
+                min-height: 48px; /* Добавлено: минимальная область касания */
+                display: flex; /* Добавлено */
+                align-items: center; /* Добавлено */
+                justify-content: center; /* Добавлено */
+                cursor: pointer; /* Добавлено */
+                touch-action: manipulation; /* Добавлено: предотвращает двойной тап и зум */
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2); /* Добавлено: визуальный отклик */
+                position: relative; /* Добавлено */
+                z-index: 10; /* Добавлено: предотвращает перекрытие */
+                -webkit-appearance: none; /* Добавлено: убирает дефолтные стили iOS */
+                appearance: none;
             }
 
             .survey-form {
@@ -1807,6 +1853,13 @@
                 padding: 1rem 2rem;
                 font-size: 1rem;
                 width: 100%;
+                min-height: 48px; /* Добавлено */
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2);
+                cursor: pointer;
             }
 
             footer {
@@ -1822,6 +1875,7 @@
                 font-size: 1.3rem;
             }
         }
+
 
         /* Landscape orientation for mobile */
         @media (max-width: 768px) and (orientation: landscape) {
