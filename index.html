@@ -144,8 +144,8 @@
         }
 
         .toggle-btn.active {
-            background: var(--white);
-            color: var(--primary-purple);
+            background: var(--gradient-cta);
+            color: var(--white);
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
@@ -308,6 +308,15 @@
             cursor: pointer;
             box-shadow: 0 12px 35px rgba(139, 127, 217, 0.35);
             animation: fadeInUp 1s ease-out 0.7s backwards;
+        }
+
+        .role-toggle {
+            display: flex;
+            justify-content: center; /* кнопки по разным краям */
+            gap: 150px; /* если нужен явный промежуток между кнопками */
+            max-width: 1000px;  /* по желанию — ограничение ширины */
+            margin: 0 auto;    /* для центрирования блока в родителе */
+            margin-top: 40px;
         }
 
         .hero-cta:hover {
@@ -1797,24 +1806,47 @@
     </style>
 </head>
 <body>
+
     <!-- Navigation -->
     <nav>
         <div class="nav-container">
             <div class="nav-logo">Rentoo</div>
             <div class="nav-toggle-wrapper">
                 <div class="page-toggle">
-                    <button class="toggle-btn active" onclick="switchPage('owner')">для Арендодателей</button>
+                    <button class="toggle-btn" onclick="switchPage('owner')">для Арендодателей</button>
                     <button class="toggle-btn" onclick="switchPage('renter')">для Арендаторов</button>
                 </div>
             </div>
             <div class="nav-links">
-                <a href="#registration" class="nav-cta">Попробовать</a>
+                <a class="nav-cta" style="display:none">Попробовать</a>
             </div>
         </div>
-    </nav>    
+    </nav>
+    
+    <section class="hero page-content active" id="hero">
+        <div class="hero-content">
+            <div class="hero-badge">🤝 Платформа, которой доверяют</div>
+            <div class="logo">Rentoo</div>
+            <h1>Откройте новые возможности аренды и сдачи вещей легко и безопасно!</h1>
+            <p class="hero-subtitle">
+                Rentoo — платформа для удобной аренды и сдачи вещей.<br>Всё быстро, безопасно и прозрачно — автоматические заявки, удобное бронирование и поддержка на всех этапах.
+            </p>
+
+            <div class="hero-features">
+                <div class="hero-feature">Удобство и автоматизация: простое размещение, мгновенные заявки и бронирование</div>
+                <div class="hero-feature">Безопасность: проверенные владельцы, прозрачные правила и эскроу-оплата</div>
+                <div class="hero-feature">Поддержка: чат 24/7, помощь и фиксация передачи вещей</div>
+            </div>
+    
+            <div class="role-toggle">
+                <a href="#" class="hero-cta" onclick="switchPage('owner')">Я арендодатель</a>
+                <a href="#" class="hero-cta" onclick="switchPage('renter')">Я арендатор</a>
+            </div>
+        </div>
+    </section>
 
     <!-- Hero Section - Owner -->
-    <section class="hero page-content active" id="hero-owner">
+    <section class="hero page-content" id="hero-owner">
         <div class="hero-content">
             <div class="hero-badge">🤝 Платформа, которой доверяют</div>
             <div class="logo">Rentoo</div>
@@ -1830,7 +1862,7 @@
                 <div class="hero-feature">Прозрачные правила и поддержка</div>
             </div>
 
-            <a href="#registration" class="hero-cta">
+            <a href="#registration-owner" class="hero-cta">
                 Разместить объявление →
             </a>
             
@@ -1855,7 +1887,7 @@
                 <div class="hero-feature">Рейтинги и отзывы</div>
             </div>
 
-            <a href="#registration" class="hero-cta">
+            <a href="#registration-renter" class="hero-cta">
                 Арендовать вещь →
             </a>
             
@@ -1864,7 +1896,7 @@
     </section>
 
     <!-- Problems Section Owner-->
-    <section class="problems-section page-content active" id="problem-owner">
+    <section class="problems-section page-content" id="problem-owner">
         <h2>Аренда вещей — отличный дополнительный доход,<br>но не всегда простое решение</h2>
         <p class="section-subtitle">Вещи могут работать на вас, но многие сталкиваются с трудностями — вот почему тысячи частных владельцев откладывают сдачу в аренду.</p>
         
@@ -1946,7 +1978,7 @@
     </section>
 
     <!-- How It Works - Owner -->
-    <section class="how-it-works page-content active" id="how-it-works-owner">
+    <section class="how-it-works page-content" id="how-it-works-owner">
         <h2>Как работает Rentoo?</h2>
         <p class="section-subtitle">Три простых шага до первого дохода</p>
         
@@ -1999,7 +2031,7 @@
     </section>
 
     <!-- Benefits - Owner -->
-    <section class="page-content active" id="benefits-owner">
+    <section class="page-content" id="benefits-owner">
         <h2>Преимущества платформы</h2>
         <p class="section-subtitle">Всё необходимое для успешного заработка на аренде</p>
         
@@ -2147,7 +2179,7 @@
     </section>
 
     <!-- Interface Demo - Owner -->
-    <section class="interface-demo page-content active" id="interface-demo-owner">
+    <section class="interface-demo page-content" id="interface-demo-owner">
         <h2>Удобство на каждом шаге</h2>
         <p class="section-subtitle">Интуитивный интерфейс и мгновенные уведомления о всех событиях</p>
         
@@ -2265,7 +2297,7 @@
     </section>
 
     <!-- Trust Section - Owner -->
-    <section class="trust-section page-content active" id="trust-owner">
+    <section class="trust-section page-content" id="trust-owner">
         <h2>Нам можно доверять</h2>
         <p class="section-subtitle">Защита и поддержка на каждом этапе</p>
         
@@ -2313,7 +2345,18 @@
     </section>
 
     <!-- Planeta Section -->
-    <section class="planeta-section" id="planeta">
+    <section class="planeta-section page-content" id="planeta-owner">
+        <div class="planeta-container">
+            <h2>Поддержите проект на Planeta.ru</h2>
+            <p class="section-subtitle">Станьте частью сообщества Rentoo и помогите нам запустить платформу</p>
+            <a href="https://planeta.ru/campaigns/rentoo" target="_blank" rel="noopener noreferrer" class="planeta-button">
+                Поддержать проект →
+            </a>
+        </div>
+    </section>
+
+    <!-- Planeta Section -->
+    <section class="planeta-section page-content" id="planeta-renter">
         <div class="planeta-container">
             <h2>Поддержите проект на Planeta.ru</h2>
             <p class="section-subtitle">Станьте частью сообщества Rentoo и помогите нам запустить платформу</p>
@@ -2324,7 +2367,20 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section" id="registration">
+    <section class="cta-section page-content" id="registration-owner">
+        <h2>Узнайте о запуске первыми!</h2>
+        <p class="section-subtitle">Оставьте заявку и получите ранний доступ с эксклюзивными бонусами</p>
+        
+        <form class="cta-form" onsubmit="return handleSubmit(event)">
+            <input type="text" name="name" class="form-input" placeholder="Ваше имя" required>
+            <input type="email" name="email" class="form-input" placeholder="Email" required>
+            <button type="submit" class="submit-button">Получить ранний доступ →</button>
+        </form>
+        
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section page-content" id="registration-renter">
         <h2>Узнайте о запуске первыми!</h2>
         <p class="section-subtitle">Оставьте заявку и получите ранний доступ с эксклюзивными бонусами</p>
         
@@ -2337,7 +2393,27 @@
     </section>
 
     <!-- Survey Section -->
-    <section class="survey-section" id="survey">
+    <section class="survey-section page-content" id="survey-owner">
+        <h2>Есть вопросы?</h2>
+        <p class="section-subtitle">Задайте свой вопрос, и мы ответим вам на почту</p>
+        
+        <form class="survey-form" onsubmit="return handleSurveySubmit(event)">
+            <div class="form-group">
+                <label class="form-label">Ваш вопрос</label>
+                <textarea name="question" class="form-textarea" placeholder="Напишите ваш вопрос..." required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Email для ответа</label>
+                <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
+            </div>
+
+            <button type="submit" class="submit-button" style="width: 100%;">Отправить вопрос →</button>
+        </form>
+    </section>
+
+    <!-- Survey Section -->
+    <section class="survey-section page-content" id="survey-renter">
         <h2>Есть вопросы?</h2>
         <p class="section-subtitle">Задайте свой вопрос, и мы ответим вам на почту</p>
         
@@ -2500,16 +2576,28 @@
                     btn.classList.add('active');
                 }
             });
+
             
             updateNavigationLinks(page);
+
+            const navCta = document.querySelector('.nav-cta');
+            if (page === 'renter') {
+                navCta.style.display = 'inline-block';
+                navCta.href = '#registration-renter';
+            } else if (page === 'owner') {
+                navCta.style.display = 'inline-block';
+                navCta.href = '#registration-owner';
+            } else {
+                navCta.style.display = 'none';
+            }
             
             document.querySelectorAll('.page-content').forEach(content => {
                 content.classList.remove('active');
             });
             
             const pages = {
-                'renter': ['hero-renter', 'problem-renter', 'how-it-works-renter', 'benefits-renter', 'interface-demo-renter', 'trust-renter'],
-                'owner': ['hero-owner', 'problem-owner', 'how-it-works-owner', 'benefits-owner', 'interface-demo-owner', 'trust-owner']
+                'renter': ['hero-renter', 'problem-renter', 'how-it-works-renter', 'benefits-renter', 'interface-demo-renter', 'trust-renter', 'planeta-renter', 'registration-renter', 'survey-renter'],
+                'owner': ['hero-owner', 'problem-owner', 'how-it-works-owner', 'benefits-owner', 'interface-demo-owner', 'trust-owner', 'planeta-owner', 'registration-owner', 'survey-owner']
             };
             
             pages[page].forEach(id => {
