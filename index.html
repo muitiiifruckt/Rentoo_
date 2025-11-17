@@ -2437,17 +2437,18 @@
         <div class="footer-content">
             <div class="footer-logo">Rentoo</div>
             <p>Платформа шеринга вещей нового поколения</p>
-            <div class="footer-links">
+            <div class="footer-links" style="display:none">
                 <a href="#hero-owner" class="footer-link-about" data-renter="#hero-renter" data-owner="#hero-owner">О нас</a>
                 <a href="#how-it-works-owner" class="footer-link-how" data-renter="#how-it-works-renter" data-owner="#how-it-works-owner">Как работает?</a>
                 <a href="#benefits-owner" class="footer-link-benefits" data-renter="#benefits-renter" data-owner="#benefits-owner">Преимущества</a>
-                <a href="#planeta">Поддержать проект</a>
-                <a href="#registration">Запись на ранний доступ</a>
-                <a href="#survey">Вопросы</a>
+                <a href="#planeta-owner" class="footer-link-planeta" data-renter="#planeta-renter" data-owner="#planeta-owner">Поддержать проект</a>
+                <a href="#registration-owner" class="footer-link-registration" data-renter="#registration-renter" data-owner="#registration-owner">Запись на ранний доступ</a>
+                <a href="#survey-owner" class="footer-link-survey" data-renter="#survey-renter" data-owner="#survey-owner">Вопросы</a>
             </div>
             <p style="margin-top: 2rem;">© 2025 Rentoo. Все права защищены.</p>
         </div>
     </footer>
+    
 
     <script>
         // ============ TELEGRAM BOT CONFIG ============
@@ -2559,7 +2560,7 @@
                 }
             });
             
-            document.querySelectorAll('.footer-link-about, .footer-link-how, .footer-link-benefits').forEach(link => {
+            document.querySelectorAll('.footer-link-about, .footer-link-how, .footer-link-benefits, footer-link-planeta, footer-link-registration, footer-link-survey').forEach(link => {
                 const newHref = link.getAttribute(`data-${page}`);
                 if (newHref) {
                     link.setAttribute('href', newHref);
@@ -2590,6 +2591,19 @@
             } else {
                 navCta.style.display = 'none';
             }
+
+            // Управление ссылками в футере
+            const footerLinks = document.querySelector('.footer-links');
+            if (page === 'renter' || page === 'owner') {
+                footerLinks.style.display = 'flex';
+                
+                // Обновляем href всех ссылок в футере
+                footerLinks.querySelectorAll('a[data-renter][data-owner]').forEach(link => {
+                    link.href = page === 'renter' ? link.dataset.renter : link.dataset.owner;
+                });
+            } else {
+                footerLinks.style.display = 'none';
+            }
             
             document.querySelectorAll('.page-content').forEach(content => {
                 content.classList.remove('active');
@@ -2607,7 +2621,7 @@
                 }
             });
             
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: 'instant' });
         }
     
         // ============ SMOOTH SCROLL ============
