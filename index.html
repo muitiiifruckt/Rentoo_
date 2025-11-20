@@ -12,7 +12,110 @@
             padding: 0;
             box-sizing: border-box;
         }
-
+        .rentoo-items-section {
+            padding: 80px 0;
+            background: #fafbfc;
+        }
+        
+        .rentoo-container {
+            width: 90%;
+            max-width: 1300px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .rentoo-title {
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 50px;
+            color: #1e293b;
+        }
+        
+        .rentoo-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 32px;
+        }
+        
+        .rentoo-card {
+            background: #ffffff;
+            border-radius: 22px;
+            padding: 24px;
+            text-align: left;
+            box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .rentoo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0px 12px 26px rgba(0, 0, 0, 0.07);
+        }
+        
+        .rentoo-card img {
+            width: 100%;
+            border-radius: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .rentoo-card h3 {
+            font-size: 22px;
+            margin-bottom: 8px;
+            color: #1e293b;
+        }
+        
+        .rentoo-card p {
+            font-size: 16px;
+            color: #64748b;
+        }
+        
+        .rentoo-cta-block {
+            margin-top: 70px;
+        }
+        
+        .rentoo-cta-block h3 {
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+        
+        .rentoo-cta-block p {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: #475569;
+        }
+        .rentoo-card img {
+            width: 100%;          /* картинка растягивается по ширине карточки */
+            height: 200px;        /* фиксированная высота для всех */
+            object-fit: cover;    /* обрезает изображение, сохраняя пропорции */
+            border-radius: 8px;   /* если нужно закругление углов */
+            display: block;
+        }
+        
+        .rentoo-btn {
+            display: inline-block;
+            padding: 16px 32px;
+            font-size: 18px;
+            color: white;
+            border-radius: 14px;
+            background: linear-gradient(90deg, #ff9b71, #8b7fd9);
+            text-decoration: none;
+            font-weight: 600;
+            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+            transition: opacity 0.2s ease;
+        }
+        
+        .rentoo-btn:hover {
+            opacity: 0.9;
+        }
+        
+        /* Mobile */
+        @media (max-width: 900px) {
+            .rentoo-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        
         :root {
             --primary-orange: #FF9B71;
             --primary-purple: #8B7FD9;
@@ -2020,7 +2123,55 @@
             <p class="hero-note">Бесплатно на первый месяц - без комиссий</p>
         </div>
     </section>
-
+    <section class="rentoo-items-section page-content" id="items-owner">
+        <div class="rentoo-container">
+            <h2 class="rentoo-title">Что можно сдавать в аренду?</h2>
+    
+            <div class="rentoo-grid">
+                <div class="rentoo-card">
+                    <img src="snowboard.jpg?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
+                    <h3>Сноуборд</h3>
+                    <p>Идеален для зимних поездок</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="drill.jpg?auto=format&fit=crop&w=900&q=60" alt="Дрель">
+                    <h3>Дрель</h3>
+                    <p>Незаменима для домашних работ</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="camera.avif?auto=format&fit=crop&w=900&q=60" alt="Камера">
+                    <h3>Профессиональная камера</h3>
+                    <p>Подходит для съёмки мероприятий</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="bike.avif?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
+                    <h3>Велосипед</h3>
+                    <p>Удобен для прогулок по городу</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="projector.jpg?auto=format&fit=crop&w=900&q=60" alt="Проектор">
+                    <h3>Проектор</h3>
+                    <p>Для презентаций и киносеансов</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="juicer.jpg?auto=format&fit=crop&w=900&q=60" alt="Соковыжималка">
+                    <h3>Соковыжималка</h3>
+                    <p>Для приготовления свежих соков</p>
+                </div>
+            </div>
+    
+            <div class="rentoo-cta-block">
+                <h3>Есть вещи, которыми вы не пользуетесь?</h3>
+                <p>Сдавайте их в аренду и зарабатывайте вместе с Rentoo!</p>
+                <a href="#" class="rentoo-btn">Начать сдавать вещи</a>
+            </div>
+        </div>
+    </section>
     <!-- Hero Section - Renter -->
     <section class="hero page-content" id="hero-renter">
         <div class="hero-content">
@@ -2074,6 +2225,7 @@
             </div>
         </div>
     </section>
+    
 
     <!-- Problems Section Renter-->
     <section class="problems-section page-content" id="problem-renter">
@@ -2563,6 +2715,8 @@
         </form>
     </section>
 
+    
+    
     <!-- Survey Section -->
     <section class="survey-section page-content" id="survey-renter">
         <h2>Есть вопросы?</h2>
@@ -2767,7 +2921,7 @@
             
             const pages = {
                 'renter': ['hero-renter', 'problem-renter', 'how-it-works-renter', 'benefits-renter', 'interface-demo-renter', 'trust-renter', 'planeta-renter', 'registration-renter', 'survey-renter'],
-                'owner': ['hero-owner', 'problem-owner', 'how-it-works-owner', 'benefits-owner', 'interface-demo-owner', 'trust-owner', 'planeta-owner', 'registration-owner', 'survey-owner']
+                'owner': ['hero-owner', 'problem-owner', 'how-it-works-owner', 'benefits-owner', 'interface-demo-owner', 'trust-owner', 'planeta-owner', 'registration-owner', 'survey-owner','items-owner']
             };
             
             pages[page].forEach(id => {
