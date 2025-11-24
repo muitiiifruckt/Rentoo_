@@ -325,6 +325,8 @@
             max-width: 900px;
             width: 100%;
             padding: 0 1rem;
+            position: relative;
+            z-index: 10;
         }
 
         @keyframes fadeInUp {
@@ -350,14 +352,85 @@
             animation: fadeInUp 1s ease-out 0.2s backwards;
         }
 
+        .logo-wrapper {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 1s ease-out 0.3s backwards;
+        }
+
         .logo {
             font-size: clamp(3.5rem, 10vw, 6rem);
             font-weight: 900;
             letter-spacing: -0.03em;
-            margin-bottom: 1.5rem;
-            color: #000000; /* или просто black */
-            animation: fadeInUp 1s ease-out 0.3s backwards;
+            color: #000000;
+            position: relative;
+            z-index: 2;
+        }
 
+        .hero-floating-image {
+            position: fixed;
+            z-index: 1;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25), 
+                        0 0 0 4px rgba(255, 255, 255, 0.1),
+                        0 0 40px rgba(139, 127, 217, 0.3);
+            object-fit: cover;
+            animation: floatImage 6s ease-in-out infinite;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            filter: brightness(1.05) saturate(1.1);
+            pointer-events: none;
+        }
+
+        .hero-floating-image:hover {
+            transform: scale(1.08) rotate(calc(var(--initial-rotate, 0deg) + 3deg));
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.3), 
+                        0 0 0 6px rgba(255, 255, 255, 0.15),
+                        0 0 60px rgba(139, 127, 217, 0.4);
+            filter: brightness(1.1) saturate(1.2);
+        }
+
+        .hero-floating-image.snowboard {
+            width: clamp(250px, 30vw, 400px);
+            height: clamp(250px, 30vw, 400px);
+            top: 50%;
+            left: 0;
+            transform: translateY(-50%) translateX(-30%) rotate(-15deg);
+            animation-delay: 0s;
+        }
+
+        .hero-floating-image.bike {
+            width: clamp(280px, 32vw, 450px);
+            height: clamp(280px, 32vw, 450px);
+            top: 50%;
+            right: 0;
+            transform: translateY(-50%) translateX(30%) rotate(12deg);
+            animation-delay: 1.5s;
+        }
+
+        @keyframes floatImage {
+            0%, 100% {
+                transform: translateY(-50%) translateX(var(--initial-x, 0)) rotate(var(--initial-rotate, 0deg));
+            }
+            25% {
+                transform: translateY(calc(-50% - 20px)) translateX(calc(var(--initial-x, 0) + 8px)) rotate(calc(var(--initial-rotate, 0deg) + 4deg));
+            }
+            50% {
+                transform: translateY(calc(-50% - 30px)) translateX(calc(var(--initial-x, 0) - 5px)) rotate(calc(var(--initial-rotate, 0deg) + 8deg));
+            }
+            75% {
+                transform: translateY(calc(-50% - 15px)) translateX(calc(var(--initial-x, 0) - 8px)) rotate(calc(var(--initial-rotate, 0deg) + 3deg));
+            }
+        }
+
+        .hero-floating-image.snowboard {
+            --initial-rotate: -15deg;
+            --initial-x: -30%;
+        }
+
+        .hero-floating-image.bike {
+            --initial-rotate: 12deg;
+            --initial-x: 30%;
         }
 
         .hero h1 {
@@ -1189,6 +1262,13 @@
             transform: scale(1.02);
         }
 
+        .cta-form .form-textarea {
+            min-height: 120px;
+            resize: vertical;
+            font-family: inherit;
+            line-height: 1.6;
+        }
+
         .submit-button {
             padding: 1.4rem 2.5rem;
             background: var(--white);
@@ -1264,6 +1344,16 @@
         /* Responsive */
         /* Tablet and smaller desktop */
         @media (max-width: 1024px) {
+            .hero-floating-image.snowboard {
+                width: clamp(200px, 28vw, 350px);
+                height: clamp(200px, 28vw, 350px);
+            }
+
+            .hero-floating-image.bike {
+                width: clamp(220px, 30vw, 380px);
+                height: clamp(220px, 30vw, 380px);
+            }
+
             .demo-container {
                 grid-template-columns: 1fr;
                 gap: 3rem;
@@ -1373,8 +1463,28 @@
                 margin-bottom: 1.5rem;
             }
 
+            .logo-wrapper {
+                margin-bottom: 1.2rem;
+            }
+
             .logo {
                 font-size: clamp(2.5rem, 12vw, 4rem);
+            }
+
+            .hero-floating-image {
+                box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+            }
+
+            .hero-floating-image.snowboard {
+                width: clamp(150px, 25vw, 280px);
+                height: clamp(150px, 25vw, 280px);
+                transform: translateY(-50%) translateX(-40%) rotate(-15deg);
+            }
+
+            .hero-floating-image.bike {
+                width: clamp(170px, 27vw, 320px);
+                height: clamp(170px, 27vw, 320px);
+                transform: translateY(-50%) translateX(40%) rotate(12deg);
             }
 
             .hero h1 {
@@ -1720,8 +1830,51 @@
                 touch-action: manipulation;
             }
 
+            .logo-wrapper {
+                margin-bottom: 1rem;
+            }
+
             .logo {
                 font-size: clamp(2rem, 15vw, 3rem);
+            }
+
+            .hero-floating-image {
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+                border-radius: 16px;
+            }
+
+            .hero-floating-image.snowboard {
+                width: clamp(120px, 20vw, 200px);
+                height: clamp(120px, 20vw, 200px);
+                transform: translateY(-50%) translateX(-45%) rotate(-15deg);
+            }
+
+            .hero-floating-image.bike {
+                width: clamp(140px, 22vw, 240px);
+                height: clamp(140px, 22vw, 240px);
+                transform: translateY(-50%) translateX(45%) rotate(12deg);
+            }
+
+            @media (max-width: 360px) {
+                .hero-floating-image {
+                    opacity: 0.5;
+                }
+                .hero-floating-image.snowboard {
+                    width: 90px;
+                    height: 90px;
+                    transform: translateY(-50%) translateX(-55%) rotate(-15deg);
+                }
+                .hero-floating-image.bike {
+                    width: 100px;
+                    height: 100px;
+                    transform: translateY(-50%) translateX(55%) rotate(12deg);
+                }
+            }
+
+            @media (max-width: 480px) {
+                .hero-floating-image {
+                    pointer-events: auto;
+                }
             }
 
             .hero h1 {
@@ -2081,9 +2234,13 @@
     </nav>
     
     <section class="hero page-content active" id="hero">
+        <img src="snowboard.jpg" alt="Сноуборд" class="hero-floating-image snowboard">
+        <img src="bike.avif" alt="Велосипед" class="hero-floating-image bike">
         <div class="hero-content">
             <div class="hero-badge">🤝 Платформа, которой доверяют</div>
-            <div class="logo">Rentoo</div>
+            <div class="logo-wrapper">
+                <div class="logo">Rentoo</div>
+            </div>
             <h1>Откройте новые возможности аренды и сдачи вещей легко и безопасно!</h1>
 
             <div class="hero-features">
@@ -2671,26 +2828,27 @@
 
     <!-- CTA Section -->
     <section class="cta-section page-content" id="registration-owner">
-        <h2>Узнайте о запуске первыми!</h2>
-        <p class="section-subtitle">Оставьте заявку и получите ранний доступ с эксклюзивными бонусами</p>
+        <h2>Начните зарабатывать на аренде уже сегодня!</h2>
+        <p class="section-subtitle">Расскажите, что вы хотите сдавать в аренду, и получите ранний доступ с эксклюзивными бонусами</p>
         
         <form class="cta-form" onsubmit="return handleSubmit(event)">
-            <input type="text" name="name" class="form-input" placeholder="Ваше имя" required>
-            <input type="email" name="email" class="form-input" placeholder="Email" required>
+            <input type="email" name="email" class="form-input" placeholder="Ваш email" required autocomplete="email">
+            <textarea name="items" class="form-input form-textarea" placeholder="Что вы хотите сдавать в аренду? Например: велосипед, дрель, камера, проектор..." required rows="4"></textarea>
             <button type="submit" class="submit-button">Получить ранний доступ →</button>
+            <p class="cta-note" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">Бесплатно · Без кредитной карты · Отменить можно в любой момент</p>
         </form>
         
     </section>
 
     <!-- CTA Section -->
     <section class="cta-section page-content" id="registration-renter">
-        <h2>Узнайте о запуске первыми!</h2>
-        <p class="section-subtitle">Оставьте заявку и получите ранний доступ с эксклюзивными бонусами</p>
+        <h2>Начните арендовать вещи уже сегодня!</h2>
+        <p class="section-subtitle">Оставьте email и получите ранний доступ с эксклюзивными бонусами</p>
         
         <form class="cta-form" onsubmit="return handleSubmit(event)">
-            <input type="text" name="name" class="form-input" placeholder="Ваше имя" required>
-            <input type="email" name="email" class="form-input" placeholder="Email" required>
+            <input type="email" name="email" class="form-input" placeholder="Ваш email" required autocomplete="email">
             <button type="submit" class="submit-button">Получить ранний доступ →</button>
+            <p class="cta-note" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">Бесплатно · Без кредитной карты · Отменить можно в любой момент</p>
         </form>
         
     </section>
@@ -2792,21 +2950,25 @@
             
             const formData = new FormData(event.target);
             const data = {
-                name: formData.get('name') || '',
                 email: formData.get('email') || '',
-                telegram: formData.get('telegram') || ''
+                items: formData.get('items') || ''
             };
             
             const userType = currentPage === 'renter' ? 'Арендатор' : 'Арендодатель';
             
-            const message = `
+            let message = `
     🆕 <b>Новая регистрация на Rentoo!</b>
     
     🎭 <b>Тип:</b> ${userType}
-    👤 <b>Имя:</b> ${data.name}
     📧 <b>Email:</b> ${data.email}
-    ⏰ <b>Время:</b> ${new Date().toLocaleString('ru-RU')}
             `.trim();
+            
+            // Добавляем информацию о том, что сдают в аренду (только для арендодателей)
+            if (currentPage === 'owner' && data.items) {
+                message += `\n    📦 <b>Что сдают в аренду:</b>\n    ${data.items}`;
+            }
+            
+            message += `\n    ⏰ <b>Время:</b> ${new Date().toLocaleString('ru-RU')}`;
             
             const sent = await sendToTelegram(message,CHAT_ID);
             const sent_2 = await sendToTelegram(message,CHAT_ID_2);
