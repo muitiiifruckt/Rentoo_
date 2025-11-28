@@ -11,6 +11,7 @@ export default function AddItem() {
   const [loading, setLoading] = useState(false)
   const [uploadingImages, setUploadingImages] = useState(false)
   const [categoriesLoading, setCategoriesLoading] = useState(true)
+  const [categoriesError, setCategoriesError] = useState<string | null>(null)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -23,17 +24,33 @@ export default function AddItem() {
 
   const loadCategories = async () => {
     setCategoriesLoading(true)
+    setCategoriesError(null)
     try {
       const data = await categoriesAPI.getCategories()
       console.log('Loaded categories:', data)
       setCategories(data)
       if (data.length === 0) {
         console.warn('No categories found in database')
+        setCategoriesError('В базе данных нет категорий. Пожалуйста, создайте категории через админ-панель или API.')
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Failed to load categories:', error)
-      // Show error to user
-      alert('Не удалось загрузить категории. Проверьте подключение к серверу.')
+      // Log detailed error for debugging
+      let errorMessage = 'Не удалось загрузить категории.'
+      
+      if (error.response) {
+        console.error('Response status:', error.response.status)
+        console.error('Response data:', error.response.data)
+        errorMessage = `Ошибка сервера: ${error.response.status}. ${error.response.data?.detail || 'Проверьте подключение к серверу.'}`
+      } else if (error.request) {
+        console.error('Request made but no response received:', error.request)
+        errorMessage = 'Не удалось подключиться к серверу. Убедитесь, что бэкенд запущен на http://localhost:8000'
+      } else {
+        console.error('Error setting up request:', error.message)
+        errorMessage = `Ошибка: ${error.message}`
+      }
+      
+      setCategoriesError(errorMessage)
     } finally {
       setCategoriesLoading(false)
     }
@@ -42,15 +59,8 @@ export default function AddItem() {
   const handleSubmit = async (data: Record<string, any>) => {
     setLoading(true)
     try {
-      // Upload images first
       const imageFiles = data.images || []
       const imageUrls: string[] = []
-
-      if (imageFiles.length > 0) {
-        setUploadingImages(true)
-        // For now, we'll create the item first, then upload images
-        // In a real app, you might want to upload to a temporary location first
-      }
 
       // Create item
       const itemData: ItemCreate = {
@@ -65,31 +75,54 @@ export default function AddItem() {
               address: data.location_address,
             }
           : undefined,
-        parameters: data.parameters ? JSON.parse(data.parameters) : undefined,
+        parameters: data.parameters && data.parameters.trim() ? (() => {
+          try {
+            return JSON.parse(data.parameters)
+          } catch (e) {
+            console.warn('Invalid JSON in parameters field:', e)
+            return undefined
+          }
+        })() : undefined,
         images: imageUrls,
       }
 
       const newItem = await itemsAPI.createItem(itemData)
+      console.log('Created item response:', newItem)
+      
+      // Item ID should be normalized by API client
+      const itemId = newItem.id
+      if (!itemId) {
+        console.error('Item ID not found in response:', newItem)
+        throw new Error('Не удалось получить ID созданного товара. Попробуйте обновить страницу.')
+      }
+      
+      console.log('Using item ID:', itemId)
 
       // Upload images after item creation
-      if (imageFiles.length > 0) {
+      if (imageFiles.length > 0 && imageFiles[0] instanceof File) {
         setUploadingImages(true)
         try {
           for (const file of imageFiles) {
             if (file instanceof File) {
-              await itemsAPI.uploadImage(newItem.id, file)
+              console.log('Uploading image for item:', itemId)
+              await itemsAPI.uploadImage(itemId, file)
             }
           }
-        } catch (error) {
+        } catch (error: any) {
           console.error('Failed to upload some images:', error)
+          // Don't throw - images are optional, but show warning
+          alert('Товар создан, но не удалось загрузить некоторые изображения. Вы можете добавить их позже.')
         } finally {
           setUploadingImages(false)
         }
       }
 
-      navigate(`/items/${newItem.id}`)
+      navigate(`/items/${itemId}`)
     } catch (error: any) {
       console.error('Failed to create item:', error)
+      // Show user-friendly error message
+      const errorMessage = error.response?.data?.detail || error.message || 'Не удалось создать товар'
+      alert(errorMessage)
       throw error
     } finally {
       setLoading(false)
@@ -187,26 +220,26 @@ export default function AddItem() {
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 md:px-6 lg:px-8">
       <h1 className="mb-8 text-h1-lg font-bold text-text-primary">Добавить товар</h1>
-      {categories.length === 0 ? (
+      {categories.length === 0 && !categoriesLoading ? (
         <div className="rounded-medium bg-surface p-8 text-center">
           <p className="mb-4 text-body text-text-secondary">
-            Категории не загружены. Пожалуйста, обновите страницу или проверьте подключение к серверу.
+            {categoriesError || 'Категории не загружены. Пожалуйста, обновите страницу или проверьте подключение к серверу.'}
           </p>
           <button
             onClick={loadCategories}
-            className="rounded-small bg-primary px-4 py-2 text-body text-white hover:bg-primary/90"
+            className="rounded-small bg-primary px-4 py-2 text-body text-white hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
           >
             Попробовать снова
           </button>
         </div>
-      ) : (
+      ) : categories.length > 0 ? (
         <Form
           fields={fields}
           onSubmit={handleSubmit}
           submitLabel={uploadingImages ? 'Загрузка изображений...' : 'Создать объявление'}
           loading={loading || uploadingImages}
         />
-      )}
+      ) : null}
     </div>
   )
 }

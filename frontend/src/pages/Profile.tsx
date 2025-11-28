@@ -26,7 +26,13 @@ export default function Profile() {
     setLoading(true)
     try {
       const data = await itemsAPI.getMyItems()
-      setMyItems(data)
+      console.log('Loaded my items:', data)
+      // Double-check normalization
+      const normalized = data.map(item => {
+        const id = item.id || (item as any)._id
+        return { ...item, id: id || '' }
+      })
+      setMyItems(normalized)
     } catch (error) {
       console.error('Failed to load items:', error)
     } finally {
@@ -35,6 +41,13 @@ export default function Profile() {
   }
 
   const handleItemClick = (item: Item) => {
+    console.log('Item clicked:', item)
+    console.log('Item ID:', item.id)
+    if (!item.id) {
+      console.error('Item has no ID!', item)
+      alert('Ошибка: товар не имеет ID. Попробуйте обновить страницу.')
+      return
+    }
     navigate(`/items/${item.id}`)
   }
 
@@ -70,9 +83,21 @@ export default function Profile() {
       </div>
 
       <Grid loading={loading} emptyMessage="У вас пока нет товаров">
-        {myItems.map((item) => (
-          <ItemCard key={item.id} item={item} onClick={handleItemClick} />
-        ))}
+        {myItems.map((item) => {
+          // Ensure item has an ID before rendering
+          const itemId = item.id || (item as any)._id
+          if (!itemId) {
+            console.error('Item missing ID:', item)
+            return null
+          }
+          return (
+            <ItemCard 
+              key={itemId} 
+              item={{ ...item, id: itemId }} 
+              onClick={handleItemClick} 
+            />
+          )
+        })}
       </Grid>
     </div>
   )

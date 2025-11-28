@@ -203,31 +203,64 @@ export const categoriesAPI = {
   },
 }
 
+// Helper function to normalize item data (ensure id field exists)
+const normalizeItem = (item: any): Item => {
+  // Create a new object to avoid mutation issues
+  const normalized = { ...item }
+  if (!normalized.id && normalized._id) {
+    normalized.id = String(normalized._id)
+  }
+  // Ensure id is always a string
+  if (normalized.id) {
+    normalized.id = String(normalized.id)
+  }
+  return normalized as Item
+}
+
+const normalizeItems = (items: any[]): Item[] => {
+  return items.map(normalizeItem)
+}
+
+// Helper function to normalize rental data
+const normalizeRental = (rental: any): Rental => {
+  if (!rental.id && rental._id) {
+    rental.id = rental._id
+  }
+  if (!rental.item_id && rental.item_id === undefined && rental.item) {
+    rental.item_id = rental.item.id || rental.item._id
+  }
+  return rental as Rental
+}
+
+const normalizeRentals = (rentals: any[]): Rental[] => {
+  return rentals.map(normalizeRental)
+}
+
 // Items API
 export const itemsAPI = {
   getItems: async (search?: ItemSearch): Promise<Item[]> => {
     const response = await api.get('/api/items', { params: search })
-    return response.data
+    return normalizeItems(response.data)
   },
 
   getItem: async (itemId: string): Promise<Item> => {
     const response = await api.get(`/api/items/${itemId}`)
-    return response.data
+    return normalizeItem(response.data)
   },
 
   getMyItems: async (): Promise<Item[]> => {
     const response = await api.get('/api/items/my')
-    return response.data
+    return normalizeItems(response.data)
   },
 
   createItem: async (data: ItemCreate): Promise<Item> => {
     const response = await api.post('/api/items', data)
-    return response.data
+    return normalizeItem(response.data)
   },
 
   updateItem: async (itemId: string, data: Partial<ItemCreate>): Promise<Item> => {
     const response = await api.put(`/api/items/${itemId}`, data)
-    return response.data
+    return normalizeItem(response.data)
   },
 
   deleteItem: async (itemId: string): Promise<void> => {
@@ -250,22 +283,22 @@ export const itemsAPI = {
 export const rentalsAPI = {
   getRentals: async (role?: 'all' | 'renter' | 'owner'): Promise<Rental[]> => {
     const response = await api.get('/api/rentals', { params: { role } })
-    return response.data
+    return normalizeRentals(response.data)
   },
 
   getRental: async (rentalId: string): Promise<Rental> => {
     const response = await api.get(`/api/rentals/${rentalId}`)
-    return response.data
+    return normalizeRental(response.data)
   },
 
   createRental: async (data: RentalCreate): Promise<Rental> => {
     const response = await api.post('/api/rentals', data)
-    return response.data
+    return normalizeRental(response.data)
   },
 
   confirmRental: async (rentalId: string, confirm: boolean): Promise<Rental> => {
     const response = await api.put(`/api/rentals/${rentalId}/confirm`, { confirm })
-    return response.data
+    return normalizeRental(response.data)
   },
 
   completeRental: async (rentalId: string): Promise<Rental> => {
