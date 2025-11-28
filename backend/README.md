@@ -30,7 +30,7 @@ Rentoo решает проблемы традиционной аренды:
 - Пользователь может одновременно:
   - Размещать объявления и сдавать вещи в аренду
   - Искать вещи и бронировать их для аренды
-- История бронирований (как арендодателя, так и арендатора)
+- История бронирований (rentals) - как владельца товара, так и арендатора
 
 ### 2. Управление товарами (Items)
 
@@ -69,27 +69,27 @@ Rentoo решает проблемы традиционной аренды:
 
 ### 4. Система бронирования
 
-#### Процесс бронирования
-1. Арендатор выбирает товар и даты
-2. Создается заявка на бронирование
-3. Арендодатель получает уведомление
-4. Арендодатель подтверждает или отклоняет заявку
-5. При подтверждении создается бронирование
+#### Процесс бронирования (rental)
+1. Пользователь выбирает товар и даты
+2. Создается заявка на бронирование (rental)
+3. Владелец товара получает уведомление
+4. Владелец подтверждает или отклоняет заявку
+5. При подтверждении создается бронирование (rental)
 6. Пользователи договариваются о встрече через чат
 7. Оплата происходит при личной встрече (наличными или переводом)
 8. После завершения аренды бронирование помечается как завершенное
 
-#### Статусы бронирования
+#### Статусы бронирования (rental)
 - `pending` — ожидает подтверждения
-- `confirmed` — подтверждено арендодателем
+- `confirmed` — подтверждено владельцем
 - `in_progress` — аренда идет
 - `completed` — аренда завершена
 - `cancelled` — отменено
 
-#### Данные бронирования
-- ID товара
-- ID арендатора
-- ID арендодателя
+#### Данные бронирования (rental)
+- ID товара (item_id)
+- ID арендатора (renter_id)
+- ID владельца (owner_id)
 - Даты начала и окончания
 - Общая стоимость (для информации)
 - Условия передачи/возврата
@@ -98,15 +98,15 @@ Rentoo решает проблемы традиционной аренды:
 ### 5. Коммуникация
 
 #### Чат между пользователями
-- Личные сообщения между арендатором и арендодателем
-- Привязка к конкретному бронированию
+- Личные сообщения между пользователями
+- Привязка к конкретному бронированию (rental)
 - История переписки
 - Уведомления о новых сообщениях
 - Возможность отправки фото (состояние товара)
 
 #### Уведомления (базовые)
 - In-app уведомления (в приложении)
-- Типы: новые заявки на бронирование, новые сообщения в чате
+- Типы: новые заявки на бронирование (rental), новые сообщения в чате
 
 ---
 
@@ -139,11 +139,11 @@ Rentoo решает проблемы традиционной аренды:
 - Категории и теги
 
 #### 4. Search & Discovery
-- Простой текстовый поиск по БД (LIKE запросы)
+- Простой текстовый поиск по MongoDB (текстовые индексы или regex)
 - Фильтрация по категории и цене
 - Сортировка по дате и цене
 
-#### 5. Booking System
+#### 5. Rental System (Система бронирований)
 - Создание и управление бронированиями
 - Проверка доступности дат
 - Автоматическое обновление календаря
@@ -151,8 +151,8 @@ Rentoo решает проблемы традиционной аренды:
 - История бронирований
 
 #### 6. Messaging System
-- Чат между пользователями (WebSocket для real-time)
-- История сообщений
+- Чат между пользователями (WebSocket для real-time через FastAPI)
+- История сообщений (хранится в MongoDB)
 - Отправка текстовых сообщений
 - Фото в сообщениях (опционально)
 
@@ -163,45 +163,47 @@ Rentoo решает проблемы традиционной аренды:
 
 ### База данных
 
-#### Основные сущности
+#### Коллекции MongoDB
 
-**Users**
-- id, email, password_hash, name, avatar_url
+**users**
+- _id (ObjectId), email, password_hash, name, avatar_url
 - created_at, updated_at
 
-**Items**
-- id, owner_id, title, description, category
+**items**
+- _id (ObjectId), owner_id (ObjectId), title, description, category
 - price_per_day, price_per_week, price_per_month
-- location (address, lat, lng), parameters (JSON)
-- status, created_at, updated_at
+- location (address, lat, lng), parameters (dict)
+- images (массив URL), status
+- created_at, updated_at
 
-**ItemImages**
-- id, item_id, image_url, order
-
-**AvailabilityCalendar**
-- id, item_id, date, available, booking_id (nullable)
-
-**Bookings**
-- id, item_id, renter_id, owner_id
+**rentals** (бронирования)
+- _id (ObjectId), item_id (ObjectId), renter_id (ObjectId), owner_id (ObjectId)
 - start_date, end_date, total_price, status
 - created_at, updated_at
 
-**Messages**
-- id, booking_id, sender_id, receiver_id
+**categories**
+- _id (ObjectId), name, slug, description
+
+**availability_calendar**
+- _id (ObjectId), item_id (ObjectId), date, available, rental_id (ObjectId, nullable)
+
+**messages**
+- _id (ObjectId), rental_id (ObjectId), sender_id (ObjectId), receiver_id (ObjectId)
 - content, type (text/image), read_at, created_at
 
-**Notifications**
-- id, user_id, type, title, content, read_at, created_at
+**notifications**
+- _id (ObjectId), user_id (ObjectId), type, title, content, read_at, created_at
 
 ### Технологический стек (рекомендации)
 
 #### Backend Framework
 - **Python** с **FastAPI**
-- **SQLAlchemy** для работы с БД
+- **Motor** (асинхронный драйвер) для работы с MongoDB
 - **Pydantic** для валидации данных
+- **Async/await** для асинхронных операций
 
 #### База данных
-- **PostgreSQL** — основная БД
+- **MongoDB** — основная БД
 - Все на одном сервере (БД и приложение)
 
 #### Хранилище файлов
@@ -248,17 +250,17 @@ Rentoo решает проблемы традиционной аренды:
 - `GET /api/items/:id/availability` — календарь доступности
 - `PUT /api/items/:id/availability` — обновление календаря
 
-#### Bookings
-- `GET /api/bookings` — список бронирований пользователя
-- `GET /api/bookings/:id` — детали бронирования
-- `POST /api/bookings` — создание заявки
-- `PUT /api/bookings/:id/confirm` — подтверждение
-- `PUT /api/bookings/:id/cancel` — отмена
-- `PUT /api/bookings/:id/complete` — завершение аренды
+#### Rentals (Бронирования)
+- `GET /api/rentals` — список бронирований пользователя
+- `GET /api/rentals/:id` — детали бронирования
+- `POST /api/rentals` — создание заявки
+- `PUT /api/rentals/:id/confirm` — подтверждение
+- `PUT /api/rentals/:id/cancel` — отмена
+- `PUT /api/rentals/:id/complete` — завершение аренды
 
 #### Messages
-- `GET /api/bookings/:id/messages` — история сообщений
-- `POST /api/bookings/:id/messages` — отправка сообщения
+- `GET /api/rentals/:id/messages` — история сообщений
+- `POST /api/rentals/:id/messages` — отправка сообщения
 - `PUT /api/messages/:id/read` — отметка прочитанным
 
 #### Notifications
@@ -335,7 +337,7 @@ Rentoo решает проблемы традиционной аренды:
 Для MVP все компоненты размещаются на одном сервере:
 
 - **Приложение**: FastAPI приложение
-- **База данных**: PostgreSQL (на том же сервере)
+- **База данных**: MongoDB 
 - **Файлы**: Локальное хранилище (папка `uploads/` или `static/`)
 - **Веб-сервер**: nginx (для проксирования к FastAPI и раздачи статики) или встроенный в FastAPI
 
@@ -347,18 +349,33 @@ backend/
 │   ├── __init__.py
 │   ├── main.py              # Точка входа FastAPI
 │   ├── config.py            # Конфигурация
-│   ├── database.py          # Подключение к БД
-│   ├── models/              # SQLAlchemy модели
-│   ├── schemas/             # Pydantic схемы
-│   ├── api/                 # API роуты
+│   ├── database.py          # Подключение к MongoDB (Motor)
+│   ├── models/              # MongoDB модели/схемы
+│   │   ├── user.py
+│   │   ├── item.py
+│   │   ├── rental.py
+│   │   └── category.py
+│   ├── schemas/             # Pydantic схемы для валидации
+│   │   ├── user.py
+│   │   ├── item.py
+│   │   ├── rental.py
+│   │   └── category.py
+│   ├── routers/             # API роуты
 │   │   ├── auth.py
 │   │   ├── users.py
 │   │   ├── items.py
-│   │   ├── bookings.py
+│   │   ├── rentals.py
+│   │   ├── categories.py
 │   │   ├── messages.py
 │   │   └── notifications.py
-│   ├── services/            # Бизнес-логика
+│   ├── crud/                # CRUD операции для коллекций
+│   │   ├── users.py
+│   │   ├── items.py
+│   │   ├── rentals.py
+│   │   └── categories.py
 │   └── utils/               # Утилиты
+│       ├── auth.py          # JWT, хеширование паролей
+│       └── file_upload.py   # Загрузка файлов
 ├── uploads/                 # Загруженные файлы (изображения)
 ├── static/                  # Статические файлы (если нужно)
 ├── requirements.txt         # Зависимости Python
@@ -370,8 +387,8 @@ backend/
 ```
 fastapi
 uvicorn[standard]
-sqlalchemy
-psycopg2-binary
+motor                      # асинхронный драйвер для MongoDB
+pymongo                   # синхронный драйвер (для утилит, если нужно)
 pydantic
 python-jose[cryptography]  # для JWT
 passlib[bcrypt]            # для хеширования паролей
