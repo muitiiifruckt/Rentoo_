@@ -1,0 +1,170 @@
+---
+alwaysApply: true
+---
+{
+  "project": "rental_service_frontend",
+  "description": "Минималистичный, современный UI для сервиса аренды вещей на React + Tailwind",
+  "stack": {
+    "framework": "react",
+    "styling": "tailwindcss",
+    "testing": "react-testing-library + jest (или vitest)",
+    "icons": "lucide / feather (рекомендация)"
+  },
+  "theme": {
+    "mode": "light-first (поддержка dark mode опциональна)",
+    "colors": {
+      "background": "#F7F8FA",
+      "surface": "#FFFFFF",
+      "primary": "#2563EB",
+      "accent": "#06B6D4",
+      "text_primary": "#0F172A",
+      "text_secondary": "#475569",
+      "error": "#EF4444",
+      "success": "#10B981",
+      "border_subtle": "rgba(15,23,42,0.06)"
+    },
+    "tokens": {
+      "radius_small": "8px",
+      "radius_medium": "12px",
+      "spacing_unit": 8,
+      "container_max_width": 1200,
+      "typography_scale_base": 16
+    },
+    "shadows": {
+      "card": "soft (subtle shadow, small y-offset)",
+      "elevated": "slightly stronger for modals/tooltips"
+    }
+  },
+  "typography": {
+    "font_family": "\"Inter\", system-ui, -apple-system, \"Segoe UI\", Roboto, \"Helvetica Neue\", Arial",
+    "sizes": {
+      "h1": "28-32px",
+      "h2": "22-26px",
+      "h3": "18-20px",
+      "body": "16px",
+      "small": "14px"
+    },
+    "line_height": "1.4-1.6",
+    "weights": {
+      "h1": 700,
+      "h2": 600,
+      "h3": 600,
+      "body": 400
+    }
+  },
+  "layout_and_spacing": {
+    "grid": {
+      "mobile_columns": 1,
+      "tablet_columns": 2,
+      "desktop_columns": 3,
+      "wide_desktop_columns": 4,
+      "gap": ["8px","16px","24px"]
+    },
+    "container": {
+      "max_width": "1200px",
+      "padding_mobile": "16px",
+      "padding_desktop": "24-32px"
+    },
+    "scale": "8px (8,16,24,32,...)"
+  },
+  "components": {
+    "Header": {
+      "description": "Логотип слева, поиск/категории по центру/слева, действия (вход/профиль) справа",
+      "features": ["responsive", "search with suggestions", "aria labels", "keyboard accessible"],
+      "styles": ["height ~64px", "clean background", "subtle bottom border"]
+    },
+    "ItemCard": {
+      "description": "Фото, название, короткое описание (truncate), цена/день, локация, кнопка 'Арендовать'",
+      "behaviour": ["hover lift + shadow", "clickable entire card", "lazy-load image", "image aspect 4:3 or 3:2"],
+      "states": ["default", "hover", "disabled", "loading (skeleton)"],
+      "accessibility": ["role=button if clickable", "alt text for images"]
+    },
+    "Grid": {
+      "description": "Адаптивная сетка для карточек",
+      "behaviour": ["responsiveness, gap tokens, skeleton placeholders while loading"]
+    },
+    "Form": {
+      "description": "Форма добавления/редактирования вещи",
+      "fields": ["title", "description", "category", "price_per_day", "location", "photos upload"],
+      "features": ["client-side validation", "server error handling", "image preview", "aria labels", "inline helper text"],
+      "validation": "use HTML5 + custom messages, clear error states and focus management"
+    },
+    "Modal": {
+      "description": "Минималистичные центрированные модальные для подтверждений/форм/ошибок",
+      "behaviour": ["trap focus", "esc to close", "aria-modal=true", "animated open/close"],
+      "styles": ["soft shadow", "radius 12px", "max-width 640px"]
+    },
+    "Button": {
+      "variants": ["primary", "ghost", "outline", "danger", "disabled"],
+      "styles": ["primary bg primary + white text", "rounded radius 8-12px", "keyboard focus visible", "accessible aria attributes"]
+    }
+  },
+  "async_states": {
+    "lists": "skeleton cards placeholders (preferable to spinner)",
+    "buttons": "loading spinner or progress indicator inside button",
+    "forms": "disabled submit + inline loading indicator",
+    "global": "toasts for non-critical errors, modals for blocking errors"
+  },
+  "accessibility": {
+    "contrast_goal": ">=4.5:1 for body text",
+    "focus": "visible focus ring for interactive elements",
+    "aria": "aria-labels and roles for custom components, aria-live for status messages",
+    "keyboard": "full keyboard navigation for header, modals, forms",
+    "forms": "labels tied to inputs, error messages programmatically associated"
+  },
+  "animations": {
+    "principles": "subtle, performant, brief",
+    "timings": {
+      "hover": "120-160ms",
+      "modal": "200-300ms",
+      "page_transition": "200-350ms"
+    },
+    "libraries": "framer-motion optional, use sparingly"
+  },
+  "images_and_icons": {
+    "icons": "lucide / feather (vector, lightweight)",
+    "images": {
+      "aspect_ratio": "4:3 or 3:2",
+      "lazy_load": true,
+      "optimize": "serve appropriately sized images"
+    }
+  },
+  "theme_mode": {
+    "dark_mode": {
+      "recommended": true,
+      "notes": "implement via tokens, dark tokens: bg #0F172A, surface #0B1220, text light"
+    }
+  },
+  "coding_style": {
+    "components_style": "functional components + React hooks",
+    "typing": "prefer TypeScript; if JS — use prop-types and JSDoc/type annotations",
+    "tailwind_usage": "utility-first classes, extract repeated patterns to @apply or small components",
+    "documentation": "each component: props, usage, loading/error states, accessibility notes"
+  },
+  "tests_and_quality": {
+    "unit_tests": "React Testing Library for components (focus on ItemCard, Form behaviors, Header)",
+    "integration_tests": "basic flows: list -> open item -> rent flow (mocking API)",
+    "coverage": "critical components and flows covered; use fixtures/mocks",
+    "responsiveness": "test breakpoints 320, 480, 768, 1024, 1440"
+  },
+  "data_and_integration": {
+    "data_source": "все поля и контракты брать из проектной документации / backend API",
+    "api_handling": "graceful error handling, retries where suitable, show user-friendly messages"
+  },
+  "senior_guidelines": {
+    "approach": "предлагай изменения и рефакторинг только с объяснением и тестами",
+    "backward_compatibility": "не ломать существующие интерфейсы",
+    "performance": "avoid unnecessary re-renders, memoize heavy components",
+    "security": "sanitize user inputs for previews, handle file uploads securely"
+  },
+  "deliverables": [
+    "file_structure + README (как запускать)",
+    "design tokens (colors, spacing, typography)",
+    "Tailwind config example (theme extensions)",
+    "components: Header, ItemCard, Grid, Form, Modal, Button (with docs)",
+    "skeleton state components for lists",
+    "example screens: Home (list), Item page, Add Item, Profile",
+    "unit tests for ItemCard and Form (React Testing Library)"
+  ]
+}
+
