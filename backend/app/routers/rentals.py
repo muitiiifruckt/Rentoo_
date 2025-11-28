@@ -102,6 +102,7 @@ async def create_rental_request(
     )
     
     rental["_id"] = str(rental["_id"])
+    rental["id"] = str(rental["_id"])  # Also add id field for Pydantic
     rental["item_id"] = str(rental["item_id"])
     rental["renter_id"] = str(rental["renter_id"])
     rental["owner_id"] = str(rental["owner_id"])
@@ -118,6 +119,7 @@ async def list_rentals(
     rentals = await get_user_rentals(db, str(current_user["_id"]), role)
     for rental in rentals:
         rental["_id"] = str(rental["_id"])
+        rental["id"] = str(rental["_id"])  # Also add id field for Pydantic
         rental["item_id"] = str(rental["item_id"])
         rental["renter_id"] = str(rental["renter_id"])
         rental["owner_id"] = str(rental["owner_id"])
@@ -147,6 +149,7 @@ async def get_rental(
         )
     
     rental["_id"] = str(rental["_id"])
+    rental["id"] = str(rental["_id"])  # Also add id field for Pydantic
     rental["item_id"] = str(rental["item_id"])
     rental["renter_id"] = str(rental["renter_id"])
     rental["owner_id"] = str(rental["owner_id"])

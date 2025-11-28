@@ -25,6 +25,7 @@ async def create_new_item(
     item_dict = item_data.dict()
     item = await create_item(db, str(current_user["_id"]), item_dict)
     item["_id"] = str(item["_id"])
+    item["id"] = str(item["_id"])  # Also add id field for Pydantic
     item["owner_id"] = str(item["owner_id"])
     return item
 
@@ -38,6 +39,7 @@ async def list_items(
     items = await search_items(db, search)
     for item in items:
         item["_id"] = str(item["_id"])
+        item["id"] = str(item["_id"])  # Also add id field for Pydantic
         item["owner_id"] = str(item["owner_id"])
     return items
 
@@ -51,6 +53,7 @@ async def get_my_items(
     items = await get_user_items(db, str(current_user["_id"]))
     for item in items:
         item["_id"] = str(item["_id"])
+        item["id"] = str(item["_id"])  # Also add id field for Pydantic
         item["owner_id"] = str(item["owner_id"])
     return items
 
@@ -68,6 +71,7 @@ async def get_item(
             detail="Item not found"
         )
     item["_id"] = str(item["_id"])
+    item["id"] = str(item["_id"])  # Also add id field for Pydantic
     item["owner_id"] = str(item["owner_id"])
     return item
 

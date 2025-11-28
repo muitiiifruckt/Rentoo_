@@ -48,7 +48,8 @@ async def update_item(db: AsyncIOMotorDatabase, item_id: str, owner_id: str, upd
     if not item or item["owner_id"] != ObjectId(owner_id):
         return None
     
-    update_data["updated_at"] = Item().created_at  # Use current time
+    from datetime import datetime
+    update_data["updated_at"] = datetime.utcnow()
     result = await db[Item.collection_name].update_one(
         {"_id": ObjectId(item_id), "owner_id": ObjectId(owner_id)},
         {"$set": update_data}

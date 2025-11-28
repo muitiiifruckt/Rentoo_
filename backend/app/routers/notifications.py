@@ -25,6 +25,7 @@ async def get_notifications(
     )
     for notification in notifications:
         notification["_id"] = str(notification["_id"])
+        notification["id"] = str(notification["_id"])  # Also add id field for Pydantic
         notification["user_id"] = str(notification["user_id"])
     return notifications
 

@@ -55,11 +55,22 @@ async def update_rental_status(
     if not rental or rental["owner_id"] != ObjectId(owner_id):
         return None
     
-    update_data = {"status": status, "updated_at": Rental().created_at}
+    from datetime import datetime
+    update_data = {"status": status, "updated_at": datetime.utcnow()}
     
     # If confirmed, update availability calendar
     if status == "confirmed":
-        await _update_availability_for_rental(db, rental_id, rental["item_id"], rental["start_date"], rental["end_date"], available=False)
+        from datetime import date as date_type
+        # Convert date strings to date objects if needed
+        start_date = rental["start_date"]
+        end_date = rental["end_date"]
+        if isinstance(start_date, str):
+            from datetime import datetime
+            start_date = datetime.fromisoformat(start_date).date()
+        if isinstance(end_date, str):
+            from datetime import datetime
+            end_date = datetime.fromisoformat(end_date).date()
+        await _update_availability_for_rental(db, rental_id, str(rental["item_id"]), start_date, end_date, available=False)
     
     result = await db[Rental.collection_name].update_one(
         {"_id": ObjectId(rental_id)},

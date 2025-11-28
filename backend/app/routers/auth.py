@@ -33,8 +33,9 @@ async def register(
         name=user_data.name
     )
     
-    # Convert ObjectId to string
+    # Convert ObjectId to string for response
     user["_id"] = str(user["_id"])
+    user["id"] = str(user["_id"])  # Also add id field for Pydantic
     
     return user
 
@@ -83,5 +84,6 @@ async def get_current_user_info(
 ):
     """Get current user information."""
     current_user["_id"] = str(current_user["_id"])
+    current_user["id"] = str(current_user["_id"])  # Also add id field for Pydantic
     return current_user
 

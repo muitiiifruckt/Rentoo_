@@ -68,6 +68,7 @@ async def send_message(
     )
     
     message["_id"] = str(message["_id"])
+    message["id"] = str(message["_id"])  # Also add id field for Pydantic
     message["rental_id"] = str(message["rental_id"])
     message["sender_id"] = str(message["sender_id"])
     message["receiver_id"] = str(message["receiver_id"])
@@ -99,6 +100,7 @@ async def get_messages(
     messages = await get_rental_messages(db, rental_id)
     for message in messages:
         message["_id"] = str(message["_id"])
+        message["id"] = str(message["_id"])  # Also add id field for Pydantic
         message["rental_id"] = str(message["rental_id"])
         message["sender_id"] = str(message["sender_id"])
         message["receiver_id"] = str(message["receiver_id"])

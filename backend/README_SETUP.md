@@ -34,20 +34,69 @@ pip install -r requirements.txt
 ```
 
 5. **Настройте переменные окружения:**
-Создайте файл `.env` на основе `.env.example`:
+
+Файл `.env` уже создан с дефолтными значениями. При необходимости отредактируйте его:
+
+**Важные настройки:**
+- `MONGODB_URL` - URL вашей MongoDB (по умолчанию `mongodb://localhost:27017`)
+- `MONGODB_DB_NAME` - имя базы данных (по умолчанию `rentoo`)
+- `SECRET_KEY` - секретный ключ для JWT (**обязательно измените в продакшене!**)
+- `DEBUG` - режим отладки (по умолчанию `False`)
+
+**Дефолтные значения:**
+- База данных: `mongodb://localhost:27017`
+- Имя БД: `rentoo`
+- Токены: 30 минут (access), 7 дней (refresh)
+- Загрузка файлов: до 10MB, форматы jpeg/png/webp
+- CORS: разрешены все источники (`*`)
+
+6. **Установите и запустите MongoDB:**
+
+**Windows:**
+- Скачайте MongoDB Community Server с официального сайта: https://www.mongodb.com/try/download/community
+- Выберите версию для Windows и установите (рекомендуется установить как службу Windows)
+- Или используйте MongoDB через Docker:
 ```bash
-cp .env.example .env
+docker run -d -p 27017:27017 --name mongodb mongo:latest
 ```
 
-Отредактируйте `.env` и укажите:
-- `MONGODB_URL` - URL вашей MongoDB (по умолчанию `mongodb://localhost:27017`)
-- `SECRET_KEY` - секретный ключ для JWT (используйте длинную случайную строку)
-- Другие настройки при необходимости
-
-6. **Убедитесь, что MongoDB запущена:**
+**Linux (Ubuntu/Debian):**
 ```bash
-# Проверьте, что MongoDB работает
+# Установка MongoDB
+wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | sudo apt-key add -
+echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | sudo tee /etc/apt/sources.list.d/mongodb-org-7.0.list
+sudo apt-get update
+sudo apt-get install -y mongodb-org
+
+# Запуск MongoDB
+sudo systemctl start mongod
+sudo systemctl enable mongod
+```
+
+**macOS:**
+```bash
+# Установка через Homebrew
+brew tap mongodb/brew
+brew install mongodb-community
+brew services start mongodb-community
+```
+
+**Проверка работы MongoDB:**
+```bash
+# Подключение к MongoDB
 mongosh
+
+# Или проверка через Python
+python -c "from pymongo import MongoClient; MongoClient('mongodb://localhost:27017').admin.command('ping')"
+```
+
+**Если MongoDB не запущена как служба, запустите вручную:**
+```bash
+# Windows (если установлена не как служба)
+"C:\Program Files\MongoDB\Server\7.0\bin\mongod.exe" --dbpath "C:\data\db"
+
+# Linux/macOS
+mongod --dbpath /data/db
 ```
 
 ## Запуск

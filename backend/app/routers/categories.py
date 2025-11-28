@@ -18,5 +18,6 @@ async def list_categories(
     categories = await get_all_categories(db)
     for category in categories:
         category["_id"] = str(category["_id"])
+        category["id"] = str(category["_id"])  # Also add id field for Pydantic
     return categories
 

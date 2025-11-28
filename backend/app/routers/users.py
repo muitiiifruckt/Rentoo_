@@ -23,6 +23,7 @@ async def get_user(
             detail="User not found"
         )
     user["_id"] = str(user["_id"])
+    user["id"] = str(user["_id"])  # Also add id field for Pydantic
     return user
 
 
@@ -53,5 +54,6 @@ async def update_user_profile(
         )
     
     updated_user["_id"] = str(updated_user["_id"])
+    updated_user["id"] = str(updated_user["_id"])  # Also add id field for Pydantic
     return updated_user
 

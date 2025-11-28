@@ -35,7 +35,8 @@ async def update_user(db: AsyncIOMotorDatabase, user_id: str, update_data: dict)
     if not ObjectId.is_valid(user_id):
         return None
     
-    update_data["updated_at"] = User().created_at  # Use current time
+    from datetime import datetime
+    update_data["updated_at"] = datetime.utcnow()
     result = await db[User.collection_name].update_one(
         {"_id": ObjectId(user_id)},
         {"$set": update_data}
@@ -48,5 +49,6 @@ async def update_user(db: AsyncIOMotorDatabase, user_id: str, update_data: dict)
 
 async def verify_user_password(user: dict, password: str) -> bool:
     """Verify user password."""
+    from app.utils.auth import verify_password
     return verify_password(password, user["password_hash"])
 
