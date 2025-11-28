@@ -15,14 +15,6 @@
         .rentoo-items-section {
             padding: 80px 0;
             background: #fafbfc;
-            display: none;
-            opacity: 0;
-            transition: opacity 0.6s ease-in-out;
-        }
-        
-        .rentoo-items-section.show {
-            display: block;
-            opacity: 1;
         }
         
         .rentoo-container {
@@ -39,30 +31,10 @@
             color: #1e293b;
         }
         
-        .rentoo-grid-wrapper {
-            overflow: hidden;
-            width: 100%;
-            position: relative;
-        }
-        
         .rentoo-grid {
-            display: flex;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
             gap: 32px;
-            animation: scroll-left 20s linear infinite;
-            width: max-content;
-        }
-        
-        .rentoo-grid:hover {
-            animation-play-state: paused;
-        }
-        
-        @keyframes scroll-left {
-            0% {
-                transform: translateX(0);
-            }
-            100% {
-                transform: translateX(calc(-33.333% - 21.33px));
-            }
         }
         
         .rentoo-card {
@@ -73,16 +45,6 @@
             box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
             border: 1px solid #e2e8f0;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            flex-shrink: 0;
-            width: 400px;
-        }
-        
-        @media (max-width: 1400px) {
-            .rentoo-card {
-                width: calc((100% - 64px) / 3);
-                max-width: 400px;
-                min-width: 300px;
-            }
         }
         
         .rentoo-card:hover {
@@ -92,10 +54,7 @@
         
         .rentoo-card img {
             width: 100%;
-            height: 200px;
-            object-fit: cover;
-            border-radius: 8px;
-            display: block;
+            border-radius: 16px;
             margin-bottom: 16px;
         }
         
@@ -125,6 +84,13 @@
             margin-bottom: 20px;
             color: #475569;
         }
+        .rentoo-card img {
+            width: 100%;          /* картинка растягивается по ширине карточки */
+            height: 200px;        /* фиксированная высота для всех */
+            object-fit: cover;    /* обрезает изображение, сохраняя пропорции */
+            border-radius: 8px;   /* если нужно закругление углов */
+            display: block;
+        }
         
         .rentoo-btn {
             display: inline-block;
@@ -145,13 +111,8 @@
         
         /* Mobile */
         @media (max-width: 900px) {
-            .rentoo-card {
-                width: 280px;
-                min-width: 280px;
-            }
-            
             .rentoo-grid {
-                animation-duration: 35s;
+                grid-template-columns: 1fr;
             }
         }
         
@@ -2273,8 +2234,8 @@
     </nav>
     
     <section class="hero page-content active" id="hero">
-        <img src="snowboard.jpg" alt="Сноуборд" class="hero-floating-image snowboard">
-        <img src="bike.avif" alt="Велосипед" class="hero-floating-image bike">
+        <img src="photos/snowboard.jpg" alt="Сноуборд" class="hero-floating-image snowboard">
+        <img src="photos/bike.avif" alt="Велосипед" class="hero-floating-image bike">
         <div class="hero-content">
             <div class="logo-wrapper">
                 <div class="logo">Rentoo</div>
@@ -2306,68 +2267,48 @@
                 Разместить объявление →
             </a>
             
+            <p class="hero-note">Бесплатно на первый месяц - без комиссий</p>
         </div>
     </section>
-    <section class="rentoo-items-section" id="items">
+    <section class="rentoo-items-section page-content" id="items-owner">
         <div class="rentoo-container">
             <h2 class="rentoo-title">Что можно сдавать в аренду?</h2>
     
-            <div class="rentoo-grid-wrapper">
-                <div class="rentoo-grid">
-                    <div class="rentoo-card">
-                        <img src="snowboard.jpg?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
-                        <h3>Сноуборд</h3>
-                        <p>Идеален для зимних поездок</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="drill.jpg?auto=format&fit=crop&w=900&q=60" alt="Дрель">
-                        <h3>Дрель</h3>
-                        <p>Незаменима для домашних работ</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="camera.avif?auto=format&fit=crop&w=900&q=60" alt="Камера">
-                        <h3>Профессиональная камера</h3>
-                        <p>Подходит для съёмки мероприятий</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="bike.avif?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
-                        <h3>Велосипед</h3>
-                        <p>Удобен для прогулок по городу</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="projector.jpg?auto=format&fit=crop&w=900&q=60" alt="Проектор">
-                        <h3>Проектор</h3>
-                        <p>Для презентаций и киносеансов</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="juicer.jpg?auto=format&fit=crop&w=900&q=60" alt="Соковыжималка">
-                        <h3>Соковыжималка</h3>
-                        <p>Для приготовления свежих соков</p>
-                    </div>
-                    
-                    <!-- Дублируем для бесконечного скролла -->
-                    <div class="rentoo-card">
-                        <img src="snowboard.jpg?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
-                        <h3>Сноуборд</h3>
-                        <p>Идеален для зимних поездок</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="drill.jpg?auto=format&fit=crop&w=900&q=60" alt="Дрель">
-                        <h3>Дрель</h3>
-                        <p>Незаменима для домашних работ</p>
-                    </div>
-        
-                    <div class="rentoo-card">
-                        <img src="camera.avif?auto=format&fit=crop&w=900&q=60" alt="Камера">
-                        <h3>Профессиональная камера</h3>
-                        <p>Подходит для съёмки мероприятий</p>
-                    </div>
+            <div class="rentoo-grid">
+                <div class="rentoo-card">
+                    <img src="photos/snowboard.jpg?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
+                    <h3>Сноуборд</h3>
+                    <p>Идеален для зимних поездок</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="photos/drill.jpg?auto=format&fit=crop&w=900&q=60" alt="Дрель">
+                    <h3>Дрель</h3>
+                    <p>Незаменима для домашних работ</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="photos/camera.avif?auto=format&fit=crop&w=900&q=60" alt="Камера">
+                    <h3>Профессиональная камера</h3>
+                    <p>Подходит для съёмки мероприятий</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="photos/bike.avif?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
+                    <h3>Велосипед</h3>
+                    <p>Удобен для прогулок по городу</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="photos/projector.jpg?auto=format&fit=crop&w=900&q=60" alt="Проектор">
+                    <h3>Проектор</h3>
+                    <p>Для презентаций и киносеансов</p>
+                </div>
+    
+                <div class="rentoo-card">
+                    <img src="photos/juicer.jpg?auto=format&fit=crop&w=900&q=60" alt="Соковыжималка">
+                    <h3>Соковыжималка</h3>
+                    <p>Для приготовления свежих соков</p>
                 </div>
             </div>
     
@@ -2391,6 +2332,7 @@
                 Арендовать вещь →
             </a>
             
+            <p class="hero-note">Бесплатно на первый месяц · без комиссий</p>
         </div>
     </section>
 
@@ -2518,6 +2460,7 @@
             <input type="email" name="email" class="form-input" placeholder="Ваш email" required autocomplete="email">
             <textarea name="items" class="form-input form-textarea" placeholder="Что вы хотите сдавать в аренду? Например: велосипед, дрель, камера, проектор..." required rows="4"></textarea>
             <button type="submit" class="submit-button">Получить ранний доступ →</button>
+            <p class="cta-note" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">Бесплатно · Без кредитной карты · Отменить можно в любой момент</p>
         </form>
         
     </section>
@@ -2530,6 +2473,7 @@
         <form class="cta-form" onsubmit="return handleSubmit(event)">
             <input type="email" name="email" class="form-input" placeholder="Ваш email" required autocomplete="email">
             <button type="submit" class="submit-button">Получить ранний доступ →</button>
+            <p class="cta-note" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">Бесплатно · Без кредитной карты · Отменить можно в любой момент</p>
         </form>
         
     </section>
@@ -2866,31 +2810,13 @@
                 nav.style.boxShadow = 'none';
             }
             
-            // Показываем секцию "Что можно сдавать" при прокрутке вниз
-            const itemsSection = document.getElementById('items');
-            if (itemsSection && currentScroll > window.innerHeight * 0.5) {
-                itemsSection.classList.add('show');
-            }
-            
             lastScroll = currentScroll;
         });
     
         // ============ INITIALIZE ============
         updateNavigationLinks(currentPage);
-        
-        // Проверяем позицию прокрутки при загрузке
-        function checkScrollPosition() {
-            const itemsSection = document.getElementById('items');
-            if (itemsSection && window.pageYOffset > window.innerHeight * 0.5) {
-                itemsSection.classList.add('show');
-            }
-        }
-        
-        // Проверяем при загрузке
-        checkScrollPosition();
 
         document.addEventListener('DOMContentLoaded', function() {
-            checkScrollPosition();
             // Обрабатываем ТОЛЬКО кнопки с атрибутом onclick
             const roleButtons = document.querySelectorAll('.role-toggle .hero-cta[onclick]');
             

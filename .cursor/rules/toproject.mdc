@@ -1,0 +1,47 @@
+---
+alwaysApply: true
+---
+{
+  "project_name": "Rentoo",
+  "description": "Сервис аренды вещей",
+  "language": "python",
+  "framework": "fastapi",
+  "database": "mongodb",
+  "db_client": "motor",
+  "validation": "pydantic",
+  "async": true,
+  "style": {
+    "pep8": true,
+    "indent": 4,
+    "max_line_length": 100,
+    "snake_case": true,
+    "camel_case_classes": true,
+    "type_hints": true
+  },
+  "structure": ["models", "schemas", "routers", "crud", "utils"],
+  "documentation": {
+    "docstrings": true,
+    "swagger": true,
+    "comments_for_complex_logic": true
+  },
+  "tests": {
+    "unit_tests": true,
+    "pytest": true,
+    "FastAPI_TestClient": true,
+    "fixtures_and_mock_data": true
+  },
+  "best_practices": {
+    "senior_developer": true,
+    "defensive_programming": true,
+    "check_existing_code_before_changes": true,
+    "dry_principle": true,
+    "structured_json_responses": true,
+    "error_handling": true
+  },
+  "crud_collections": ["users", "items", "rentals", "categories"],
+  "behavior": {
+    "generate_documentation_and_tests": "where_needed",
+    "avoid_breaking_existing_code": true,
+    "propose_refactoring_with_comments": true
+  }
+}
