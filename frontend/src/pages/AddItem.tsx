@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { itemsAPI, categoriesAPI, Category, ItemCreate } from '@/lib/api'
@@ -10,6 +10,7 @@ export default function AddItem() {
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
   const [uploadingImages, setUploadingImages] = useState(false)
+  const [categoriesLoading, setCategoriesLoading] = useState(true)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -21,11 +22,20 @@ export default function AddItem() {
   }, [isAuthenticated, navigate])
 
   const loadCategories = async () => {
+    setCategoriesLoading(true)
     try {
       const data = await categoriesAPI.getCategories()
+      console.log('Loaded categories:', data)
       setCategories(data)
+      if (data.length === 0) {
+        console.warn('No categories found in database')
+      }
     } catch (error) {
       console.error('Failed to load categories:', error)
+      // Show error to user
+      alert('Не удалось загрузить категории. Проверьте подключение к серверу.')
+    } finally {
+      setCategoriesLoading(false)
     }
   }
 
@@ -86,12 +96,14 @@ export default function AddItem() {
     }
   }
 
-  const categoryOptions = categories.map((cat) => ({
-    value: cat.slug,
-    label: cat.name,
-  }))
+  const categoryOptions = useMemo(() => {
+    return categories.map((cat) => ({
+      value: cat.slug,
+      label: cat.name,
+    }))
+  }, [categories])
 
-  const fields: FormField[] = [
+  const fields: FormField[] = useMemo(() => [
     {
       name: 'title',
       label: 'Название',
@@ -159,17 +171,42 @@ export default function AddItem() {
       placeholder: '{"размер": "L", "цвет": "синий"}',
       helperText: 'Опционально. Укажите дополнительные характеристики в формате JSON',
     },
-  ]
+  ], [categoryOptions])
+
+  if (categoriesLoading) {
+    return (
+      <div className="mx-auto max-w-2xl px-4 py-8 md:px-6 lg:px-8">
+        <h1 className="mb-8 text-h1-lg font-bold text-text-primary">Добавить товар</h1>
+        <div className="rounded-medium bg-surface p-8 text-center">
+          <p className="text-body text-text-secondary">Загрузка категорий...</p>
+        </div>
+      </div>
+    )
+  }
 
   return (
     <div className="mx-auto max-w-2xl px-4 py-8 md:px-6 lg:px-8">
       <h1 className="mb-8 text-h1-lg font-bold text-text-primary">Добавить товар</h1>
-      <Form
-        fields={fields}
-        onSubmit={handleSubmit}
-        submitLabel={uploadingImages ? 'Загрузка изображений...' : 'Создать объявление'}
-        loading={loading || uploadingImages}
-      />
+      {categories.length === 0 ? (
+        <div className="rounded-medium bg-surface p-8 text-center">
+          <p className="mb-4 text-body text-text-secondary">
+            Категории не загружены. Пожалуйста, обновите страницу или проверьте подключение к серверу.
+          </p>
+          <button
+            onClick={loadCategories}
+            className="rounded-small bg-primary px-4 py-2 text-body text-white hover:bg-primary/90"
+          >
+            Попробовать снова
+          </button>
+        </div>
+      ) : (
+        <Form
+          fields={fields}
+          onSubmit={handleSubmit}
+          submitLabel={uploadingImages ? 'Загрузка изображений...' : 'Создать объявление'}
+          loading={loading || uploadingImages}
+        />
+      )}
     </div>
   )
 }
