@@ -41,9 +41,15 @@ export default function Home() {
     setLoading(true)
     try {
       const data = await itemsAPI.getItems(searchFilters)
-      setItems(data)
+      // Ensure all items have proper IDs
+      const normalized = data.map(item => {
+        const id = item.id || (item as any)._id
+        return { ...item, id: id ? String(id) : '' }
+      }).filter(item => item.id) // Filter out items without ID
+      setItems(normalized)
     } catch (error) {
       console.error('Failed to load items:', error)
+      setItems([]) // Set empty array on error
     } finally {
       setLoading(false)
     }
@@ -99,14 +105,22 @@ export default function Home() {
       </div>
 
       <Grid loading={loading} emptyMessage="Товары не найдены">
-        {items.map((item) => (
-          <ItemCard
-            key={item.id}
-            item={item}
-            onRent={handleRent}
-            onClick={handleItemClick}
-          />
-        ))}
+        {items.map((item) => {
+          // Ensure item has id
+          const itemId = item.id || (item as any)._id
+          if (!itemId) {
+            console.error('Item missing ID:', item)
+            return null
+          }
+          return (
+            <ItemCard
+              key={itemId}
+              item={{ ...item, id: String(itemId) }}
+              onRent={handleRent}
+              onClick={handleItemClick}
+            />
+          )
+        })}
       </Grid>
     </div>
   )

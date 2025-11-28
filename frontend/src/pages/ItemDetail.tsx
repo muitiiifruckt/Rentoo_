@@ -28,12 +28,16 @@ export default function ItemDetail() {
     setLoading(true)
     try {
       const itemData = await itemsAPI.getItem(id)
+      // Ensure item has id
+      if (!itemData.id && (itemData as any)._id) {
+        itemData.id = String((itemData as any)._id)
+      }
       setItem(itemData)
 
       // Load owner info
       if (itemData.owner_id) {
         try {
-          const ownerData = await usersAPI.getUser(itemData.owner_id)
+          const ownerData = await usersAPI.getUser(String(itemData.owner_id))
           setOwner(ownerData)
         } catch (error) {
           console.error('Failed to load owner:', error)
@@ -41,6 +45,7 @@ export default function ItemDetail() {
       }
     } catch (error) {
       console.error('Failed to load item:', error)
+      setItem(null) // Set to null to show error state
     } finally {
       setLoading(false)
     }

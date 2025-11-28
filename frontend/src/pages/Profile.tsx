@@ -19,22 +19,25 @@ export default function Profile() {
       return
     }
 
-    loadMyItems()
-  }, [isAuthenticated, navigate])
+    if (user) {
+      loadMyItems()
+    }
+  }, [isAuthenticated, user, navigate])
 
   const loadMyItems = async () => {
     setLoading(true)
     try {
       const data = await itemsAPI.getMyItems()
       console.log('Loaded my items:', data)
-      // Double-check normalization
+      // Double-check normalization and filter out items without ID
       const normalized = data.map(item => {
         const id = item.id || (item as any)._id
-        return { ...item, id: id || '' }
-      })
+        return { ...item, id: id ? String(id) : '' }
+      }).filter(item => item.id) // Filter out items without ID
       setMyItems(normalized)
     } catch (error) {
       console.error('Failed to load items:', error)
+      setMyItems([]) // Set empty array on error
     } finally {
       setLoading(false)
     }
@@ -51,7 +54,13 @@ export default function Profile() {
     navigate(`/items/${item.id}`)
   }
 
-  if (!user) return null
+  if (!user) {
+    return (
+      <div className="mx-auto max-w-container px-4 py-8 md:px-6 lg:px-8">
+        <div className="h-96 animate-pulse rounded-medium bg-surface" />
+      </div>
+    )
+  }
 
   return (
     <div className="mx-auto max-w-container px-4 py-8 md:px-6 lg:px-8">

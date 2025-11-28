@@ -207,12 +207,19 @@ export const categoriesAPI = {
 const normalizeItem = (item: any): Item => {
   // Create a new object to avoid mutation issues
   const normalized = { ...item }
-  if (!normalized.id && normalized._id) {
+  // Handle both _id and id fields
+  if (normalized._id && !normalized.id) {
+    normalized.id = String(normalized._id)
+  } else if (!normalized.id && normalized._id) {
     normalized.id = String(normalized._id)
   }
   // Ensure id is always a string
   if (normalized.id) {
     normalized.id = String(normalized.id)
+  }
+  // Normalize owner_id
+  if (normalized.owner_id && typeof normalized.owner_id === 'object') {
+    normalized.owner_id = String(normalized.owner_id)
   }
   return normalized as Item
 }
@@ -223,13 +230,27 @@ const normalizeItems = (items: any[]): Item[] => {
 
 // Helper function to normalize rental data
 const normalizeRental = (rental: any): Rental => {
-  if (!rental.id && rental._id) {
-    rental.id = rental._id
+  const normalized = { ...rental }
+  // Handle id
+  if (!normalized.id && normalized._id) {
+    normalized.id = String(normalized._id)
+  } else if (normalized.id) {
+    normalized.id = String(normalized.id)
   }
-  if (!rental.item_id && rental.item_id === undefined && rental.item) {
-    rental.item_id = rental.item.id || rental.item._id
+  // Handle item_id
+  if (!normalized.item_id && normalized.item_id === undefined && normalized.item) {
+    normalized.item_id = String(normalized.item.id || normalized.item._id)
+  } else if (normalized.item_id && typeof normalized.item_id === 'object') {
+    normalized.item_id = String(normalized.item_id)
   }
-  return rental as Rental
+  // Handle renter_id and owner_id
+  if (normalized.renter_id && typeof normalized.renter_id === 'object') {
+    normalized.renter_id = String(normalized.renter_id)
+  }
+  if (normalized.owner_id && typeof normalized.owner_id === 'object') {
+    normalized.owner_id = String(normalized.owner_id)
+  }
+  return normalized as Rental
 }
 
 const normalizeRentals = (rentals: any[]): Rental[] => {

@@ -30,7 +30,7 @@ async def create_item(db: AsyncIOMotorDatabase, owner_id: str, item_data: dict) 
         location=item_data.get("location"),
         parameters=item_data.get("parameters"),
         images=item_data.get("images", []),
-        status=item_data.get("status", "draft")
+        status=item_data.get("status", "active")  # По умолчанию active, чтобы товары сразу были видны
     )
     item_dict = item.to_dict()
     result = await db[Item.collection_name].insert_one(item_dict)

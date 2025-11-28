@@ -25,9 +25,15 @@ export default function Rentals() {
     setLoading(true)
     try {
       const data = await rentalsAPI.getRentals(role)
-      setRentals(data)
+      // Ensure all rentals have proper IDs
+      const normalized = data.map(rental => {
+        const id = rental.id || (rental as any)._id
+        return { ...rental, id: id ? String(id) : '' }
+      }).filter(rental => rental.id) // Filter out rentals without ID
+      setRentals(normalized)
     } catch (error) {
       console.error('Failed to load rentals:', error)
+      setRentals([]) // Set empty array on error
     } finally {
       setLoading(false)
     }
@@ -123,9 +129,15 @@ export default function Rentals() {
         </div>
       ) : (
         <div className="space-y-4">
-          {rentals.map((rental) => (
+          {rentals.map((rental) => {
+            const rentalId = rental.id || (rental as any)._id
+            if (!rentalId) {
+              console.error('Rental missing ID:', rental)
+              return null
+            }
+            return (
             <div
-              key={rental.id}
+              key={rentalId}
               className="rounded-medium bg-surface p-6 shadow-card"
             >
               <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
@@ -152,13 +164,13 @@ export default function Rentals() {
                     <>
                       <Button
                         variant="primary"
-                        onClick={() => handleConfirm(rental.id, true)}
+                        onClick={() => handleConfirm(String(rentalId), true)}
                       >
                         Подтвердить
                       </Button>
                       <Button
                         variant="danger"
-                        onClick={() => handleConfirm(rental.id, false)}
+                        onClick={() => handleConfirm(String(rentalId), false)}
                       >
                         Отклонить
                       </Button>
@@ -167,21 +179,27 @@ export default function Rentals() {
                   {(rental.status === 'confirmed' || rental.status === 'in_progress') && (
                     <Button
                       variant="primary"
-                      onClick={() => handleComplete(rental.id)}
+                      onClick={() => handleComplete(String(rentalId))}
                     >
                       Завершить
                     </Button>
                   )}
                   <Button
                     variant="outline"
-                    onClick={() => navigate(`/items/${rental.item_id}`)}
+                    onClick={() => {
+                      const itemId = rental.item_id || (rental as any).item_id
+                      if (itemId) {
+                        navigate(`/items/${String(itemId)}`)
+                      }
+                    }}
                   >
                     Посмотреть товар
                   </Button>
                 </div>
               </div>
             </div>
-          ))}
+            )
+          })}
         </div>
       )}
     </div>

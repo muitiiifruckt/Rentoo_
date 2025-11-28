@@ -41,9 +41,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   const register = async (email: string, name: string, password: string) => {
-    const newUser = await authAPI.register({ email, name, password })
+    await authAPI.register({ email, name, password })
     // After registration, login automatically
-    await login(email, password)
+    const response = await authAPI.login({ email, password })
+    localStorage.setItem('access_token', response.access_token)
+    localStorage.setItem('refresh_token', response.refresh_token)
+    setUser(response.user)
   }
 
   const logout = () => {

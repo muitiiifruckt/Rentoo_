@@ -20,6 +20,8 @@ export default function Register() {
     setError('')
     try {
       await register(data.email, data.name, data.password)
+      // Небольшая задержка для обновления состояния AuthContext
+      await new Promise(resolve => setTimeout(resolve, 500))
       navigate('/')
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Не удалось зарегистрироваться')

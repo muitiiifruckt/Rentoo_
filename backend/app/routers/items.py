@@ -24,9 +24,16 @@ async def create_new_item(
     """Create a new item."""
     item_dict = item_data.dict()
     item = await create_item(db, str(current_user["_id"]), item_dict)
+    # Convert all ObjectIds to strings
     item["_id"] = str(item["_id"])
     item["id"] = str(item["_id"])  # Also add id field for Pydantic
-    item["owner_id"] = str(item["owner_id"])
+    if "owner_id" in item:
+        item["owner_id"] = str(item["owner_id"])
+    # Ensure created_at and updated_at are properly serialized
+    if "created_at" in item and hasattr(item["created_at"], "isoformat"):
+        item["created_at"] = item["created_at"].isoformat()
+    if "updated_at" in item and hasattr(item["updated_at"], "isoformat"):
+        item["updated_at"] = item["updated_at"].isoformat()
     return item
 
 

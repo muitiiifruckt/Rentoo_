@@ -21,6 +21,8 @@ export default function Login() {
     setError('')
     try {
       await login(data.email, data.password)
+      // Небольшая задержка для обновления состояния AuthContext
+      await new Promise(resolve => setTimeout(resolve, 500))
       navigate('/')
     } catch (err: any) {
       setError(err.response?.data?.detail || 'Неверный email или пароль')
