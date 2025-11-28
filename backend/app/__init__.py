@@ -1,0 +1,2 @@
+"""Rentoo Backend Application."""
+
