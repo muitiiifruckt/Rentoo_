@@ -805,6 +805,11 @@
         /* Survey Form */
         .survey-section {
             background: var(--bg-light);
+            display: none;
+        }
+
+        .survey-section.show {
+            display: block;
         }
 
         .survey-form {
@@ -1382,6 +1387,20 @@
         .footer-links a:hover {
             color: var(--primary-purple);
         }
+
+        .footer-question-link {
+            color: var(--text-gray);
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .footer-question-link:hover {
+            color: var(--primary-purple);
+        }
+
 
         /* Responsive */
         /* Tablet and smaller desktop */
@@ -2376,6 +2395,7 @@
         <div class="footer-content">
             <div class="footer-logo">Rentoo</div>
             <p>Платформа шеринга вещей нового поколения</p>
+            <a href="javascript:void(0)" onclick="showSurveySection()" class="footer-question-link">Задать вопрос</a>
             <p style="margin-top: 2rem;">© 2025 Rentoo. Все права защищены.</p>
         </div>
     </footer>
@@ -2601,7 +2621,18 @@
             
             lastScroll = currentScroll;
         });
-    
+
+        // ============ SHOW SURVEY SECTION ============
+        function showSurveySection() {
+            const surveySection = document.getElementById('survey-owner');
+            if (surveySection) {
+                surveySection.classList.add('show');
+                // Плавно прокручиваем к секции
+                setTimeout(() => {
+                    surveySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 100);
+            }
+        }
 
     </script>
     
