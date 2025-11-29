@@ -1,4 +1,5 @@
 """Item routes."""
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status, UploadFile, File
 from typing import List, Optional
 from app.schemas.item import ItemCreate, ItemUpdate, ItemResponse, ItemSearch
@@ -11,6 +12,8 @@ from app.crud.items import (
 from app.utils.file_upload import save_uploaded_file
 from motor.motor_asyncio import AsyncIOMotorDatabase
 
+logger = logging.getLogger(__name__)
+
 
 router = APIRouter(prefix="/api/items", tags=["items"])
 
@@ -22,8 +25,10 @@ async def create_new_item(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Create a new item."""
+    logger.info(f"Creating item: title={item_data.title}, user_id={current_user.get('_id')}")
     item_dict = item_data.dict()
     item = await create_item(db, str(current_user["_id"]), item_dict)
+    logger.info(f"Item created: _id={item.get('_id')}")
     # Convert all ObjectIds to strings
     item["_id"] = str(item["_id"])
     item["id"] = str(item["_id"])  # Also add id field for Pydantic
@@ -62,7 +67,9 @@ async def get_my_items(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Get current user's items."""
+    logger.info(f"Getting user items: user_id={current_user.get('_id')}")
     items = await get_user_items(db, str(current_user["_id"]))
+    logger.info(f"Found {len(items)} items")
     for item in items:
         item["_id"] = str(item["_id"])
         item["id"] = str(item["_id"])  # Also add id field for Pydantic
@@ -81,12 +88,15 @@ async def get_item(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Get item by ID."""
+    logger.info(f"Getting item: {item_id}")
     item = await get_item_by_id(db, item_id)
     if not item:
+        logger.warning(f"Item not found: {item_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Item not found"
         )
+    logger.info(f"Item found: title={item.get('title')}")
     item["_id"] = str(item["_id"])
     item["id"] = str(item["_id"])  # Also add id field for Pydantic
     item["owner_id"] = str(item["owner_id"])

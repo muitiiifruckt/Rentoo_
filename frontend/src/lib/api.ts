@@ -29,10 +29,15 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Clear tokens and redirect to login
+      // Clear tokens
       localStorage.removeItem('access_token')
       localStorage.removeItem('refresh_token')
-      window.location.href = '/login'
+      // Only redirect if not already on login/register page and not during login attempt
+      const currentPath = window.location.pathname
+      const isLoginAttempt = error.config?.url?.includes('/api/auth/login')
+      if (currentPath !== '/login' && currentPath !== '/register' && !isLoginAttempt) {
+        window.location.href = '/login'
+      }
     }
     return Promise.reject(error)
   }

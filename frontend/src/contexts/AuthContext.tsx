@@ -26,9 +26,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .catch(() => {
           localStorage.removeItem('access_token')
           localStorage.removeItem('refresh_token')
+          setUser(null) // Явно очищаем пользователя при ошибке
         })
         .finally(() => setLoading(false))
     } else {
+      setUser(null) // Явно устанавливаем null, если токена нет
       setLoading(false)
     }
   }, [])
@@ -38,6 +40,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     localStorage.setItem('access_token', response.access_token)
     localStorage.setItem('refresh_token', response.refresh_token)
     setUser(response.user)
+    // Если ошибка произошла, она будет проброшена автоматически через Promise.reject
   }
 
   const register = async (email: string, name: string, password: string) => {

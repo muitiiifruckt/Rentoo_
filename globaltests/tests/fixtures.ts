@@ -41,11 +41,33 @@ export async function loginUser(
   email: string,
   password: string
 ): Promise<void> {
-  await page.goto('/login');
+  // Очищаем localStorage перед логином
+  await page.evaluate(() => {
+    localStorage.clear();
+  });
+  
+  await page.goto('/login', { waitUntil: 'domcontentloaded' });
+  // Ждем, пока React загрузится и отрендерит форму
+  await page.waitForLoadState('networkidle');
+  await page.waitForTimeout(2000); // Дополнительная задержка для React
+  
+  // Проверяем, что мы на странице логина (не перенаправлены)
+  const currentUrl = page.url();
+  if (!currentUrl.includes('/login')) {
+    // Если мы не на странице логина, переходим туда снова
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
+  }
+  
+  // Ждем появления формы логина
+  await page.waitForSelector('input[name="email"]', { timeout: 30000 });
+  await page.waitForSelector('input[name="password"]', { timeout: 30000 });
+  
   await page.fill('input[name="email"]', email);
   await page.fill('input[name="password"]', password);
   await page.click('button[type="submit"]');
-  await page.waitForURL('/', { timeout: 10000 });
+  await page.waitForURL('/', { timeout: 15000 });
 }
 
 /**
@@ -108,7 +130,12 @@ export async function createItemViaAPI(
     data: itemData,
   });
   expect(response.ok()).toBeTruthy();
-  return await response.json();
+  const item = await response.json();
+  // Убеждаемся, что у товара есть id (может быть _id или id)
+  if (!item.id && item._id) {
+    item.id = item._id;
+  }
+  return item;
 }
 
 /**

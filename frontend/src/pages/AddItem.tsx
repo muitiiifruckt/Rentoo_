@@ -5,7 +5,7 @@ import { itemsAPI, categoriesAPI, Category, ItemCreate } from '@/lib/api'
 import { Form, FormField } from '@/components/Form'
 
 export default function AddItem() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, loading: authLoading } = useAuth()
   const navigate = useNavigate()
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
@@ -14,13 +14,19 @@ export default function AddItem() {
   const [categoriesError, setCategoriesError] = useState<string | null>(null)
 
   useEffect(() => {
+    // Ждем, пока AuthContext загрузится (authLoading === false)
+    // Не перенаправляем сразу, если еще идет загрузка
+    if (authLoading) {
+      return
+    }
+    
     if (!isAuthenticated) {
       navigate('/login')
       return
     }
 
     loadCategories()
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate, authLoading])
 
   const loadCategories = async () => {
     setCategoriesLoading(true)
@@ -206,15 +212,23 @@ export default function AddItem() {
     },
   ], [categoryOptions])
 
-  if (categoriesLoading) {
+  // Показываем загрузку, если проверяется авторизация или загружаются категории
+  if (authLoading || categoriesLoading) {
     return (
       <div className="mx-auto max-w-2xl px-4 py-8 md:px-6 lg:px-8">
         <h1 className="mb-8 text-h1-lg font-bold text-text-primary">Добавить товар</h1>
         <div className="rounded-medium bg-surface p-8 text-center">
-          <p className="text-body text-text-secondary">Загрузка категорий...</p>
+          <p className="text-body text-text-secondary">
+            {authLoading ? 'Проверка авторизации...' : 'Загрузка категорий...'}
+          </p>
         </div>
       </div>
     )
+  }
+  
+  // Если не авторизован, не показываем ничего (будет редирект)
+  if (!isAuthenticated) {
+    return null
   }
 
   return (

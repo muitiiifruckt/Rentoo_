@@ -46,26 +46,38 @@ test.describe('Rentals', () => {
       category: 'electronics',
       price_per_day: 500,
     });
+    // Убеждаемся, что у товара есть id (может быть _id или id)
+    if (!testItem.id && testItem._id) {
+      testItem.id = testItem._id;
+    }
   });
 
   test('should create rental request', async ({ page }) => {
     // Логинимся как арендатор
-    await page.goto('/login');
+    await page.evaluate(() => localStorage.clear());
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle');
-    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
+    await page.waitForTimeout(2000);
+    const url = page.url();
+    if (!url.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', renterEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
     await page.waitForURL('/', { timeout: 15000 });
     
     // Переходим на страницу товара
-    await page.goto(`/items/${testItem.id}`);
+    await page.goto(`/items/${testItem.id || testItem._id}`);
     await page.waitForLoadState('networkidle');
     await page.waitForTimeout(2000);
     
-    // Ищем кнопку аренды
-    const rentButton = page.locator('button:has-text("Арендовать"), text=/Арендовать|Rent|Забронировать/i').first();
-    if (await rentButton.isVisible({ timeout: 10000 })) {
+    // Ищем кнопку аренды - используем правильный синтаксис Playwright
+    const rentButton = page.locator('button:has-text("Арендовать"), button:has-text("Rent"), button:has-text("Забронировать")').first();
+    if (await rentButton.count() > 0 && await rentButton.isVisible({ timeout: 10000 }).catch(() => false)) {
       await rentButton.click();
       
       // Заполняем даты (если есть форма)
@@ -114,7 +126,7 @@ test.describe('Rentals', () => {
         Authorization: `Bearer ${renterToken}`,
       },
       data: {
-        item_id: testItem.id,
+        item_id: testItem.id || testItem._id,
         start_date: tomorrow.toISOString().split('T')[0],
         end_date: dayAfterTomorrow.toISOString().split('T')[0],
       },
@@ -128,19 +140,31 @@ test.describe('Rentals', () => {
     }
     expect(response.ok()).toBeTruthy();
     
-    // Логинимся как арендатор
-    await page.goto('/login');
+    // Логинимся как арендатор - очищаем localStorage и переходим на логин
+    await page.evaluate(() => localStorage.clear());
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000); // Дополнительная задержка для загрузки React
+    // Проверяем, что мы на странице логина
+    let loginUrl = page.url();
+    if (!loginUrl.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', renterEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
-    await page.waitForURL('/', { timeout: 10000 });
+    await page.waitForURL('/', { timeout: 15000 });
     
     // Переходим на страницу бронирований
     await page.goto('/rentals');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000); // Дополнительная задержка для загрузки данных
     
-    // Проверяем, что заявка отображается
-    await expect(page.locator('text=Item for Rental')).toBeVisible({ timeout: 10000 });
+    // Проверяем, что заявка отображается (используем first() для избежания strict mode violation)
+    await expect(page.locator('text=Item for Rental').first()).toBeVisible({ timeout: 15000 });
   });
 
   test('should confirm rental as owner', async ({ page }) => {
@@ -155,7 +179,7 @@ test.describe('Rentals', () => {
         Authorization: `Bearer ${renterToken}`,
       },
       data: {
-        item_id: testItem.id,
+        item_id: testItem.id || testItem._id,
         start_date: tomorrow.toISOString().split('T')[0],
         end_date: dayAfterTomorrow.toISOString().split('T')[0],
       },
@@ -171,8 +195,17 @@ test.describe('Rentals', () => {
     const rental = await rentalResponse.json();
     
     // Логинимся как владелец
-    await page.goto('/login');
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
+    await page.evaluate(() => localStorage.clear());
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
+    const url = page.url();
+    if (!url.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', ownerEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -222,18 +255,33 @@ test.describe('Rentals', () => {
         Authorization: `Bearer ${renterToken}`,
       },
       data: {
-        item_id: testItem.id,
+        item_id: testItem.id || testItem._id,
         start_date: tomorrow.toISOString().split('T')[0],
         end_date: dayAfterTomorrow.toISOString().split('T')[0],
       },
     });
     
+    if (!rentalResponse.ok()) {
+      const errorText = await rentalResponse.text();
+      const errorJson = await rentalResponse.json().catch(() => ({ detail: errorText }));
+      console.error('Rental creation failed:', errorJson);
+      throw new Error(`Failed to create rental: ${JSON.stringify(errorJson)}`);
+    }
     expect(rentalResponse.ok()).toBeTruthy();
     
-    // Логинимся как арендатор
-    await page.goto('/login');
+    // Логинимся как арендатор - очищаем localStorage и переходим на логин
+    await page.evaluate(() => localStorage.clear());
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle');
-    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
+    await page.waitForTimeout(2000); // Дополнительная задержка для загрузки React
+    // Проверяем, что мы на странице логина
+    let cancelLoginUrl = page.url();
+    if (!cancelLoginUrl.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', renterEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');

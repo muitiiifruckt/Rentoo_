@@ -1,4 +1,5 @@
 """Main FastAPI application."""
+import logging
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.staticfiles import StaticFiles
@@ -7,6 +8,17 @@ from app.database import connect_to_mongo, close_mongo_connection
 from app.routers import (
     auth, users, items, rentals, messages, notifications, categories
 )
+
+# Configure logging
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler('backend.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
 
 
 app = FastAPI(
@@ -37,10 +49,11 @@ except Exception:
 async def startup_event():
     """Startup event handler."""
     try:
+        logger.info("Starting application...")
         await connect_to_mongo()
-        print("Backend started successfully")
+        logger.info("Backend started successfully")
     except Exception as e:
-        print(f"Error during startup: {e}")
+        logger.error(f"Error during startup: {e}", exc_info=True)
         raise
 
 

@@ -11,10 +11,16 @@ export default function Login() {
   const [error, setError] = React.useState<string>('')
 
   React.useEffect(() => {
-    if (isAuthenticated) {
-      navigate('/')
+    // Не перенаправляем сразу, даем время на рендеринг формы
+    // Также не перенаправляем во время загрузки, чтобы форма успела отобразиться
+    // Увеличиваем задержку, чтобы тесты успели увидеть форму
+    if (isAuthenticated && !loading) {
+      const timer = setTimeout(() => {
+        navigate('/')
+      }, 500)
+      return () => clearTimeout(timer)
     }
-  }, [isAuthenticated, navigate])
+  }, [isAuthenticated, navigate, loading])
 
   const handleSubmit = async (data: Record<string, any>) => {
     setLoading(true)

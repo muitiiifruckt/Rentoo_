@@ -46,20 +46,24 @@ async def login(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Login user and return tokens."""
+    logger.info(f"Login attempt: email={user_data.email}")
     # Get user
     user = await get_user_by_email(db, user_data.email)
     if not user:
+        logger.warning(f"Login failed: user not found for email={user_data.email}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password"
+            detail="Неверный email или пароль"
         )
     
     # Verify password
     if not verify_user_password(user, user_data.password):
+        logger.warning(f"Login failed: invalid password for email={user_data.email}")
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Incorrect email or password"
+            detail="Неверный email или пароль"
         )
+    logger.info(f"Login successful: user_id={user.get('_id')}")
     
     # Create tokens
     access_token = create_access_token(data={"sub": str(user["_id"])})

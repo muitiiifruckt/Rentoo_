@@ -7,9 +7,9 @@ from bson import ObjectId
 
 class RentalBase(BaseModel):
     """Base rental schema."""
-    item_id: str
-    start_date: date
-    end_date: date
+    item_id: str = Field(..., description="Item ID to rent")
+    start_date: date = Field(..., description="Rental start date")
+    end_date: date = Field(..., description="Rental end date")
 
 
 class RentalCreate(RentalBase):

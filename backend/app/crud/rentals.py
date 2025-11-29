@@ -110,25 +110,59 @@ async def check_item_availability(
     end_date: date
 ) -> bool:
     """Check if item is available for given dates."""
+    logger.info(f"Checking availability: item_id={item_id}, start_date={start_date}, end_date={end_date}")
     if not ObjectId.is_valid(item_id):
+        logger.warning(f"Invalid item_id: {item_id}")
         return False
     
     # Check for overlapping rentals
-    # Dates in MongoDB are stored as ISO strings, so we compare as strings
-    start_date_str = start_date.isoformat()
-    end_date_str = end_date.isoformat()
+    # Dates in MongoDB can be stored as ISO strings or date objects
+    # We need to check both formats
+    from datetime import datetime
     
-    # Find rentals that overlap with the requested dates
-    # Overlap occurs when: rental_start <= request_end AND rental_end >= request_start
+    # Convert request dates to datetime for comparison
+    start_datetime = datetime.combine(start_date, datetime.min.time())
+    end_datetime = datetime.combine(end_date, datetime.max.time())
+    
+    # Find all confirmed/in_progress rentals for this item
     query = {
         "item_id": ObjectId(item_id),
-        "status": {"$in": ["confirmed", "in_progress"]},
-        "start_date": {"$lte": end_date_str},
-        "end_date": {"$gte": start_date_str}
+        "status": {"$in": ["confirmed", "in_progress"]}
     }
     
-    existing = await db[Rental.collection_name].find_one(query)
-    return existing is None
+    rentals = await db[Rental.collection_name].find(query).to_list(length=1000)
+    
+    # Check for overlaps
+    logger.info(f"Found {len(rentals)} existing rentals to check")
+    for rental in rentals:
+        rental_start = rental.get("start_date")
+        rental_end = rental.get("end_date")
+        logger.debug(f"Checking rental: _id={rental.get('_id')}, start_date={rental_start} (type: {type(rental_start)}), end_date={rental_end} (type: {type(rental_end)})")
+        
+        # Convert to date if needed
+        if isinstance(rental_start, str):
+            rental_start = datetime.fromisoformat(rental_start.replace('Z', '+00:00')).date()
+        elif isinstance(rental_start, datetime):
+            rental_start = rental_start.date()
+        elif not isinstance(rental_start, date):
+            logger.warning(f"Skipping rental {rental.get('_id')}: invalid start_date type {type(rental_start)}")
+            continue
+            
+        if isinstance(rental_end, str):
+            rental_end = datetime.fromisoformat(rental_end.replace('Z', '+00:00')).date()
+        elif isinstance(rental_end, datetime):
+            rental_end = rental_end.date()
+        elif not isinstance(rental_end, date):
+            logger.warning(f"Skipping rental {rental.get('_id')}: invalid end_date type {type(rental_end)}")
+            continue
+        
+        # Check for overlap: rental_start <= request_end AND rental_end >= request_start
+        if rental_start <= end_date and rental_end >= start_date:
+            logger.info(f"Overlap found: rental {rental.get('_id')} overlaps with requested dates")
+            return False
+    
+    logger.info("No overlaps found, item is available")
+    return True
 
 
 async def _update_availability_for_rental(

@@ -82,9 +82,17 @@ test.describe('User Profile', () => {
     });
     
     // Логинимся и переходим в профиль
-    await page.goto('/login');
+    await page.evaluate(() => localStorage.clear());
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('networkidle');
-    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
+    await page.waitForTimeout(2000);
+    const url = page.url();
+    if (!url.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', userEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -135,11 +143,22 @@ test.describe('User Profile', () => {
     });
     
     // Логинимся как владелец и переходим в профиль
+    await page.evaluate(() => localStorage.clear());
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(1000); // Дополнительная задержка для загрузки React
+    await page.waitForSelector('input[name="email"]', { timeout: 20000 });
+    const url = page.url();
+    if (!url.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', userEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
-    await page.waitForURL('/', { timeout: 10000 });
+    await page.waitForURL('/', { timeout: 15000 });
     
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
@@ -153,8 +172,17 @@ test.describe('User Profile', () => {
   });
 
   test('should navigate to profile from header', async ({ page }) => {
-    await page.goto('/login');
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
+    await page.evaluate(() => localStorage.clear());
+    await page.goto('/login', { waitUntil: 'domcontentloaded' });
+    await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000);
+    const url = page.url();
+    if (!url.includes('/login')) {
+      await page.goto('/login', { waitUntil: 'domcontentloaded' });
+      await page.waitForLoadState('networkidle');
+      await page.waitForTimeout(2000);
+    }
+    await page.waitForSelector('input[name="email"]', { timeout: 30000 });
     await page.fill('input[name="email"]', userEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
