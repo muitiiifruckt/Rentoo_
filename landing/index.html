@@ -332,7 +332,8 @@
                         0 0 40px rgba(139, 127, 217, 0.3);
             object-fit: cover;
             animation: floatImage 6s ease-in-out infinite;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), 
+                        transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
             filter: brightness(1.05) saturate(1.1);
             pointer-events: none;
         }
@@ -386,6 +387,43 @@
         .hero-floating-image.bike {
             --initial-rotate: 12deg;
             --initial-x: 30%;
+        }
+
+        /* Animation for hiding images on scroll */
+        .hero-floating-image.snowboard.hide-on-scroll {
+            animation: slideOutLeft 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            pointer-events: none;
+        }
+
+        .hero-floating-image.bike.hide-on-scroll {
+            animation: slideOutRight 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+            pointer-events: none;
+        }
+
+        /* When hide-on-scroll is removed, images return smoothly via transition */
+        .hero-floating-image:not(.hide-on-scroll) {
+            animation: floatImage 6s ease-in-out infinite;
+            opacity: 1 !important;
+        }
+
+        @keyframes slideOutLeft {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(calc(var(--initial-x, 0) - 120vw)) rotate(calc(var(--initial-rotate, 0deg) - 30deg)) scale(0.5);
+            }
+        }
+
+        @keyframes slideOutRight {
+            0% {
+                opacity: 1;
+            }
+            100% {
+                opacity: 0;
+                transform: translateY(-50%) translateX(calc(var(--initial-x, 0) + 120vw)) rotate(calc(var(--initial-rotate, 0deg) + 30deg)) scale(0.5);
+            }
         }
 
         .hero h1 {
@@ -2391,6 +2429,69 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s ease-out';
             observer.observe(el);
+        });
+    
+        // ============ HIDE/SHOW FLOATING IMAGES ON SCROLL ============
+        document.addEventListener('DOMContentLoaded', function() {
+            const heroSection = document.getElementById('hero');
+            const itemsSection = document.getElementById('items-owner');
+            const floatingImages = document.querySelectorAll('.hero-floating-image');
+            
+            if (heroSection && itemsSection && floatingImages.length > 0) {
+                let heroVisible = false;
+                let itemsVisible = false;
+                
+                // Функция для управления видимостью картинок
+                function updateImagesVisibility() {
+                    // Картинки видны только когда hero видна и items не видна
+                    const shouldShow = heroVisible && !itemsVisible;
+                    
+                    floatingImages.forEach(img => {
+                        if (shouldShow) {
+                            // Показываем картинки
+                            if (img.classList.contains('hide-on-scroll')) {
+                                img.classList.remove('hide-on-scroll');
+                                // Сбрасываем анимацию для плавного возврата
+                                img.style.animation = 'none';
+                                // Принудительно вызываем reflow
+                                void img.offsetWidth;
+                                // Возвращаем исходную анимацию
+                                img.style.animation = '';
+                            }
+                        } else {
+                            // Скрываем картинки
+                            if (!img.classList.contains('hide-on-scroll')) {
+                                img.classList.add('hide-on-scroll');
+                            }
+                        }
+                    });
+                }
+                
+                // Observer для hero секции
+                const heroObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        heroVisible = entry.isIntersecting;
+                        updateImagesVisibility();
+                    });
+                }, {
+                    threshold: 0.1,
+                    rootMargin: '0px'
+                });
+                
+                // Observer для items секции
+                const itemsObserver = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        itemsVisible = entry.isIntersecting;
+                        updateImagesVisibility();
+                    });
+                }, {
+                    threshold: 0.05,
+                    rootMargin: '200px 0px 0px 0px' // Начинаем скрывать когда секция еще на 200px выше
+                });
+                
+                heroObserver.observe(heroSection);
+                itemsObserver.observe(itemsSection);
+            }
         });
     
         // ============ NAVIGATION SCROLL EFFECT ============
