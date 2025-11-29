@@ -89,3 +89,4 @@ async def test_mark_notification_as_read(test_db):
     assert all_notifications[0]["read_at"] is not None
 
 
+

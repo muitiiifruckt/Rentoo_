@@ -25,3 +25,4 @@ if ($failedTests) {
 Write-Host "`nПолные результаты сохранены в test-results-full.txt" -ForegroundColor Yellow
 
 
+

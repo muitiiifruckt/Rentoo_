@@ -179,11 +179,6 @@
             box-sizing: border-box;
         }
 
-        .nav-toggle-wrapper {
-            flex: 1;
-            display: flex;
-            justify-content: center;
-        }
 
         .nav-logo {
             font-size: 1.8rem;
@@ -237,47 +232,7 @@
             color: var(--white) !important;
         }
 
-        /* Page Toggle */
-        .page-toggle {
-            display: flex;
-            gap: 0.5rem;
-            background: var(--bg-light);
-            padding: 0.4rem;
-            border-radius: 12px;
-            margin-right: 2rem;
-        }
 
-        .toggle-btn {
-            padding: 0.6rem 1.5rem;
-            border: none;
-            background: transparent;
-            color: var(--text-gray);
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-
-        .toggle-btn.active {
-            background: var(--gradient-cta);
-            color: var(--white);
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-        }
-
-        /* Page Content Visibility */
-        .page-content {
-            display: none !important;
-        }
-
-        .page-content.active {
-            display: block !important;
-        }
-
-        /* Hero sections need flex when active */
-        .hero.page-content.active {
-            display: flex !important;
-        }
 
         /* Hero Section */
         .hero {
@@ -508,14 +463,6 @@
             color: var(--white) !important;
         }
 
-        .role-toggle {
-            display: flex;
-            justify-content: center; /* кнопки по разным краям */
-            gap: 150px; /* если нужен явный промежуток между кнопками */
-            max-width: 1000px;  /* по желанию — ограничение ширины */
-            margin: 0 auto;    /* для центрирования блока в родителе */
-            margin-top: 40px;
-        }
 
         .hero-cta:hover {
             transform: translateY(-3px);
@@ -1363,14 +1310,6 @@
                 padding: 0 1rem;
             }
 
-            .page-toggle {
-                margin-right: 1rem;
-            }
-
-            .toggle-btn {
-                padding: 0.5rem 1.2rem;
-                font-size: 0.9rem;
-            }
 
             section {
                 padding: 6rem 2rem;
@@ -1398,19 +1337,6 @@
                 justify-content: center;
             }
 
-            .nav-toggle-wrapper {
-                order: 2;
-                width: 100%;
-                margin-top: 0.5rem;
-            }
-
-            .nav-logo {
-                order: 1;
-            }
-
-            .nav-links {
-                order: 3;
-            }
 
             .nav-logo {
                 font-size: 1.2rem;
@@ -1680,23 +1606,6 @@
                 font-size: 1.8rem;
             }
 
-            .page-toggle {
-                margin-right: 0;
-                width: 100%;
-                justify-content: center;
-                margin-bottom: 0;
-                padding: 0.3rem;
-            }
-
-            .toggle-btn {
-                padding: 0.6rem 0.8rem;
-                font-size: 0.75rem;
-                flex: 1;
-                max-width: 180px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
 
             .survey-form {
                 padding: 2rem 1rem;
@@ -1740,18 +1649,6 @@
                 font-size: 0.95rem;
             }
 
-            .role-toggle {
-                flex-direction: column;
-                gap: 15px;
-                width: 100%;
-            }
-
-            .role-toggle .hero-cta {
-                width: 100%;
-                max-width: 100%;
-                padding: 1.2rem;
-                text-align: center;
-            }
         }
 
         /* Small mobile devices */
@@ -1790,15 +1687,6 @@
                 z-index: 1; /* Добавлено */
             }
 
-            .role-toggle {
-                gap: 12px;
-                margin-top: 30px;
-                display: flex;
-                flex-direction: column;
-                width: 100%;
-                z-index: 100;
-                position: relative;
-            }
             
             .hero-features {
                 gap: 1rem;
@@ -2035,17 +1923,6 @@
                 font-size: 0.95rem;
             }
 
-            .toggle-btn {
-                padding: 0.7rem 1rem; /* ИСПРАВЛЕНО: увеличен горизонтальный padding */
-                font-size: 0.7rem;
-                max-width: 150px;
-                min-height: 44px; /* Добавлено */
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                touch-action: manipulation;
-                -webkit-tap-highlight-color: rgba(0,0,0,0.1);
-            }
 
             .cta-section {
                 margin: 1.5rem auto;
@@ -2173,17 +2050,6 @@
                 margin-right: 0 !important;
                 margin-top: 0.2rem !important;
             }
-            .nav-mobile-toggle-row {
-                display: flex !important;
-                justify-content: center !important;
-                align-items: center !important;
-                width: 100%;
-                gap: 0.7rem;
-                margin-bottom: 0.4rem;
-            }
-            .page-toggle {
-                width: 100%;
-            }
         }
 
 
@@ -2221,19 +2087,13 @@
     <nav>
         <div class="nav-container">
             <div class="nav-logo">Rentoo</div>
-            <div class="nav-toggle-wrapper">
-                <div class="page-toggle">
-                    <button class="toggle-btn" onclick="switchPage('owner')">для Арендодателей</button>
-                    <button class="toggle-btn" onclick="switchPage('renter')">для Арендаторов</button>
-                </div>
-            </div>
             <div class="nav-links">
-                <a class="nav-cta" style="display:none">Попробовать</a>
+                <a href="#registration-owner" class="nav-cta">Попробовать</a>
             </div>
         </div>
     </nav>
     
-    <section class="hero page-content active" id="hero">
+    <section class="hero" id="hero">
         <img src="photos/snowboard.jpg" alt="Сноуборд" class="hero-floating-image snowboard">
         <img src="photos/bike.avif" alt="Велосипед" class="hero-floating-image bike">
         <div class="hero-content">
@@ -2245,32 +2105,10 @@
             <div class="hero-features">
                 
             </div>
-    
-            <div class="role-toggle">
-                <a href="javascript:void(0)" class="hero-cta" onclick="switchPage('owner')">Я арендодатель</a>
-                <a href="javascript:void(0)" class="hero-cta" onclick="switchPage('renter')">Я арендатор</a>
-            </div>
         </div>
     </section>
 
-    <!-- Hero Section - Owner -->
-    <section class="hero page-content" id="hero-owner">
-        <div class="hero-content">
-            <div class="logo">Rentoo</div>
-            <h1>Зарабатывайте на своих вещах легко и безопасно!</h1>
-            <p class="hero-subtitle">Платформа Rentoo — ваш дополнительный источник дохода без лишних хлопот.
-                Сдавайте любые вещи частным лицам, получайте заявки автоматически, а о трафике и надежности сервиса заботимся мы.</p>
-            
-            
-
-            <a href="#registration-owner" class="hero-cta">
-                Разместить объявление →
-            </a>
-            
-            <p class="hero-note">Бесплатно на первый месяц - без комиссий</p>
-        </div>
-    </section>
-    <section class="rentoo-items-section page-content" id="items-owner">
+    <section class="rentoo-items-section" id="items-owner">
         <div class="rentoo-container">
             <h2 class="rentoo-title">Что можно сдавать в аренду?</h2>
     
@@ -2319,82 +2157,8 @@
             </div>
         </div>
     </section>
-    <!-- Hero Section - Renter -->
-    <section class="hero page-content" id="hero-renter">
-        <div class="hero-content">
-            <div class="logo">Rentoo</div>
-            <h1>Бронируйте любые вещи быстро, удобно и безопасно — всё для спокойствия арендатора!</h1>
-            <p class="hero-subtitle">Rentoo помогает находить, сравнивать и арендовать любые товары у проверенных владельцев. Всё просто: выберите вещь, забронируйте на нужные даты — и получите её в удобном месте и в удобное время.</p>
-            
-
-
-            <a href="#registration-renter" class="hero-cta">
-                Арендовать вещь →
-            </a>
-            
-            <p class="hero-note">Бесплатно на первый месяц · без комиссий</p>
-        </div>
-    </section>
-
-    <!-- Problems Section Owner-->
-    
-    
-
-    <!-- Problems Section Renter-->
-    <section class="problems-section page-content" id="problem-renter">
-        <h2>Аренда вещей — быстро и удобно?<br>С какими трудностями сталкиваются арендаторы ежедневно</h2>
-        <p class="section-subtitle">Идея взять вещь в аренду часто оборачивается поисками и сомнениями. Вот почему многие до сих пор предпочитают покупать, а не арендовать.</p>
-        
-        <div class="problems-grid">
-            <div class="problem-card">
-                <div class="problem-icon">🔎</div>
-                <h3>Нелегко найти нужную вещь</h3>
-                <p>Сложный поиск, нет удобных фильтров, неполные описания или неточность параметров (даты, размеры, место).</p>
-            </div>
-            <div class="problem-card">
-                <div class="problem-icon">🪪</div>
-                <h3>Неясно, кому можно доверять</h3>
-                <p>Нет подтверждённой верификации владельцев, нет прозрачных рейтингов и отзывов — риск обмана и некачественных вещей.</p>
-            </div>
-            <div class="problem-card">
-                <div class="problem-icon">💸</div>
-                <h3>Страх потерять деньги</h3>
-                <p>Неудобная или небезопасная оплата, отсутствие эскроу — не гарантирует возврата средств при проблемах.</p>
-            </div>
-            <div class="problem-card">
-                <div class="problem-icon">🆘</div>
-                <h3>Непрозрачная коммуникация и поддержка</h3>
-                <p>Нет чата, спорные ситуации сложно урегулировать, невозможно доказать состояние товара при передаче и возврате.</p>
-            </div>
-        </div>
-    </section>
-
-    <!-- How It Works - Renter -->
-    <section id="how-it-works-renter" class="how-it-works page-content">
-        <h2>Как работает Rentoo?</h2>
-        <p class="section-subtitle">Три простых шага до первой аренды</p>
-        
-        <div class="steps">
-            <div class="step-card">
-                <div class="step-number">1</div>
-                <h3>Найдите нужную вещь</h3>
-                <p>Ищите среди тысяч предложений от проверенных пользователей. Фильтры по цене, локации и доступности помогут найти идеальный вариант за секунды.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">2</div>
-                <h3>Забронируйте онлайн</h3>
-                <p>Выберите удобные даты в интерактивном календаре и оформите безопасное бронирование. Оплата защищена через эскроу.</p>
-            </div>
-            <div class="step-card">
-                <div class="step-number">3</div>
-                <h3>Используйте с комфортом</h3>
-                <p>Получите вещь, пользуйтесь по назначению и верните владельцу. Все детали в приложении, поддержка 24/7, полная прозрачность процесса.</p>
-            </div>
-        </div>
-    </section>
-
     <!-- How It Works - Owner -->
-    <section class="how-it-works page-content" id="how-it-works-owner">
+    <section class="how-it-works" id="how-it-works-owner">
         <h2>Как работает Rentoo?</h2>
         <p class="section-subtitle">Три простых шага до первого дохода</p>
         
@@ -2430,18 +2194,7 @@
     
 
     <!-- Planeta Section -->
-    <section class="planeta-section page-content" id="planeta-owner">
-        <div class="planeta-container">
-            <h2>Поддержите проект на Planeta.ru</h2>
-            <p class="section-subtitle">Станьте частью сообщества Rentoo и помогите нам запустить платформу</p>
-            <a href="https://planeta.ru/campaigns/rentoo" target="_blank" rel="noopener noreferrer" class="planeta-button">
-                Поддержать проект →
-            </a>
-        </div>
-    </section>
-
-    <!-- Planeta Section -->
-    <section class="planeta-section page-content" id="planeta-renter">
+    <section class="planeta-section" id="planeta-owner">
         <div class="planeta-container">
             <h2>Поддержите проект на Planeta.ru</h2>
             <p class="section-subtitle">Станьте частью сообщества Rentoo и помогите нам запустить платформу</p>
@@ -2452,7 +2205,7 @@
     </section>
 
     <!-- CTA Section -->
-    <section class="cta-section page-content" id="registration-owner">
+    <section class="cta-section" id="registration-owner">
         <h2>Начните зарабатывать на аренде уже сегодня!</h2>
         <p class="section-subtitle">Расскажите, что вы хотите сдавать в аренду, и получите ранний доступ с эксклюзивными бонусами</p>
         
@@ -2465,21 +2218,8 @@
         
     </section>
 
-    <!-- CTA Section -->
-    <section class="cta-section page-content" id="registration-renter">
-        <h2>Начните арендовать вещи уже сегодня!</h2>
-        <p class="section-subtitle">Оставьте email и получите ранний доступ с эксклюзивными бонусами</p>
-        
-        <form class="cta-form" onsubmit="return handleSubmit(event)">
-            <input type="email" name="email" class="form-input" placeholder="Ваш email" required autocomplete="email">
-            <button type="submit" class="submit-button">Получить ранний доступ →</button>
-            <p class="cta-note" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">Бесплатно · Без кредитной карты · Отменить можно в любой момент</p>
-        </form>
-        
-    </section>
-
     <!-- Survey Section -->
-    <section class="survey-section page-content" id="survey-owner">
+    <section class="survey-section" id="survey-owner">
         <h2>Есть вопросы?</h2>
         <p class="section-subtitle">Задайте свой вопрос, и мы ответим вам на почту</p>
         
@@ -2500,39 +2240,12 @@
 
     
     
-    <!-- Survey Section -->
-    <section class="survey-section page-content" id="survey-renter">
-        <h2>Есть вопросы?</h2>
-        <p class="section-subtitle">Задайте свой вопрос, и мы ответим вам на почту</p>
-        
-        <form class="survey-form" onsubmit="return handleSurveySubmit(event)">
-            <div class="form-group">
-                <label class="form-label">Ваш вопрос</label>
-                <textarea name="question" class="form-textarea" placeholder="Напишите ваш вопрос..." required></textarea>
-            </div>
-
-            <div class="form-group">
-                <label class="form-label">Email для ответа</label>
-                <input type="email" name="email" class="form-input" placeholder="your@email.com" required>
-            </div>
-
-            <button type="submit" class="submit-button" style="width: 100%;">Отправить вопрос →</button>
-        </form>
-    </section>
 
     <!-- Footer -->
     <footer>
         <div class="footer-content">
             <div class="footer-logo">Rentoo</div>
             <p>Платформа шеринга вещей нового поколения</p>
-            <div class="footer-links" style="display:none">
-                <a href="#hero-owner" class="footer-link-about" data-renter="#hero-renter" data-owner="#hero-owner">О нас</a>
-                <a href="#how-it-works-owner" class="footer-link-how" data-renter="#how-it-works-renter" data-owner="#how-it-works-owner">Как работает?</a>
-                <a href="#benefits-owner" class="footer-link-benefits" data-renter="#benefits-renter" data-owner="#benefits-owner">Преимущества</a>
-                <a href="#planeta-owner" class="footer-link-planeta" data-renter="#planeta-renter" data-owner="#planeta-owner">Поддержать проект</a>
-                <a href="#registration-owner" class="footer-link-registration" data-renter="#registration-renter" data-owner="#registration-owner">Запись на ранний доступ</a>
-                <a href="#survey-owner" class="footer-link-survey" data-renter="#survey-renter" data-owner="#survey-owner">Вопросы</a>
-            </div>
             <p style="margin-top: 2rem;">© 2025 Rentoo. Все права защищены.</p>
         </div>
     </footer>
@@ -2579,17 +2292,15 @@
                 items: formData.get('items') || ''
             };
             
-            const userType = currentPage === 'renter' ? 'Арендатор' : 'Арендодатель';
-            
             let message = `
     🆕 <b>Новая регистрация на Rentoo!</b>
     
-    🎭 <b>Тип:</b> ${userType}
+    🎭 <b>Тип:</b> Арендодатель
     📧 <b>Email:</b> ${data.email}
             `.trim();
             
-            // Добавляем информацию о том, что сдают в аренду (только для арендодателей)
-            if (currentPage === 'owner' && data.items) {
+            // Добавляем информацию о том, что сдают в аренду
+            if (data.items) {
                 message += `\n    📦 <b>Что сдают в аренду:</b>\n    ${data.items}`;
             }
             
@@ -2617,12 +2328,10 @@
                 question: formData.get('question') || ''
             };
             
-            const userType = currentPage === 'renter' ? 'Арендатор' : 'Арендодатель';
-            
             const message = `
     ❓ <b>Новый вопрос с Rentoo!</b>
     
-    🎭 <b>Тип:</b> ${userType}
+    🎭 <b>Тип:</b> Арендодатель
     📧 <b>Email:</b> ${data.email}
     💬 <b>Вопрос:</b>
     ${data.question}
@@ -2641,130 +2350,17 @@
             return false;
         }
     
-        // ============ PAGE SWITCHING ============
-        let currentPage = 'owner';
-    
-        function updateNavigationLinks(page) {
-            document.querySelectorAll('.nav-link-how, .nav-link-benefits').forEach(link => {
-                const newHref = link.getAttribute(`data-${page}`);
-                if (newHref) {
-                    link.setAttribute('href', newHref);
-                }
-            });
-            
-            document.querySelectorAll('.footer-link-about, .footer-link-how, .footer-link-benefits, footer-link-planeta, footer-link-registration, footer-link-survey').forEach(link => {
-                const newHref = link.getAttribute(`data-${page}`);
-                if (newHref) {
-                    link.setAttribute('href', newHref);
-                }
-            });
-        }
-    
-        function switchPage(page) {
-            if (event) {
-                event.preventDefault();
-                event.stopPropagation();
-            }
-
-            currentPage = page;
-            
-            document.querySelectorAll('.toggle-btn').forEach((btn, index) => {
-                btn.classList.remove('active');
-                if ((page === 'renter' && index === 1) || (page === 'owner' && index === 0)) {
-                    btn.classList.add('active');
-                }
-            });
-
-            
-            updateNavigationLinks(page);
-
-            const navCta = document.querySelector('.nav-cta');
-            if (page === 'renter') {
-                navCta.style.display = 'inline-block';
-                navCta.href = '#registration-renter';
-            } else if (page === 'owner') {
-                navCta.style.display = 'inline-block';
-                navCta.href = '#registration-owner';
-            } else {
-                navCta.style.display = 'none';
-            }
-
-            // Управление ссылками в футере
-            const footerLinks = document.querySelector('.footer-links');
-            if (page === 'renter' || page === 'owner') {
-                footerLinks.style.display = 'flex';
-                
-                // Обновляем href всех ссылок в футере
-                footerLinks.querySelectorAll('a[data-renter][data-owner]').forEach(link => {
-                    link.href = page === 'renter' ? link.dataset.renter : link.dataset.owner;
-                });
-            } else {
-                footerLinks.style.display = 'none';
-            }
-            
-            document.querySelectorAll('.page-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            
-            const pages = {
-                'renter': ['hero-renter', 'problem-renter', 'how-it-works-renter', 'benefits-renter', 'interface-demo-renter', 'trust-renter', 'planeta-renter', 'registration-renter', 'survey-renter'],
-                'owner': ['hero-owner', 'problem-owner', 'how-it-works-owner', 'benefits-owner', 'interface-demo-owner', 'trust-owner', 'planeta-owner', 'registration-owner', 'survey-owner','items-owner']
-            };
-            
-            pages[page].forEach(id => {
-                const element = document.getElementById(id);
-                if (element) {
-                    element.classList.add('active');
-                }
-            });
-            
-            window.scrollTo({ top: 0, behavior: 'instant' });
-        }
-    
         // SMOOTH SCROLL
-        function handleAnchorClick(e, href) {
-            e.preventDefault();
-            e.stopPropagation();
-            
-            const target = document.querySelector(href);
-            
-            if (target) {
-                if (href.includes('renter') && currentPage !== 'renter') {
-                    switchPage('renter');
-                    setTimeout(() => {
-                        const updatedTarget = document.querySelector(href);
-                        if (updatedTarget) {
-                            updatedTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }, 300);
-                } else if (href.includes('owner') && currentPage !== 'owner') {
-                    switchPage('owner');
-                    setTimeout(() => {
-                        const updatedTarget = document.querySelector(href);
-                        if (updatedTarget) {
-                            updatedTarget.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                        }
-                    }, 300);
-                } else {
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const href = this.getAttribute('href');
+                const target = document.querySelector(href);
+                
+                if (target) {
                     target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-            }
-        }
-
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            // Обработка клика для десктопа
-            anchor.addEventListener('click', function (e) {
-                const href = this.getAttribute('href');
-                handleAnchorClick(e, href);
             });
-            
-            // Обработка touch для мобильных (только для ссылок БЕЗ onclick)
-            if (!anchor.hasAttribute('onclick')) {
-                anchor.addEventListener('touchend', function (e) {
-                    const href = this.getAttribute('href');
-                    handleAnchorClick(e, href);
-                }, { passive: false });
-            }
         });
 
     
@@ -2813,25 +2409,6 @@
             lastScroll = currentScroll;
         });
     
-        // ============ INITIALIZE ============
-        updateNavigationLinks(currentPage);
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // Обрабатываем ТОЛЬКО кнопки с атрибутом onclick
-            const roleButtons = document.querySelectorAll('.role-toggle .hero-cta[onclick]');
-            
-            roleButtons.forEach(button => {
-                button.addEventListener('touchend', function(e) {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    const onclick = this.getAttribute('onclick');
-                    const match = onclick.match(/switchPage\('(\w+)'\)/);
-                    if (match) {
-                        switchPage(match[1]);
-                    }
-                }, { passive: false });
-            });
-        }, { once: true });
 
     </script>
     

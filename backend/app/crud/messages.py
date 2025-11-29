@@ -50,3 +50,4 @@ async def mark_message_as_read(db: AsyncIOMotorDatabase, message_id: str, user_i
     return result.modified_count > 0
 
 
+

@@ -24,3 +24,4 @@ class NotificationResponse(NotificationBase):
         json_encoders = {ObjectId: str}
 
 
+
