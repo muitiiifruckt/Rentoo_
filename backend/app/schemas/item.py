@@ -62,3 +62,4 @@ class ItemSearch(BaseModel):
     sort_by: Optional[str] = "created_at"  # created_at, price
     sort_order: Optional[str] = "desc"  # asc, desc
 
+

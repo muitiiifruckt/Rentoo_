@@ -55,3 +55,4 @@ async def mark_notification_as_read(db: AsyncIOMotorDatabase, notification_id: s
     )
     return result.modified_count > 0
 
+

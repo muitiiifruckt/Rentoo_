@@ -41,3 +41,4 @@ class RentalConfirm(BaseModel):
     """Schema for rental confirmation."""
     confirm: bool = True
 
+

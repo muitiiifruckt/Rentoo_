@@ -5,3 +5,4 @@ npm test -- --reporter=line 2>&1 | Select-Object -First 100
 
 Write-Host "`nДля полного вывода запустите: npm test" -ForegroundColor Yellow
 
+

@@ -52,3 +52,4 @@ class User:
             updated_at=data.get("updated_at")
         )
 
+

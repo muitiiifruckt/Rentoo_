@@ -80,7 +80,8 @@ test.describe('Authentication', () => {
     await page.click('button[type="submit"]');
     
     // Ожидаем сообщение об ошибке (может быть в div с role="alert" или просто текст)
-    await expect(page.locator('[role="alert"], text=/неверный|incorrect|error|Неверный/i').first()).toBeVisible({ timeout: 10000 });
+    const errorMessage = page.locator('[role="alert"], text=/неверный|incorrect|error|Неверный/i').first();
+    await expect(errorMessage).toBeVisible({ timeout: 10000 });
   });
 
   test('should logout user', async ({ page }) => {

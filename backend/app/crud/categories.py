@@ -25,3 +25,4 @@ async def create_category(db, name: str, slug: str, description: str = None) -> 
     category_dict["_id"] = result.inserted_id
     return category_dict
 
+

@@ -16,9 +16,15 @@ db = Database()
 
 async def connect_to_mongo():
     """Connect to MongoDB."""
-    db.client = AsyncIOMotorClient(settings.mongodb_url)
-    db.database = db.client[settings.mongodb_db_name]
-    print(f"Connected to MongoDB: {settings.mongodb_db_name}")
+    try:
+        db.client = AsyncIOMotorClient(settings.mongodb_url)
+        db.database = db.client[settings.mongodb_db_name]
+        # Test connection
+        await db.client.admin.command('ping')
+        print(f"Connected to MongoDB: {settings.mongodb_db_name}")
+    except Exception as e:
+        print(f"Error connecting to MongoDB: {e}")
+        raise
 
 
 async def close_mongo_connection():
@@ -31,4 +37,5 @@ async def close_mongo_connection():
 def get_database():
     """Get database instance."""
     return db.database
+
 

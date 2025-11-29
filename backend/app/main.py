@@ -36,7 +36,12 @@ except Exception:
 @app.on_event("startup")
 async def startup_event():
     """Startup event handler."""
-    await connect_to_mongo()
+    try:
+        await connect_to_mongo()
+        print("Backend started successfully")
+    except Exception as e:
+        print(f"Error during startup: {e}")
+        raise
 
 
 @app.on_event("shutdown")
@@ -69,4 +74,5 @@ async def root():
 async def health_check():
     """Health check endpoint."""
     return {"status": "ok"}
+
 

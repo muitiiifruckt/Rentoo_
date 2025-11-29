@@ -10,3 +10,4 @@ npm test -- --reporter=list 2>&1 | Tee-Object -FilePath $outputFile
 Write-Host "`nТесты завершены! Результаты сохранены в $outputFile" -ForegroundColor Green
 Write-Host "Откройте файл для просмотра результатов." -ForegroundColor Cyan
 
+

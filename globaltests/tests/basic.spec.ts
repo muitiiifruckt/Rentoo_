@@ -48,8 +48,8 @@ test.describe('Basic System Tests', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
-    // Ищем логотип или название приложения - используем более гибкий селектор
-    const logo = page.locator('a:has-text("Rentoo"), [href="/"]:has-text("Rentoo"), text=Rentoo').first();
+    // Ищем логотип или название приложения - используем правильный синтаксис Playwright
+    const logo = page.locator('a:has-text("Rentoo"), [href="/"]:has-text("Rentoo")').first();
     await expect(logo).toBeVisible({ timeout: 10000 });
   });
 });

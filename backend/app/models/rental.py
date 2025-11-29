@@ -73,3 +73,4 @@ class Rental:
             updated_at=data.get("updated_at")
         )
 
+

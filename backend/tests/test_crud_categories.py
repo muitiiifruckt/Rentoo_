@@ -57,3 +57,4 @@ async def test_get_category_by_slug_not_found(test_db):
     category = await get_category_by_slug(test_db, "nonexistent")
     assert category is None
 
+

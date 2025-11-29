@@ -52,3 +52,4 @@ class Notification:
             created_at=data.get("created_at")
         )
 
+

@@ -164,3 +164,4 @@ async def test_check_item_availability(test_db, sample_item_data):
     is_available = await check_item_availability(test_db, str(item["_id"]), start_date, end_date)
     assert is_available is False
 
+

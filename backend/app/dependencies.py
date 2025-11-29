@@ -58,3 +58,4 @@ async def get_optional_current_user(
     except HTTPException:
         return None
 
+
