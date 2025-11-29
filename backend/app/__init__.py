@@ -1,4 +1,0 @@
-"""Rentoo Backend Application."""
-
-
-
