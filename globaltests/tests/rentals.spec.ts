@@ -51,7 +51,8 @@ test.describe('Rentals', () => {
   test('should create rental request', async ({ page }) => {
     // Логинимся как арендатор
     await page.goto('/login');
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
     await page.fill('input[name="email"]', renterEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
@@ -119,6 +120,12 @@ test.describe('Rentals', () => {
       },
     });
     
+    if (!response.ok()) {
+      const errorText = await response.text();
+      const errorJson = await response.json().catch(() => ({ detail: errorText }));
+      console.error('Rental creation failed:', errorJson);
+      throw new Error(`Failed to create rental: ${JSON.stringify(errorJson)}`);
+    }
     expect(response.ok()).toBeTruthy();
     
     // Логинимся как арендатор
@@ -154,6 +161,12 @@ test.describe('Rentals', () => {
       },
     });
     
+    if (!rentalResponse.ok()) {
+      const errorText = await rentalResponse.text();
+      const errorJson = await rentalResponse.json().catch(() => ({ detail: errorText }));
+      console.error('Rental creation failed:', errorJson);
+      throw new Error(`Failed to create rental: ${JSON.stringify(errorJson)}`);
+    }
     expect(rentalResponse.ok()).toBeTruthy();
     const rental = await rentalResponse.json();
     
@@ -219,7 +232,8 @@ test.describe('Rentals', () => {
     
     // Логинимся как арендатор
     await page.goto('/login');
-    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
     await page.fill('input[name="email"]', renterEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');

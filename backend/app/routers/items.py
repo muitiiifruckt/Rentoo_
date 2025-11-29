@@ -48,6 +48,11 @@ async def list_items(
         item["_id"] = str(item["_id"])
         item["id"] = str(item["_id"])  # Also add id field for Pydantic
         item["owner_id"] = str(item["owner_id"])
+        # Ensure created_at and updated_at are properly serialized
+        if "created_at" in item and hasattr(item["created_at"], "isoformat"):
+            item["created_at"] = item["created_at"].isoformat()
+        if "updated_at" in item and hasattr(item["updated_at"], "isoformat"):
+            item["updated_at"] = item["updated_at"].isoformat()
     return items
 
 
@@ -62,6 +67,11 @@ async def get_my_items(
         item["_id"] = str(item["_id"])
         item["id"] = str(item["_id"])  # Also add id field for Pydantic
         item["owner_id"] = str(item["owner_id"])
+        # Ensure created_at and updated_at are properly serialized
+        if "created_at" in item and hasattr(item["created_at"], "isoformat"):
+            item["created_at"] = item["created_at"].isoformat()
+        if "updated_at" in item and hasattr(item["updated_at"], "isoformat"):
+            item["updated_at"] = item["updated_at"].isoformat()
     return items
 
 
@@ -80,6 +90,11 @@ async def get_item(
     item["_id"] = str(item["_id"])
     item["id"] = str(item["_id"])  # Also add id field for Pydantic
     item["owner_id"] = str(item["owner_id"])
+    # Ensure created_at and updated_at are properly serialized
+    if "created_at" in item and hasattr(item["created_at"], "isoformat"):
+        item["created_at"] = item["created_at"].isoformat()
+    if "updated_at" in item and hasattr(item["updated_at"], "isoformat"):
+        item["updated_at"] = item["updated_at"].isoformat()
     return item
 
 
@@ -112,6 +127,11 @@ async def update_item_details(
     
     updated_item["_id"] = str(updated_item["_id"])
     updated_item["owner_id"] = str(updated_item["owner_id"])
+    # Ensure created_at and updated_at are properly serialized
+    if "created_at" in updated_item and hasattr(updated_item["created_at"], "isoformat"):
+        updated_item["created_at"] = updated_item["created_at"].isoformat()
+    if "updated_at" in updated_item and hasattr(updated_item["updated_at"], "isoformat"):
+        updated_item["updated_at"] = updated_item["updated_at"].isoformat()
     return updated_item
 
 
@@ -161,5 +181,10 @@ async def upload_item_image(
     
     updated_item["_id"] = str(updated_item["_id"])
     updated_item["owner_id"] = str(updated_item["owner_id"])
+    # Ensure created_at and updated_at are properly serialized
+    if "created_at" in updated_item and hasattr(updated_item["created_at"], "isoformat"):
+        updated_item["created_at"] = updated_item["created_at"].isoformat()
+    if "updated_at" in updated_item and hasattr(updated_item["updated_at"], "isoformat"):
+        updated_item["updated_at"] = updated_item["updated_at"].isoformat()
     return updated_item
 

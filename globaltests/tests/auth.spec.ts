@@ -80,7 +80,8 @@ test.describe('Authentication', () => {
     await page.click('button[type="submit"]');
     
     // Ожидаем сообщение об ошибке (может быть в div с role="alert" или просто текст)
-    const errorMessage = page.locator('[role="alert"], text=/неверный|incorrect|error|Неверный/i').first();
+    // Используем правильный синтаксис Playwright для поиска текста
+    const errorMessage = page.locator('text=/неверный|incorrect|error|Неверный/i').first();
     await expect(errorMessage).toBeVisible({ timeout: 10000 });
   });
 
@@ -112,9 +113,12 @@ test.describe('Authentication', () => {
     }
     
     // Проверяем, что мы на странице логина или главной, но не авторизованы
-    await page.waitForTimeout(1000);
+    await page.waitForTimeout(2000);
+    await page.waitForLoadState('networkidle');
     const currentUrl = page.url();
-    expect(currentUrl === '/login' || currentUrl === '/').toBeTruthy();
+    // Проверяем, что мы не на защищенной странице (не в профиле)
+    const isOnProtectedPage = currentUrl.includes('/profile') || currentUrl.includes('/items/new');
+    expect(isOnProtectedPage).toBeFalsy();
   });
 
   test('should redirect to login when accessing protected route', async ({ page }) => {

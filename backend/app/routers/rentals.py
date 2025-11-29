@@ -106,6 +106,15 @@ async def create_rental_request(
     rental["item_id"] = str(rental["item_id"])
     rental["renter_id"] = str(rental["renter_id"])
     rental["owner_id"] = str(rental["owner_id"])
+    # Ensure dates are properly serialized
+    if "start_date" in rental and hasattr(rental["start_date"], "isoformat"):
+        rental["start_date"] = rental["start_date"].isoformat()
+    if "end_date" in rental and hasattr(rental["end_date"], "isoformat"):
+        rental["end_date"] = rental["end_date"].isoformat()
+    if "created_at" in rental and hasattr(rental["created_at"], "isoformat"):
+        rental["created_at"] = rental["created_at"].isoformat()
+    if "updated_at" in rental and hasattr(rental["updated_at"], "isoformat"):
+        rental["updated_at"] = rental["updated_at"].isoformat()
     return rental
 
 
@@ -162,6 +171,15 @@ async def get_rental(
     rental["item_id"] = str(rental["item_id"])
     rental["renter_id"] = str(rental["renter_id"])
     rental["owner_id"] = str(rental["owner_id"])
+    # Ensure dates are properly serialized
+    if "start_date" in rental and hasattr(rental["start_date"], "isoformat"):
+        rental["start_date"] = rental["start_date"].isoformat()
+    if "end_date" in rental and hasattr(rental["end_date"], "isoformat"):
+        rental["end_date"] = rental["end_date"].isoformat()
+    if "created_at" in rental and hasattr(rental["created_at"], "isoformat"):
+        rental["created_at"] = rental["created_at"].isoformat()
+    if "updated_at" in rental and hasattr(rental["updated_at"], "isoformat"):
+        rental["updated_at"] = rental["updated_at"].isoformat()
     return rental
 
 

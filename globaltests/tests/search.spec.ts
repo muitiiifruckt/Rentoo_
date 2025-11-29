@@ -152,8 +152,8 @@ test.describe('Search and Filter', () => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
     
-    // Ищем по несуществующему запросу
-    const searchInput = page.locator('input[type="search"], input[placeholder*="поиск" i]');
+    // Ищем по несуществующему запросу (используем first() для избежания strict mode violation)
+    const searchInput = page.locator('input[type="search"]').first();
     if (await searchInput.count() > 0) {
       await searchInput.fill('NonexistentItem12345');
       await searchInput.press('Enter');

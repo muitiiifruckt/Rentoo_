@@ -114,15 +114,17 @@ async def check_item_availability(
         return False
     
     # Check for overlapping rentals
+    # Dates in MongoDB are stored as ISO strings, so we compare as strings
+    start_date_str = start_date.isoformat()
+    end_date_str = end_date.isoformat()
+    
+    # Find rentals that overlap with the requested dates
+    # Overlap occurs when: rental_start <= request_end AND rental_end >= request_start
     query = {
         "item_id": ObjectId(item_id),
         "status": {"$in": ["confirmed", "in_progress"]},
-        "$or": [
-            {
-                "start_date": {"$lte": end_date.isoformat()},
-                "end_date": {"$gte": start_date.isoformat()}
-            }
-        ]
+        "start_date": {"$lte": end_date_str},
+        "end_date": {"$gte": start_date_str}
     }
     
     existing = await db[Rental.collection_name].find_one(query)

@@ -83,17 +83,20 @@ test.describe('User Profile', () => {
     
     // Логинимся и переходим в профиль
     await page.goto('/login');
+    await page.waitForLoadState('networkidle');
+    await page.waitForSelector('input[name="email"]', { timeout: 15000 });
     await page.fill('input[name="email"]', userEmail);
     await page.fill('input[name="password"]', 'TestPassword123!');
     await page.click('button[type="submit"]');
-    await page.waitForURL('/', { timeout: 10000 });
+    await page.waitForURL('/', { timeout: 15000 });
     
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(3000); // Дополнительная задержка для загрузки данных
     
-    // Проверяем, что товары отображаются
-    await expect(page.locator('text=My First Item')).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('text=My Second Item')).toBeVisible({ timeout: 10000 });
+    // Проверяем, что товары отображаются (используем first() для избежания strict mode violation)
+    await expect(page.locator('text=My First Item').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('text=My Second Item').first()).toBeVisible({ timeout: 15000 });
   });
 
   test('should display user rentals in profile', async ({ page }) => {

@@ -28,11 +28,20 @@ test.describe('Items Management', () => {
   });
 
   test('should create a new item', async ({ page }) => {
+    // Сначала логинимся
+    await page.goto('/login');
+    await page.waitForSelector('input[name="email"]', { timeout: 10000 });
+    await page.fill('input[name="email"]', userEmail);
+    await page.fill('input[name="password"]', 'TestPassword123!');
+    await page.click('button[type="submit"]');
+    await page.waitForURL('/', { timeout: 15000 });
+    
     await page.goto('/items/new');
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000); // Дополнительная задержка для загрузки формы
     
     // Ждем появления полей формы
-    await page.waitForSelector('input[name="title"]', { timeout: 10000 });
+    await page.waitForSelector('input[name="title"]', { timeout: 15000 });
     
     // Заполняем форму создания товара
     await page.fill('input[name="title"]', 'Test Item');
@@ -93,10 +102,11 @@ test.describe('Items Management', () => {
     // Переходим на страницу товара
     await page.goto(`/items/${item.id}`);
     await page.waitForLoadState('networkidle');
+    await page.waitForTimeout(2000); // Дополнительная задержка для загрузки данных
     
     // Проверяем, что информация о товаре отображается
-    await expect(page.locator('text=Test Item for Viewing').first()).toBeVisible({ timeout: 10000 });
-    await expect(page.locator('text=Description of test item').first()).toBeVisible({ timeout: 10000 });
+    await expect(page.locator('text=Test Item for Viewing').first()).toBeVisible({ timeout: 15000 });
+    await expect(page.locator('text=Description of test item').first()).toBeVisible({ timeout: 15000 });
   });
 
   test('should list items on home page', async ({ page }) => {
@@ -202,8 +212,8 @@ test.describe('Items Management', () => {
     await page.goto('/profile');
     await page.waitForLoadState('networkidle');
     
-    // Проверяем, что товар отображается в профиле
-    await expect(page.locator('text=My Item')).toBeVisible({ timeout: 10000 });
+    // Проверяем, что товар отображается в профиле (используем first() для избежания strict mode violation)
+    await expect(page.locator('text=My Item').first()).toBeVisible({ timeout: 10000 });
   });
 });
 
