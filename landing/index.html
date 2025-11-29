@@ -31,20 +31,57 @@
             color: #1e293b;
         }
         
+        .rentoo-grid-wrapper {
+            overflow: hidden;
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            position: relative;
+        }
+
         .rentoo-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
+            display: flex;
             gap: 32px;
+            width: fit-content;
+            animation: scrollLeft 40s linear infinite;
+            will-change: transform;
+        }
+
+        @media (min-width: 901px) {
+            .rentoo-card {
+                flex: 0 0 400px;
+                min-width: 400px;
+                max-width: 400px;
+            }
+        }
+
+        @keyframes scrollLeft {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-50% - 16px));
+            }
+        }
+
+        .rentoo-grid:hover {
+            animation-play-state: paused;
         }
         
         .rentoo-card {
             background: #ffffff;
             border-radius: 22px;
-            padding: 24px;
+            padding: 32px;
             text-align: left;
             box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
             border: 1px solid #e2e8f0;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
+            flex: 0 0 calc((100% - 64px) / 3);
+            min-width: calc((100% - 64px) / 3);
+            max-width: calc((100% - 64px) / 3);
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
         }
         
         .rentoo-card:hover {
@@ -55,18 +92,21 @@
         .rentoo-card img {
             width: 100%;
             border-radius: 16px;
-            margin-bottom: 16px;
+            margin-bottom: 20px;
         }
         
         .rentoo-card h3 {
             font-size: 22px;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: #1e293b;
+            margin-top: 0;
         }
         
         .rentoo-card p {
             font-size: 16px;
             color: #64748b;
+            line-height: 1.6;
+            margin: 0;
         }
         
         .rentoo-cta-block {
@@ -86,10 +126,12 @@
         }
         .rentoo-card img {
             width: 100%;          /* картинка растягивается по ширине карточки */
-            height: 200px;        /* фиксированная высота для всех */
+            height: 320px;        /* увеличенная высота для лучшей видимости */
             object-fit: cover;    /* обрезает изображение, сохраняя пропорции */
-            border-radius: 8px;   /* если нужно закругление углов */
+            border-radius: 16px;   /* закругление углов */
             display: block;
+            margin-bottom: 20px;
+            flex-shrink: 0;
         }
         
         .rentoo-btn {
@@ -111,8 +153,10 @@
         
         /* Mobile */
         @media (max-width: 900px) {
-            .rentoo-grid {
-                grid-template-columns: 1fr;
+            .rentoo-card {
+                flex: 0 0 calc(100% - 0px);
+                min-width: calc(100% - 0px);
+                max-width: calc(100% - 0px);
             }
         }
         
@@ -2150,41 +2194,67 @@
         <div class="rentoo-container">
             <h2 class="rentoo-title">Что можно сдавать в аренду?</h2>
     
-            <div class="rentoo-grid">
-                <div class="rentoo-card">
-                    <img src="photos/snowboard.jpg?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
-                    <h3>Сноуборд</h3>
-                    <p>Идеален для зимних поездок</p>
-                </div>
-    
-                <div class="rentoo-card">
-                    <img src="photos/drill.jpg?auto=format&fit=crop&w=900&q=60" alt="Дрель">
-                    <h3>Дрель</h3>
-                    <p>Незаменима для домашних работ</p>
-                </div>
-    
-                <div class="rentoo-card">
-                    <img src="photos/camera.avif?auto=format&fit=crop&w=900&q=60" alt="Камера">
-                    <h3>Профессиональная камера</h3>
-                    <p>Подходит для съёмки мероприятий</p>
-                </div>
-    
-                <div class="rentoo-card">
-                    <img src="photos/bike.avif?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
-                    <h3>Велосипед</h3>
-                    <p>Удобен для прогулок по городу</p>
-                </div>
-    
-                <div class="rentoo-card">
-                    <img src="photos/projector.jpg?auto=format&fit=crop&w=900&q=60" alt="Проектор">
-                    <h3>Проектор</h3>
-                    <p>Для презентаций и киносеансов</p>
-                </div>
-    
-                <div class="rentoo-card">
-                    <img src="photos/juicer.jpg?auto=format&fit=crop&w=900&q=60" alt="Соковыжималка">
-                    <h3>Соковыжималка</h3>
-                    <p>Для приготовления свежих соков</p>
+            <div class="rentoo-grid-wrapper">
+                <div class="rentoo-grid">
+                    <div class="rentoo-card">
+                        <img src="photos/Сноуборд.png?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
+                        <h3>Сноуборд</h3>
+                        <p>Идеален для зимних поездок</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Инструмент.png?auto=format&fit=crop&w=900&q=60" alt="Дрель">
+                        <h3>Дрель</h3>
+                        <p>Незаменима для домашних работ</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Велосипед.jpeg?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
+                        <h3>Велосипед</h3>
+                        <p>Удобен для прогулок по городу</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Проектор.png?auto=format&fit=crop&w=900&q=60" alt="Проектор">
+                        <h3>Проектор</h3>
+                        <p>Для презентаций и киносеансов</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Сапы.png?auto=format&fit=crop&w=900&q=60" alt="Сапы">
+                        <h3>Сапы</h3>
+                        <p>Поймай волну и не только</p>
+                    </div>
+                    <!-- Дублируем карточки для бесконечного эффекта -->
+                    <div class="rentoo-card">
+                        <img src="photos/Сноуборд.png?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
+                        <h3>Сноуборд</h3>
+                        <p>Идеален для зимних поездок</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Инструмент.png?auto=format&fit=crop&w=900&q=60" alt="Дрель">
+                        <h3>Дрель</h3>
+                        <p>Незаменима для домашних работ</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Велосипед.jpeg?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
+                        <h3>Велосипед</h3>
+                        <p>Удобен для прогулок по городу</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Проектор.png?auto=format&fit=crop&w=900&q=60" alt="Проектор">
+                        <h3>Проектор</h3>
+                        <p>Для презентаций и киносеансов</p>
+                    </div>
+        
+                    <div class="rentoo-card">
+                        <img src="photos/Сапы.png?auto=format&fit=crop&w=900&q=60" alt="Сапы">
+                        <h3>Сапы</h3>
+                        <p>Поймай волну и не только</p>
+                    </div>
                 </div>
             </div>
     
