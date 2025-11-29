@@ -3,7 +3,7 @@ import pytest
 
 
 @pytest.fixture
-def auth_token(client, test_db):
+def auth_token(client):
     """Get authentication token."""
     # Register and login
     client.post(
@@ -61,7 +61,8 @@ def test_create_item_unauthorized(client):
         }
     )
     
-    assert response.status_code == 403
+    # FastAPI returns 401 for unauthorized requests, not 403
+    assert response.status_code == 401
 
 
 def test_get_items(client, auth_token):

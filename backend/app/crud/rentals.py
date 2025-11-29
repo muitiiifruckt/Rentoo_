@@ -1,10 +1,13 @@
 """Rental CRUD operations."""
+import logging
 from typing import Optional, List
 from datetime import date, timedelta
 from bson import ObjectId
 from motor.motor_asyncio import AsyncIOMotorDatabase
 from app.models.rental import Rental
 from app.models.availability_calendar import AvailabilityCalendar
+
+logger = logging.getLogger(__name__)
 
 
 async def get_rental_by_id(db: AsyncIOMotorDatabase, rental_id: str) -> Optional[dict]:

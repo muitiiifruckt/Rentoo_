@@ -153,5 +153,6 @@ def test_get_current_user_unauthorized(client):
     """Test getting current user without token."""
     response = client.get("/api/auth/me")
     
-    assert response.status_code == 403
+    # FastAPI returns 401 for unauthorized requests, not 403
+    assert response.status_code == 401
 

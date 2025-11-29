@@ -1,4 +1,5 @@
 """Authentication routes."""
+import logging
 from fastapi import APIRouter, Depends, HTTPException, status
 from app.schemas.user import UserCreate, UserLogin, UserResponse
 from app.database import get_database
@@ -6,6 +7,8 @@ from app.crud.users import create_user, get_user_by_email, verify_user_password
 from app.utils.auth import create_access_token, create_refresh_token
 from app.dependencies import get_current_user
 from motor.motor_asyncio import AsyncIOMotorDatabase
+
+logger = logging.getLogger(__name__)
 
 
 router = APIRouter(prefix="/api/auth", tags=["auth"])

@@ -1,5 +1,6 @@
 """Pytest configuration and fixtures."""
 import pytest
+import pytest_asyncio
 from motor.motor_asyncio import AsyncIOMotorClient
 from app.database import Database, get_database
 from app.config import settings
@@ -8,7 +9,7 @@ from app.main import app
 import os
 
 
-@pytest.fixture(scope="function")
+@pytest_asyncio.fixture(scope="function")
 async def test_db():
     """Create test database connection."""
     # Use test database
@@ -19,8 +20,14 @@ async def test_db():
     yield test_database
     
     # Cleanup: drop test database after tests
-    await test_client.drop_database(test_db_name)
-    test_client.close()
+    try:
+        await test_client.drop_database(test_db_name)
+    except Exception:
+        pass
+    try:
+        test_client.close()
+    except Exception:
+        pass
 
 
 @pytest.fixture(scope="function")

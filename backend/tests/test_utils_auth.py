@@ -96,7 +96,7 @@ def test_decode_token_invalid():
 def test_decode_token_expired():
     """Test decoding expired token."""
     from datetime import datetime, timedelta
-    import jwt
+    from jose import jwt  # Using jose library (python-jose)
     from app.config import settings
     
     # Create expired token manually
