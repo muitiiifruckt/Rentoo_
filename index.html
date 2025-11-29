@@ -91,12 +91,6 @@
             box-shadow: 0px 12px 26px rgba(0, 0, 0, 0.07);
         }
         
-        .rentoo-card img {
-            width: 100%;
-            border-radius: 16px;
-            margin-bottom: 20px;
-        }
-        
         .rentoo-card h3 {
             font-size: 22px;
             margin-bottom: 12px;
@@ -111,21 +105,6 @@
             margin: 0;
         }
         
-        .rentoo-cta-block {
-            margin-top: 70px;
-        }
-        
-        .rentoo-cta-block h3 {
-            font-size: 28px;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        
-        .rentoo-cta-block p {
-            font-size: 18px;
-            margin-bottom: 20px;
-            color: #475569;
-        }
         .rentoo-card img {
             width: 100%;          /* картинка растягивается по ширине карточки */
             height: 320px;        /* увеличенная высота для лучшей видимости */
@@ -134,23 +113,6 @@
             display: block;
             margin-bottom: 20px;
             flex-shrink: 0;
-        }
-        
-        .rentoo-btn {
-            display: inline-block;
-            padding: 16px 32px;
-            font-size: 18px;
-            color: white;
-            border-radius: 14px;
-            background: linear-gradient(90deg, #ff9b71, #8b7fd9);
-            text-decoration: none;
-            font-weight: 600;
-            box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
-            transition: opacity 0.2s ease;
-        }
-        
-        .rentoo-btn:hover {
-            opacity: 0.9;
         }
         
         /* Mobile */
@@ -379,18 +341,6 @@
             }
         }
 
-        .hero-badge {
-            display: inline-block;
-            padding: 0.6rem 1.5rem;
-            background: rgba(255, 255, 255, 0.9);
-            border-radius: 50px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            color: var(--primary-purple);
-            margin-bottom: 2rem;
-            animation: fadeInUp 1s ease-out 0.2s backwards;
-        }
-
         .logo-wrapper {
             position: relative;
             display: inline-block;
@@ -519,14 +469,6 @@
             animation: fadeInUp 1s ease-out 0.4s backwards;
         }
 
-        .hero-subtitle {
-            font-size: clamp(1.15rem, 2.5vw, 1.5rem);
-            color: var(--text-gray);
-            margin-bottom: 1rem;
-            line-height: 1.7;
-            animation: fadeInUp 1s ease-out 0.5s backwards;
-        }
-
         .hero-features {
             display: flex;
             justify-content: center;
@@ -589,13 +531,6 @@
         .hero-cta:hover {
             transform: translateY(-3px);
             box-shadow: 0 18px 50px rgba(139, 127, 217, 0.5);
-        }
-
-        .hero-note {
-            margin-top: 1.5rem;
-            font-size: 0.9rem;
-            color: var(--text-gray);
-            animation: fadeInUp 1s ease-out 0.8s backwards;
         }
 
         /* Section Styles */
@@ -721,127 +656,6 @@
             font-size: 1.05rem;
         }
 
-        /* Benefits */
-        .benefits-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 3rem;
-            margin-top: 5rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .benefit-card {
-            background: var(--white);
-            padding: 3rem 2.5rem;
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            border: 2px solid #E2E8F0;
-        }
-
-        .benefit-card:hover {
-            border-color: var(--primary-purple);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(139, 127, 217, 0.15);
-        }
-
-        .benefit-icon {
-            width: 70px;
-            height: 70px;
-            background: var(--light-purple);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .benefit-card:hover .benefit-icon {
-            background: var(--gradient-cta);
-            transform: scale(1.1);
-        }
-
-        .benefit-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .benefit-card p {
-            color: var(--text-gray);
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
-        /* Problems Section */
-        .problems-section {
-            background: var(--bg-light);
-        }
-
-        .problems-section h2 {
-            font-size: 2.3rem;       /* Было около 2.7rem, стало компактней */
-            margin-bottom: 2rem;   /* Можно уменьшить отступ перед проблемами */
-            font-weight: 700;
-        }
-
-        .problems-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 2.5rem;
-            margin-top: 5rem;
-            width: 100%;
-            box-sizing: border-box;
-        }
-
-        .problem-card {
-            background: var(--white);
-            padding: 1.5rem 1rem;
-            border-radius: 20px;
-            transition: all 0.4s ease;
-            border: 2px solid #E2E8F0;
-            position: relative;
-        }
-
-        .problem-card:hover {
-            border-color: var(--primary-orange);
-            transform: translateY(-8px);
-            box-shadow: 0 20px 50px rgba(255, 155, 113, 0.15);
-        }
-
-        .problem-icon {
-            width: 70px;
-            height: 70px;
-            background: linear-gradient(135deg, #FFE5DE 0%, #FFD4C7 100%);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2rem;
-            margin-bottom: 1.8rem;
-            transition: all 0.3s ease;
-        }
-
-        .problem-card:hover .problem-icon {
-            background: linear-gradient(135deg, #FF9B71 0%, #FFB399 100%);
-            transform: scale(1.1);
-        }
-
-        .problem-card h3 {
-            font-size: 1.2rem;
-            margin-bottom: 0.8rem;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .problem-card p {
-            color: var(--text-gray);
-            line-height: 1.8;
-            font-size: 1.05rem;
-        }
-
         /* Survey Form */
         .survey-section {
             background: var(--bg-light);
@@ -913,369 +727,6 @@
 
         .survey-form .form-input::placeholder {
             color: var(--text-gray);
-        }
-
-        /* Planeta Section */
-        .planeta-section {
-            background: var(--white);
-            text-align: center;
-            padding: 6rem 2rem;
-        }
-
-        .planeta-container {
-            max-width: 900px;
-            margin: 0 auto;
-            background: var(--bg-light);
-            border-radius: 24px;
-            padding: 4rem 3rem;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-        }
-
-        .planeta-button {
-            display: inline-flex;
-            align-items: center;
-            gap: 1rem;
-            padding: 1.5rem 3rem;
-            background: var(--gradient-cta);
-            color: var(--white);
-            text-decoration: none;
-            border-radius: 14px;
-            font-weight: 700;
-            font-size: 1.2rem;
-            transition: all 0.3s ease;
-            box-shadow: 0 8px 25px rgba(139, 127, 217, 0.3);
-            margin-top: 2rem;
-        }
-
-        .planeta-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 35px rgba(139, 127, 217, 0.5);
-        }
-
-        /* Interface Demo */
-        .interface-demo {
-            text-align: center;
-        }
-
-        .demo-container {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 4rem;
-            margin-top: 5rem;
-            align-items: center;
-        }
-
-        .phone-mockup {
-            width: 340px;
-            height: 680px;
-            background: #1F2937;
-            border-radius: 45px;
-            padding: 16px;
-            box-shadow: 0 35px 100px rgba(0, 0, 0, 0.35);
-            margin: 0 auto;
-            transition: all 0.5s ease;
-            box-sizing: border-box;
-        }
-
-        .phone-mockup:hover {
-            transform: scale(1.05) rotateY(5deg);
-            box-shadow: 0 45px 130px rgba(139, 127, 217, 0.5);
-        }
-
-        .phone-notch {
-            width: 160px;
-            height: 32px;
-            background: #1F2937;
-            border-radius: 0 0 22px 22px;
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 10;
-            box-sizing: border-box;
-        }
-
-        .phone-screen {
-            width: 100%;
-            height: 100%;
-            background: var(--gradient-bg);
-            border-radius: 35px;
-            overflow: hidden;
-            position: relative;
-            box-sizing: border-box;
-        }
-
-        .status-bar {
-            display: flex;
-            justify-content: space-between;
-            padding: 55px 22px 18px;
-            color: var(--text-dark);
-            font-size: 0.8rem;
-            font-weight: 700;
-            box-sizing: border-box;
-        }
-
-        .notifications-area {
-            padding: 22px;
-            animation: slideInNotifications 1.2s ease-out;
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        @keyframes slideInNotifications {
-            from {
-                opacity: 0;
-                transform: translateY(-30px);
-            }
-            to {
-                opacity: 1;
-                transform: translateY(0);
-            }
-        }
-
-        .notification-card {
-            background: var(--white);
-            border-radius: 18px;
-            padding: 18px;
-            margin-bottom: 14px;
-            box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
-            animation: popIn 0.6s ease-out;
-            animation-fill-mode: backwards;
-            box-sizing: border-box;
-            width: 100%;
-        }
-
-        .notification-card:nth-child(1) { animation-delay: 0.3s; }
-        .notification-card:nth-child(2) { animation-delay: 0.5s; }
-        .notification-card:nth-child(3) { animation-delay: 0.7s; }
-
-        @keyframes popIn {
-            from {
-                opacity: 0;
-                transform: scale(0.85) translateY(-15px);
-            }
-            to {
-                opacity: 1;
-                transform: scale(1) translateY(0);
-            }
-        }
-
-        .notification-header {
-            display: flex;
-            align-items: center;
-        }
-
-        .notification-icon {
-            width: 45px;
-            height: 45px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.4rem;
-            margin-right: 14px;
-            flex-shrink: 0;
-        }
-
-        .icon-booking {
-            background: linear-gradient(135deg, #DDD6FE 0%, #C4B5FD 100%);
-        }
-
-        .icon-payment {
-            background: linear-gradient(135deg, #FED7AA 0%, #FDBA74 100%);
-        }
-
-        .icon-message {
-            background: linear-gradient(135deg, #DBEAFE 0%, #BFDBFE 100%);
-        }
-
-        .notification-content {
-            flex: 1;
-            min-width: 0;
-            box-sizing: border-box;
-        }
-
-        .notification-title {
-            font-weight: 700;
-            font-size: 0.95rem;
-            color: var(--text-dark);
-            margin-bottom: 4px;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .notification-text {
-            font-size: 0.85rem;
-            color: var(--text-gray);
-            line-height: 1.5;
-            word-break: break-word;
-            overflow-wrap: break-word;
-        }
-
-        .notification-time {
-            font-size: 0.75rem;
-            color: var(--text-gray);
-            margin-top: 6px;
-        }
-
-        .calendar-mockup {
-            background: var(--white);
-            border-radius: 28px;
-            padding: 3.5rem;
-            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.12);
-            border: 2px solid #E2E8F0;
-            box-sizing: border-box;
-            width: 100%;
-            max-width: 100%;
-        }
-
-        .calendar-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 2.5rem;
-            padding-bottom: 2rem;
-            border-bottom: 2px solid #E2E8F0;
-        }
-
-        .calendar-header h4 {
-            font-size: 1.6rem;
-            color: var(--text-dark);
-            font-weight: 700;
-        }
-
-        .calendar-nav {
-            display: flex;
-            gap: 1rem;
-        }
-
-        .calendar-nav button {
-            padding: 0.7rem 1.4rem;
-            border: 2px solid var(--primary-purple);
-            background: transparent;
-            color: var(--primary-purple);
-            border-radius: 10px;
-            cursor: pointer;
-            font-weight: 700;
-            transition: all 0.3s ease;
-            font-size: 0.95rem;
-        }
-
-        .calendar-nav button:hover {
-            background: var(--primary-purple);
-            color: var(--white);
-            transform: scale(1.05);
-        }
-
-        .calendar-grid {
-            display: grid;
-            grid-template-columns: repeat(7, 1fr);
-            gap: 1.2rem;
-            margin-top: 2rem;
-        }
-
-        .calendar-day {
-            aspect-ratio: 1;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.25s ease;
-            border: 2px solid transparent;
-            font-size: 1rem;
-            box-sizing: border-box;
-        }
-
-        .calendar-day.available {
-            background: var(--bg-light);
-            color: var(--text-dark);
-        }
-
-        .calendar-day.available:hover {
-            background: var(--light-purple);
-            border-color: var(--primary-purple);
-            transform: scale(1.08);
-        }
-
-        .calendar-day.booked {
-            background: #FEE2E2;
-            color: #991B1B;
-            cursor: not-allowed;
-            opacity: 0.65;
-        }
-
-        .calendar-day.selected {
-            background: var(--gradient-cta);
-            color: var(--white);
-            transform: scale(1.05);
-        }
-
-        .calendar-legend {
-            display: flex;
-            justify-content: center;
-            gap: 2.5rem;
-            margin-top: 2.5rem;
-            font-size: 0.95rem;
-            flex-wrap: wrap;
-            box-sizing: border-box;
-        }
-
-        .legend-item {
-            display: flex;
-            align-items: center;
-            gap: 0.6rem;
-            font-weight: 600;
-        }
-
-        .legend-box {
-            width: 24px;
-            height: 24px;
-            border-radius: 8px;
-        }
-
-        /* Trust Section */
-        .trust-section {
-            background: var(--bg-light);
-            text-align: center;
-        }
-
-        .trust-badges {
-            display: flex;
-            justify-content: center;
-            gap: 4rem;
-            margin-top: 4rem;
-            flex-wrap: wrap;
-        }
-
-        .trust-badge {
-            text-align: center;
-        }
-
-        .trust-badge-icon {
-            width: 80px;
-            height: 80px;
-            background: var(--white);
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 2.5rem;
-            margin: 0 auto 1rem;
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
-        }
-
-        .trust-badge h4 {
-            font-size: 1.2rem;
-            font-weight: 700;
-            color: var(--text-dark);
-            margin-bottom: 0.5rem;
-        }
-
-        .trust-badge p {
-            color: var(--text-gray);
-            font-size: 0.95rem;
         }
 
         /* CTA Section */
@@ -1375,12 +826,6 @@
             box-shadow: 0 12px 35px rgba(255, 255, 255, 0.4);
         }
 
-        .cta-note {
-            margin-top: 1.5rem;
-            font-size: 0.95rem;
-            color: rgba(255, 255, 255, 0.85);
-        }
-
         /* Footer */
         footer {
             text-align: center;
@@ -1409,25 +854,6 @@
             margin-bottom: 1rem;
         }
 
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            gap: 2rem;
-            margin: 2rem 0;
-            flex-wrap: wrap;
-        }
-
-        .footer-links a {
-            text-decoration: none;
-            color: var(--text-gray);
-            font-weight: 500;
-            transition: color 0.3s ease;
-        }
-
-        .footer-links a:hover {
-            color: var(--primary-purple);
-        }
-
         .footer-question-link {
             color: var(--text-gray);
             text-decoration: none;
@@ -1441,7 +867,6 @@
             color: var(--primary-purple);
         }
 
-
         /* Responsive */
         /* Tablet and smaller desktop */
         @media (max-width: 1024px) {
@@ -1453,11 +878,6 @@
             .hero-floating-image.bike {
                 width: clamp(220px, 30vw, 380px);
                 height: clamp(220px, 30vw, 380px);
-            }
-
-            .demo-container {
-                grid-template-columns: 1fr;
-                gap: 3rem;
             }
 
             .nav-container {
@@ -1480,15 +900,6 @@
 
             .step-mockup {
                 max-width: 260px;
-            }
-
-            .problems-grid {
-                grid-template-columns: repeat(2, 1fr);
-                gap: 2rem;
-            }
-
-            .trust-badges {
-                gap: 3rem;
             }
         }
 
@@ -1564,12 +975,6 @@
                 padding: 0;
             }
 
-            .hero-badge {
-                font-size: 0.8rem;
-                padding: 0.5rem 1.2rem;
-                margin-bottom: 1.5rem;
-            }
-
             .logo-wrapper {
                 margin-bottom: 1.2rem;
             }
@@ -1598,12 +1003,6 @@
                 font-size: clamp(1.4rem, 5vw, 2rem);
                 line-height: 1.3;
                 margin-bottom: 1.2rem;
-            }
-
-            .hero-subtitle {
-                font-size: clamp(1rem, 3vw, 1.2rem);
-                line-height: 1.6;
-                margin-bottom: 2rem;
             }
 
             .hero-features {
@@ -1636,100 +1035,6 @@
                 box-sizing: border-box;
             }
 
-            .phone-mockup {
-                width: 280px;
-                height: 560px;
-                padding: 12px;
-            }
-
-            .phone-notch {
-                width: 130px;
-                height: 26px;
-            }
-
-            .phone-screen {
-                border-radius: 30px;
-            }
-
-            .status-bar {
-                padding: 45px 18px 15px;
-                font-size: 0.75rem;
-            }
-
-            .notifications-area {
-                padding: 18px;
-            }
-
-            .notification-card {
-                padding: 14px 12px;
-                border-radius: 15px;
-                margin-bottom: 12px;
-            }
-
-            .notification-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 1.2rem;
-                margin-right: 12px;
-            }
-
-            .notification-title {
-                font-size: 0.9rem;
-                word-break: break-word;
-                overflow-wrap: break-word;
-            }
-
-            .notification-text {
-                font-size: 0.82rem;
-                word-break: break-word;
-                overflow-wrap: break-word;
-            }
-
-            .notification-time {
-                font-size: 0.72rem;
-            }
-
-            .calendar-mockup {
-                padding: 1.5rem 1rem;
-            }
-
-            .calendar-header {
-                flex-direction: column;
-                gap: 1rem;
-                margin-bottom: 1.5rem;
-                padding-bottom: 1.5rem;
-            }
-
-            .calendar-header h4 {
-                font-size: 1.2rem;
-            }
-
-            .calendar-nav {
-                gap: 0.7rem;
-            }
-
-            .calendar-nav button {
-                padding: 0.4rem 0.9rem;
-                font-size: 0.8rem;
-            }
-
-            .calendar-grid {
-                gap: 0.4rem;
-                margin-top: 1.5rem;
-            }
-
-            .calendar-day {
-                font-size: 0.8rem;
-                border-radius: 10px;
-            }
-
-            .calendar-legend {
-                gap: 1.5rem;
-                margin-top: 1.5rem;
-                font-size: 0.85rem;
-                flex-wrap: wrap;
-            }
-
             .cta-section {
                 margin: 2rem auto;
                 padding: 4rem 1.5rem;
@@ -1758,16 +1063,12 @@
                 box-sizing: border-box;
             }
 
-            .steps,
-            .benefits-grid,
-            .problems-grid {
+            .steps {
                 grid-template-columns: 1fr;
                 gap: 1.3rem;
             }
 
-            .step-card,
-            .benefit-card,
-            .problem-card {
+            .step-card {
                 padding: 1.5rem 1rem;
                 width: 100%;
                 max-width: 100%;
@@ -1779,62 +1080,12 @@
                 margin-bottom: 1.5rem;
             }
 
-            .step-number {
-                width: 70px;
-                height: 70px;
-                font-size: 2rem;
-            }
-
-            .benefit-icon,
-            .problem-icon {
-                width: 60px;
-                height: 60px;
-                font-size: 1.8rem;
-            }
-
-
             .survey-form {
                 padding: 2rem 1rem;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
             }
-
-            .trust-badges {
-                flex-direction: column;
-                gap: 2rem;
-                align-items: center;
-            }
-
-            .trust-badge {
-                max-width: 300px;
-            }
-
-            .planeta-section {
-                padding: 3rem 1.5rem;
-            }
-
-            .planeta-container {
-                padding: 2.5rem 1rem;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-            }
-
-            .planeta-button {
-                padding: 1.2rem 2.5rem;
-                font-size: 1.1rem;
-            }
-
-            .footer-links {
-                flex-direction: column;
-                gap: 1rem;
-            }
-
-            .footer-links a {
-                font-size: 0.95rem;
-            }
-
         }
 
         /* Small mobile devices */
@@ -1895,15 +1146,6 @@
                 margin-top: 0.2rem;
             }
 
-            .hero-badge {
-                font-size: 0.75rem;
-                padding: 0.4rem 1rem;
-                min-height: 44px; /* Добавлено */
-                display: inline-flex;
-                align-items: center;
-                touch-action: manipulation;
-            }
-
             .logo-wrapper {
                 margin-bottom: 1rem;
             }
@@ -1956,141 +1198,23 @@
                 margin-bottom: 1rem;
             }
 
-            .hero-subtitle {
-                font-size: clamp(0.9rem, 4vw, 1.1rem);
-            }
-
             .hero-cta {
-                padding: 1rem 2rem; /* ИСПРАВЛЕНО: был только вертикальный padding */
+                padding: 1rem 2rem;
                 font-size: 1rem;
                 width: 100%;
                 justify-content: center;
-                min-height: 48px; /* Увеличено до 48px согласно рекомендациям Material Design */
+                min-height: 48px;
                 display: flex;
-                align-items: center; /* Добавлено */
+                align-items: center;
                 pointer-events: auto;
-                cursor: pointer; /* Добавлено */
-                touch-action: manipulation; /* Добавлено для предотвращения двойного касания */
-                -webkit-tap-highlight-color: rgba(0,0,0,0.2); /* Добавлено */
-                position: relative; /* Добавлено */
-                z-index: 10; /* Добавлено */
-            }
-
-            .phone-mockup {
-                width: 220px;
-                height: 420px;
-                padding: 8px;
-            }
-
-            .phone-notch {
-                width: 100px;
-                height: 20px;
-            }
-
-            .phone-screen {
-                border-radius: 25px;
-            }
-
-            .status-bar {
-                padding: 40px 12px 12px;
-                font-size: 0.7rem;
-            }
-
-            .notifications-area {
-                padding: 12px;
-            }
-
-            .notification-card {
-                padding: 10px 7px;
-                border-radius: 13px;
-                margin-bottom: 10px;
-            }
-
-            .notification-icon {
-                width: 35px;
-                height: 35px;
-                font-size: 1.1rem;
-                margin-right: 10px;
-            }
-
-            .notification-title {
-                font-size: 0.85rem;
-                word-break: break-word;
-                overflow-wrap: break-word;
-            }
-
-            .notification-text {
-                font-size: 0.8rem;
-                word-break: break-word;
-                overflow-wrap: break-word;
-            }
-
-            .notification-time {
-                font-size: 0.7rem;
-            }
-
-            .notification-content {
-                font-size: 0.8rem;
-            }
-
-            .calendar-mockup {
-                padding: 0.6rem 0.3rem;
-                border-radius: 18px;
-            }
-
-            .calendar-header {
-                padding-bottom: 1rem;
-                margin-bottom: 1rem;
-            }
-
-            .calendar-header h4 {
-                font-size: 1rem;
-            }
-
-            .calendar-nav {
-                gap: 0.5rem;
-            }
-
-            .calendar-nav button {
-                padding: 0.3rem 0.7rem;
-                font-size: 0.75rem;
-                min-height: 44px; /* Добавлено */
-                min-width: 44px; /* Добавлено */
+                cursor: pointer;
                 touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2);
+                position: relative;
+                z-index: 10;
             }
 
-            .calendar-grid {
-                gap: 0.25rem;
-                margin-top: 1rem;
-            }
-
-            .calendar-day {
-                font-size: 0.72rem;
-                border-radius: 7px;
-                min-width: 26px;
-                min-height: 26px;
-                padding: 0;
-            }
-
-            .calendar-legend {
-                gap: 1rem;
-                margin-top: 1rem;
-                font-size: 0.75rem;
-                flex-wrap: wrap;
-            }
-
-            .legend-item {
-                font-size: 0.7rem;
-            }
-
-            .legend-box {
-                width: 18px;
-                height: 18px;
-            }
-
-            .step-card,
-            .benefit-card,
-            .problem-card {
+            .step-card {
                 padding: 1.3rem 0.9rem;
                 width: 100%;
                 max-width: 100%;
@@ -2171,14 +1295,14 @@
                 width: calc(100% - 1.4rem);
                 max-width: 100%;
                 box-sizing: border-box;
-                position: relative; /* Добавлено */
-                z-index: 1; /* Добавлено */
+                position: relative;
+                z-index: 1;
             }
 
             .cta-form {
                 gap: 0.8rem;
-                position: relative; /* Добавлено */
-                z-index: 2; /* Добавлено */
+                position: relative;
+                z-index: 2;
             }
 
             .form-input {
@@ -2186,26 +1310,26 @@
                 font-size: 0.95rem;
                 width: 100%;
                 box-sizing: border-box;
-                min-height: 48px; /* Добавлено */
-                touch-action: manipulation; /* Добавлено */
+                min-height: 48px;
+                touch-action: manipulation;
             }
 
             .submit-button {
-                padding: 1.1rem 1.5rem; /* КРИТИЧЕСКОЕ ИСПРАВЛЕНИЕ: добавлен горизонтальный padding */
+                padding: 1.1rem 1.5rem;
                 font-size: 1.1rem;
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
-                min-height: 48px; /* Добавлено: минимальная область касания */
-                display: flex; /* Добавлено */
-                align-items: center; /* Добавлено */
-                justify-content: center; /* Добавлено */
-                cursor: pointer; /* Добавлено */
-                touch-action: manipulation; /* Добавлено: предотвращает двойной тап и зум */
-                -webkit-tap-highlight-color: rgba(0,0,0,0.2); /* Добавлено: визуальный отклик */
-                position: relative; /* Добавлено */
-                z-index: 10; /* Добавлено: предотвращает перекрытие */
-                -webkit-appearance: none; /* Добавлено: убирает дефолтные стили iOS */
+                min-height: 48px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                touch-action: manipulation;
+                -webkit-tap-highlight-color: rgba(0,0,0,0.2);
+                position: relative;
+                z-index: 10;
+                -webkit-appearance: none;
                 appearance: none;
             }
 
@@ -2214,26 +1338,6 @@
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
-            }
-
-            .planeta-container {
-                padding: 2rem 0.9rem;
-                width: 100%;
-                max-width: 100%;
-                box-sizing: border-box;
-            }
-
-            .planeta-button {
-                padding: 1rem 2rem;
-                font-size: 1rem;
-                width: 100%;
-                min-height: 48px; /* Добавлено */
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                touch-action: manipulation;
-                -webkit-tap-highlight-color: rgba(0,0,0,0.2);
-                cursor: pointer;
             }
 
             footer {
@@ -2250,19 +1354,6 @@
             }
         }
 
-
-        /* Landscape orientation for mobile */
-        @media (max-width: 768px) and (orientation: landscape) {
-            .hero {
-                padding: 5rem 1.5rem 3rem;
-                min-height: auto;
-            }
-
-            .phone-mockup {
-                width: 240px;
-                height: 480px;
-            }
-        }
 
         @media (max-width: 480px) {
             .nav-logo { display: none !important; }
@@ -2293,15 +1384,8 @@
         }
 
 
-        /* Smooth Scroll */
         html {
             scroll-behavior: smooth;
-        }
-
-        /* Loading Animation */
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
         }
     </style>
 
@@ -2618,14 +1702,6 @@
                 }
             });
         });
-
-    
-        // ============ CALENDAR INTERACTION ============
-        document.querySelectorAll('.calendar-day.available').forEach(day => {
-            day.addEventListener('click', function() {
-                this.classList.toggle('selected');
-            });
-        });
     
         // ============ SCROLL ANIMATIONS ============
         const observerOptions = {
@@ -2642,7 +1718,7 @@
             });
         }, observerOptions);
     
-        document.querySelectorAll('.step-card, .benefit-card').forEach(el => {
+        document.querySelectorAll('.step-card').forEach(el => {
             el.style.opacity = '0';
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s ease-out';
@@ -2728,12 +1804,10 @@
             lastScroll = currentScroll;
         });
 
-        // ============ SHOW SURVEY SECTION ============
         function showSurveySection() {
             const surveySection = document.getElementById('survey-owner');
             if (surveySection) {
                 surveySection.classList.add('show');
-                // Плавно прокручиваем к секции
                 setTimeout(() => {
                     surveySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }, 100);
