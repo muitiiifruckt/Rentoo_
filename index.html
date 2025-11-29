@@ -22,6 +22,8 @@
             max-width: 1300px;
             margin: 0 auto;
             text-align: center;
+            padding: 0 1rem;
+            box-sizing: border-box;
         }
         
         .rentoo-title {
@@ -153,10 +155,48 @@
         
         /* Mobile */
         @media (max-width: 900px) {
+            .rentoo-items-section {
+                padding: 50px 0;
+            }
+
+            .rentoo-container {
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            .rentoo-title {
+                font-size: 28px;
+                margin-bottom: 30px;
+                padding: 0 1rem;
+            }
+
+            .rentoo-grid-wrapper {
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .rentoo-grid {
+                gap: 20px;
+            }
+
             .rentoo-card {
-                flex: 0 0 calc(100% - 0px);
-                min-width: calc(100% - 0px);
-                max-width: calc(100% - 0px);
+                flex: 0 0 calc(100vw - 2rem);
+                min-width: calc(100vw - 2rem);
+                max-width: calc(100vw - 2rem);
+                padding: 24px;
+            }
+
+            .rentoo-card img {
+                height: 250px;
+            }
+
+            .rentoo-card h3 {
+                font-size: 20px;
+            }
+
+            .rentoo-card p {
+                font-size: 15px;
             }
         }
         
@@ -1429,6 +1469,15 @@
                 padding: 6rem 2rem;
             }
 
+            .rentoo-items-section {
+                padding: 60px 0;
+            }
+
+            .rentoo-title {
+                font-size: 32px;
+                margin-bottom: 40px;
+            }
+
             .step-mockup {
                 max-width: 260px;
             }
@@ -1481,6 +1530,20 @@
                 width: 100%;
                 max-width: 100%;
                 box-sizing: border-box;
+            }
+
+            .rentoo-items-section {
+                padding: 50px 0;
+            }
+
+            .rentoo-container {
+                width: 100%;
+                padding: 0 1rem;
+            }
+
+            .rentoo-title {
+                font-size: clamp(24px, 6vw, 32px);
+                margin-bottom: 30px;
             }
 
             h2 {
@@ -2034,6 +2097,55 @@
                 box-sizing: border-box;
             }
 
+            .rentoo-items-section {
+                padding: 40px 0;
+            }
+
+            .rentoo-container {
+                width: 100%;
+                padding: 0 0.7rem;
+            }
+
+            .rentoo-title {
+                font-size: 24px;
+                margin-bottom: 25px;
+                padding: 0;
+            }
+
+            .rentoo-grid-wrapper {
+                padding: 0;
+                width: 100%;
+                max-width: 100%;
+            }
+
+            .rentoo-grid {
+                gap: 16px;
+            }
+
+            .rentoo-card {
+                flex: 0 0 calc(100vw - 1.4rem);
+                min-width: calc(100vw - 1.4rem);
+                max-width: calc(100vw - 1.4rem);
+                padding: 20px;
+            }
+
+            .rentoo-card img {
+                height: 200px;
+            }
+
+            .rentoo-card h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+
+            .rentoo-card p {
+                font-size: 14px;
+            }
+
+            .rentoo-grid {
+                animation: scrollLeft 50s linear infinite;
+            }
+
             .step-mockup {
                 max-width: 200px;
                 margin-bottom: 1.2rem;
@@ -2304,12 +2416,7 @@
                     </div>
                 </div>
             </div>
-    
-            <div class="rentoo-cta-block">
-                <h3>Есть вещи, которыми вы не пользуетесь?</h3>
-                <p>Сдавайте их в аренду и зарабатывайте вместе с Rentoo!</p>
-                <a href="#" class="rentoo-btn">Начать сдавать вещи</a>
-            </div>
+
         </div>
     </section>
     <!-- How It Works - Owner -->
@@ -2362,7 +2469,6 @@
             <input type="email" name="email" class="form-input" placeholder="Ваш email" required autocomplete="email">
             <textarea name="items" class="form-input form-textarea" placeholder="Что вы хотите сдавать в аренду? Например: велосипед, дрель, камера, проектор..." required rows="4"></textarea>
             <button type="submit" class="submit-button">Получить ранний доступ →</button>
-            <p class="cta-note" style="margin-top: 1rem; font-size: 0.9rem; opacity: 0.9;">Бесплатно · Без кредитной карты · Отменить можно в любой момент</p>
         </form>
         
     </section>
