@@ -406,11 +406,15 @@
                         0 0 0 4px rgba(255, 255, 255, 0.1),
                         0 0 40px rgba(139, 127, 217, 0.3);
             object-fit: cover;
-            animation: floatImage 6s ease-in-out infinite;
-            transition: opacity 1.5s cubic-bezier(0.4, 0, 0.2, 1), 
-                        transform 1.5s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: transform 0.1s ease-out, opacity 0.2s ease-out;
             filter: brightness(1.05) saturate(1.1);
             pointer-events: none;
+            will-change: transform, opacity;
+        }
+        
+        /* Анимация для начального состояния (когда нет прокрутки) */
+        .hero-floating-image.no-scroll {
+            animation: floatImage 6s ease-in-out infinite;
         }
 
         .hero-floating-image:hover {
@@ -426,7 +430,7 @@
             height: clamp(250px, 30vw, 400px);
             top: 50%;
             left: 0;
-            transform: translateY(-50%) translateX(-30%) rotate(-15deg);
+            transform: translateY(-50%) translateX(100%) rotate(-15deg);
             animation-delay: 0s;
         }
 
@@ -435,7 +439,7 @@
             height: clamp(280px, 32vw, 450px);
             top: 50%;
             right: 0;
-            transform: translateY(-50%) translateX(30%) rotate(12deg);
+            transform: translateY(-50%) translateX(-100%) rotate(12deg);
             animation-delay: 1.5s;
         }
 
@@ -456,29 +460,18 @@
 
         .hero-floating-image.snowboard {
             --initial-rotate: -15deg;
-            --initial-x: -30%;
+            --initial-x: 100%;
         }
 
         .hero-floating-image.bike {
             --initial-rotate: 12deg;
-            --initial-x: 30%;
+            --initial-x: -100%;
         }
 
-        /* Animation for hiding images on scroll */
-        .hero-floating-image.snowboard.hide-on-scroll {
-            animation: slideOutLeft 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+        /* Плавное скрытие картинок при прокрутке */
+        .hero-floating-image.hide-on-scroll {
+            opacity: 0;
             pointer-events: none;
-        }
-
-        .hero-floating-image.bike.hide-on-scroll {
-            animation: slideOutRight 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
-            pointer-events: none;
-        }
-
-        /* When hide-on-scroll is removed, images return smoothly via transition */
-        .hero-floating-image:not(.hide-on-scroll) {
-            animation: floatImage 6s ease-in-out infinite;
-            opacity: 1 !important;
         }
 
         @keyframes slideOutLeft {
@@ -1781,67 +1774,120 @@
             observer.observe(el);
         });
     
-        // ============ HIDE/SHOW FLOATING IMAGES ON SCROLL ============
+        // ============ SCROLL-BASED FLOATING IMAGES ANIMATION ============
         document.addEventListener('DOMContentLoaded', function() {
             const heroSection = document.getElementById('hero');
             const itemsSection = document.getElementById('items-owner');
-            const floatingImages = document.querySelectorAll('.hero-floating-image');
+            const snowboardImg = document.querySelector('.hero-floating-image.snowboard');
+            const bikeImg = document.querySelector('.hero-floating-image.bike');
             
-            if (heroSection && itemsSection && floatingImages.length > 0) {
-                let heroVisible = false;
-                let itemsVisible = false;
+            if (!heroSection || !snowboardImg || !bikeImg) return;
+            
+            // Базовые позиции (начальные) - 100% как запрошено
+            const snowboardBase = {
+                x: 100,    // 100% от левого края (в центре)
+                y: -50,    // -50% для центрирования по вертикали
+                rotate: -15 // градусы
+            };
+            
+            const bikeBase = {
+                x: -100,   // -100% от правого края (в центре)
+                y: -50,    // -50% для центрирования по вертикали
+                rotate: 12 // градусы
+            };
+            
+            function updateImagesOnScroll() {
+                const heroRect = heroSection.getBoundingClientRect();
+                const viewportHeight = window.innerHeight;
                 
-                // Функция для управления видимостью картинок
-                function updateImagesVisibility() {
-                    // Картинки видны только когда hero видна и items не видна
-                    const shouldShow = heroVisible && !itemsVisible;
-                    
-                    floatingImages.forEach(img => {
-                        if (shouldShow) {
-                            // Показываем картинки
-                            if (img.classList.contains('hide-on-scroll')) {
-                                img.classList.remove('hide-on-scroll');
-                                // Сбрасываем анимацию для плавного возврата
-                                img.style.animation = 'none';
-                                // Принудительно вызываем reflow
-                                void img.offsetWidth;
-                                // Возвращаем исходную анимацию
-                                img.style.animation = '';
-                            }
-                        } else {
-                            // Скрываем картинки
-                            if (!img.classList.contains('hide-on-scroll')) {
-                                img.classList.add('hide-on-scroll');
-                            }
-                        }
-                    });
+                // Вычисляем прогресс прокрутки от начала hero секции
+                // 0 = hero секция только появилась (top = viewportHeight)
+                // 1 = hero секция полностью ушла вверх (top = -heroHeight)
+                const heroTop = heroRect.top;
+                const heroHeight = heroRect.height;
+                
+                // Прогресс от 0 до 1
+                // Когда heroTop = viewportHeight, progress = 0
+                // Когда heroTop уходит в минус, progress увеличивается
+                let scrollProgress = 0;
+                
+                // Проверяем, видна ли items секция
+                let itemsVisible = false;
+                if (itemsSection) {
+                    const itemsRect = itemsSection.getBoundingClientRect();
+                    itemsVisible = itemsRect.top < viewportHeight * 0.3; // Когда items секция на 30% от верха экрана
                 }
                 
-                // Observer для hero секции
-                const heroObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        heroVisible = entry.isIntersecting;
-                        updateImagesVisibility();
-                    });
-                }, {
-                    threshold: 0.1,
-                    rootMargin: '0px'
-                });
+                // Если items секция видна, картинки уходят максимально далеко
+                if (itemsVisible) {
+                    scrollProgress = 1;
+                } else if (heroTop <= viewportHeight) {
+                    // Hero секция начала прокручиваться
+                    const scrollDistance = viewportHeight - heroTop;
+                    const maxScrollDistance = viewportHeight + heroHeight;
+                    scrollProgress = Math.min(scrollDistance / maxScrollDistance, 1);
+                }
                 
-                // Observer для items секции
-                const itemsObserver = new IntersectionObserver((entries) => {
-                    entries.forEach(entry => {
-                        itemsVisible = entry.isIntersecting;
-                        updateImagesVisibility();
-                    });
-                }, {
-                    threshold: 0.05,
-                    rootMargin: '200px 0px 0px 0px' // Начинаем скрывать когда секция еще на 200px выше
-                });
+                // Максимальные смещения (когда progress = 1)
+                // Картинки должны полностью уйти за пределы экрана
+                // Начальная позиция 100% и -100%, нужно уйти еще на 100vw чтобы полностью скрыться
+                // Используем большие значения для полного скрытия
+                const maxOffsetX = 250;     // Картинки уйдут еще на 250% в стороны (итого до -150% и 150%)
+                const maxOffsetY = 50;       // Картинки опустятся на 50px
+                const maxRotate = 20;        // Дополнительный поворот
                 
-                heroObserver.observe(heroSection);
-                itemsObserver.observe(itemsSection);
+                // Если нет прокрутки, включаем CSS анимацию floatImage
+                if (scrollProgress === 0) {
+                    snowboardImg.classList.add('no-scroll');
+                    bikeImg.classList.add('no-scroll');
+                    // Сбрасываем inline стили, чтобы CSS анимация работала
+                    snowboardImg.style.transform = '';
+                    bikeImg.style.transform = '';
+                } else {
+                    // При прокрутке отключаем CSS анимацию и управляем через JS
+                    snowboardImg.classList.remove('no-scroll');
+                    bikeImg.classList.remove('no-scroll');
+                    
+                    // Применяем смещения пропорционально прогрессу
+                    const snowboardX = snowboardBase.x - (scrollProgress * maxOffsetX);
+                    const snowboardY = snowboardBase.y - (scrollProgress * maxOffsetY);
+                    const snowboardRotate = snowboardBase.rotate - (scrollProgress * maxRotate);
+                    
+                    const bikeX = bikeBase.x + (scrollProgress * maxOffsetX);
+                    const bikeY = bikeBase.y - (scrollProgress * maxOffsetY);
+                    const bikeRotate = bikeBase.rotate + (scrollProgress * maxRotate);
+                    
+                    // Применяем transform
+                    snowboardImg.style.transform = 
+                        `translateY(${snowboardY}%) translateX(${snowboardX}%) rotate(${snowboardRotate}deg)`;
+                    bikeImg.style.transform = 
+                        `translateY(${bikeY}%) translateX(${bikeX}%) rotate(${bikeRotate}deg)`;
+                }
+                
+                // Opacity всегда 1
+                snowboardImg.style.opacity = 1;
+                bikeImg.style.opacity = 1;
             }
+            
+            // Обработчик скролла с оптимизацией через requestAnimationFrame
+            let ticking = false;
+            window.addEventListener('scroll', () => {
+                if (!ticking) {
+                    window.requestAnimationFrame(() => {
+                        updateImagesOnScroll();
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            });
+            
+            // Инициализация: добавляем класс для анимации при начальной позиции
+            snowboardImg.classList.add('no-scroll');
+            bikeImg.classList.add('no-scroll');
+            
+            // Обновляем при загрузке и изменении размера окна
+            updateImagesOnScroll();
+            window.addEventListener('resize', updateImagesOnScroll);
         });
     
         // ============ NAVIGATION SCROLL EFFECT ============
