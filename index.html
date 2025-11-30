@@ -430,7 +430,7 @@
             height: clamp(250px, 30vw, 400px);
             top: 50%;
             left: 0;
-            transform: translateY(-50%) translateX(100%) rotate(-15deg);
+            transform: translateY(-50%) translateX(90%) rotate(-15deg);
             animation-delay: 0s;
         }
 
@@ -439,7 +439,7 @@
             height: clamp(280px, 32vw, 450px);
             top: 50%;
             right: 0;
-            transform: translateY(-50%) translateX(-100%) rotate(12deg);
+            transform: translateY(-50%) translateX(-90%) rotate(12deg);
             animation-delay: 1.5s;
         }
 
@@ -460,12 +460,12 @@
 
         .hero-floating-image.snowboard {
             --initial-rotate: -15deg;
-            --initial-x: 100%;
+            --initial-x: 90%;
         }
 
         .hero-floating-image.bike {
             --initial-rotate: 12deg;
-            --initial-x: -100%;
+            --initial-x: -90%;
         }
 
         /* Плавное скрытие картинок при прокрутке */
@@ -1783,15 +1783,15 @@
             
             if (!heroSection || !snowboardImg || !bikeImg) return;
             
-            // Базовые позиции (начальные) - 100% как запрошено
+            // Базовые позиции (начальные) - 90% как запрошено
             const snowboardBase = {
-                x: 100,    // 100% от левого края (в центре)
+                x: 90,     // 90% от левого края
                 y: -50,    // -50% для центрирования по вертикали
                 rotate: -15 // градусы
             };
             
             const bikeBase = {
-                x: -100,   // -100% от правого края (в центре)
+                x: -90,    // -90% от правого края
                 y: -50,    // -50% для центрирования по вертикали
                 rotate: 12 // градусы
             };
@@ -1830,9 +1830,9 @@
                 
                 // Максимальные смещения (когда progress = 1)
                 // Картинки должны полностью уйти за пределы экрана
-                // Начальная позиция 100% и -100%, нужно уйти еще на 100vw чтобы полностью скрыться
+                // Начальная позиция 90% и -90%, нужно уйти еще на 100vw чтобы полностью скрыться
                 // Используем большие значения для полного скрытия
-                const maxOffsetX = 250;     // Картинки уйдут еще на 250% в стороны (итого до -150% и 150%)
+                const maxOffsetX = 240;     // Картинки уйдут еще на 240% в стороны (итого до -150% и 150%)
                 const maxOffsetY = 50;       // Картинки опустятся на 50px
                 const maxRotate = 20;        // Дополнительный поворот
                 
