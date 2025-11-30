@@ -57,6 +57,14 @@
 
         @media (min-width: 901px) {
             .rentoo-card {
+                flex: 0 0 360px;
+                min-width: 360px;
+                max-width: 360px;
+            }
+        }
+        
+        @media (min-width: 1400px) {
+            .rentoo-card {
                 flex: 0 0 400px;
                 min-width: 400px;
                 max-width: 400px;
@@ -86,9 +94,6 @@
             box-shadow: 0px 8px 20px rgba(0,0,0,0.05);
             border: 1px solid #e2e8f0;
             transition: transform 0.2s ease, box-shadow 0.2s ease;
-            flex: 0 0 calc((100% - 64px) / 3);
-            min-width: calc((100% - 64px) / 3);
-            max-width: calc((100% - 64px) / 3);
             box-sizing: border-box;
             display: flex;
             flex-direction: column;
@@ -1297,10 +1302,6 @@
                 font-size: 14px;
             }
 
-            .rentoo-grid {
-                animation: scrollLeft 50s linear infinite;
-            }
-
             .step-mockup {
                 max-width: 200px;
                 margin-bottom: 1.2rem;
@@ -1468,7 +1469,7 @@
                 <div class="logo">Rentoo</div>
             </div>
             <h1>Откройте новые возможности аренды<br>и сдачи вещей легко и безопасно!</h1>
-            <p class="hero-subtitle">Платформа Rentoo — простой способ зарабатывать на аренде вещей, даже если вы никогда раньше их не сдавали или уже занимаетесь арендой.</p>
+            <p class="hero-subtitle">У вас есть вещи, которые пылятся в кладовке? Сноуборд, велосипед, инструменты, проектор — превратите их в источник дохода! Сдавайте в аренду и зарабатывайте на том, что уже есть у вас дома.</p>
 
             <!-- КНОПКА-ЯКОРЬ -->
             <a href="#registration-owner" class="hero-cta">
@@ -1523,31 +1524,31 @@
                     <div class="rentoo-track" aria-hidden="true">
                         <div class="rentoo-card">
                             <img src="photos/Сноуборд.png?auto=format&fit=crop&w=900&q=60" alt="Сноуборд">
-                            <h3>Сноуборд</h3>
+                            <h3>🏂 Сноуборд</h3>
                             <p>Идеален для зимних поездок</p>
                         </div>
             
                         <div class="rentoo-card">
-                            <img src="photos/Инструмент.png?auto=format&fit=crop&w=900&q=60" alt="Дрель">
-                            <h3>Дрель</h3>
+                            <img src="photos/Инструмент.png?auto=format&fit=crop&w=900&q=60" alt="Шуруповерт">
+                            <h3>⚒️ Шуруповерт</h3>
                             <p>Незаменима для домашних работ</p>
                         </div>
             
                         <div class="rentoo-card">
                             <img src="photos/Велосипед.jpeg?auto=format&fit=crop&w=900&q=60" alt="Велосипед">
-                            <h3>Велосипед</h3>
+                            <h3>🚲 Велосипед</h3>
                             <p>Удобен для прогулок по городу</p>
                         </div>
             
                         <div class="rentoo-card">
                             <img src="photos/Проектор.png?auto=format&fit=crop&w=900&q=60" alt="Проектор">
-                            <h3>Проектор</h3>
+                            <h3>📽 Проектор</h3>
                             <p>Для презентаций и киносеансов</p>
                         </div>
             
                         <div class="rentoo-card">
                             <img src="photos/Сапы.png?auto=format&fit=crop&w=900&q=60" alt="Сапы">
-                            <h3>Сапы</h3>
+                            <h3>🛶 Сапы</h3>
                             <p>Поймай волну и не только</p>
                         </div>
                     </div>
@@ -1687,8 +1688,7 @@
             
             let message = `
     🆕 <b>Новая регистрация на Rentoo!</b>
-    
-    🎭 <b>Тип:</b> Арендодатель
+
     📧 <b>Email:</b> ${data.email}
             `.trim();
             
@@ -1723,8 +1723,6 @@
             
             const message = `
     ❓ <b>Новый вопрос с Rentoo!</b>
-    
-    🎭 <b>Тип:</b> Арендодатель
     📧 <b>Email:</b> ${data.email}
     💬 <b>Вопрос:</b>
     ${data.question}
