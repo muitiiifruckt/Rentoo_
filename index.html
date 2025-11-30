@@ -45,6 +45,8 @@
         .rentoo-grid {
             display: flex;
             width: max-content;
+            gap: 32px; /* Промежуток между треками */
+            animation: scrollLeft 20s linear infinite;
         }
 
         /* один трек с карточками */
@@ -52,12 +54,6 @@
             display: flex;
             gap: 32px;
             flex-shrink: 0;
-            animation: scrollLeft 20s linear infinite;
-        }
-
-        /* Добавить промежуток между треками */
-        .rentoo-track + .rentoo-track {
-            margin-left: 32px;
         }
 
         @media (min-width: 901px) {
@@ -81,8 +77,9 @@
                 transform: translateX(0);
             }
             to {
-                /* уезжаем ровно на ширину трека */
-                transform: translateX(-100%);
+                /* уезжаем ровно на половину ширины контейнера (один трек) + половину gap */
+                /* У нас два трека, поэтому перемещаем на 50% + 16px (половина gap) */
+                transform: translateX(calc(-50% - 16px));
             }
         }
 
