@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { MapPin, Calendar, User, ArrowLeft } from 'lucide-react'
+import { MapPin, Calendar, User, ArrowLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 import { Item, itemsAPI, rentalsAPI, usersAPI, User as UserType } from '@/lib/api'
 import { formatPrice, formatDate, getImageUrl } from '@/lib/utils'
 import { Button } from '@/components/Button'
@@ -15,12 +15,42 @@ export default function ItemDetail() {
   const [loading, setLoading] = useState(true)
   const [showRentModal, setShowRentModal] = useState(false)
   const [renting, setRenting] = useState(false)
+  const [currentImageIndex, setCurrentImageIndex] = useState(0)
 
   useEffect(() => {
     if (!id) return
 
     loadItem()
   }, [id])
+
+  useEffect(() => {
+    // Reset image index when item changes
+    if (item) {
+      setCurrentImageIndex(0)
+    }
+  }, [item])
+
+  useEffect(() => {
+    // Keyboard navigation for images
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (!item?.images || item.images.length <= 1) return
+      
+      if (e.key === 'ArrowLeft') {
+        e.preventDefault()
+        setCurrentImageIndex((prev) => 
+          prev === 0 ? item.images.length - 1 : prev - 1
+        )
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault()
+        setCurrentImageIndex((prev) => 
+          prev === item.images.length - 1 ? 0 : prev + 1
+        )
+      }
+    }
+
+    window.addEventListener('keydown', handleKeyDown)
+    return () => window.removeEventListener('keydown', handleKeyDown)
+  }, [item])
 
   const loadItem = async () => {
     if (!id) return
@@ -72,6 +102,24 @@ export default function ItemDetail() {
     }
   }
 
+  const handlePreviousImage = () => {
+    if (!item?.images || item.images.length === 0) return
+    setCurrentImageIndex((prev) => 
+      prev === 0 ? item.images.length - 1 : prev - 1
+    )
+  }
+
+  const handleNextImage = () => {
+    if (!item?.images || item.images.length === 0) return
+    setCurrentImageIndex((prev) => 
+      prev === item.images.length - 1 ? 0 : prev + 1
+    )
+  }
+
+  const handleThumbnailClick = (index: number) => {
+    setCurrentImageIndex(index)
+  }
+
   const rentFields: FormField[] = [
     {
       name: 'start_date',
@@ -108,7 +156,9 @@ export default function ItemDetail() {
     )
   }
 
-  const mainImage = item.images && item.images.length > 0 ? item.images[0] : null
+  const images = item.images || []
+  const currentImage = images.length > 0 ? images[currentImageIndex] : null
+  const hasMultipleImages = images.length > 1
   const today = new Date().toISOString().split('T')[0]
 
   return (
@@ -125,28 +175,63 @@ export default function ItemDetail() {
       <div className="grid gap-8 lg:grid-cols-2">
         {/* Images */}
         <div className="space-y-4">
-          {mainImage && (
-            <div className="aspect-[4/3] overflow-hidden rounded-medium bg-background">
+          {currentImage && (
+            <div className="relative aspect-[4/3] overflow-hidden rounded-medium bg-background group">
               <img
-                src={getImageUrl(mainImage)}
-                alt={item.title}
+                src={getImageUrl(currentImage)}
+                alt={`${item.title} ${currentImageIndex + 1}`}
                 className="h-full w-full object-cover"
               />
+              
+              {/* Navigation Arrows */}
+              {hasMultipleImages && (
+                <>
+                  <button
+                    onClick={handlePreviousImage}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 rounded-small bg-black/50 p-2 text-white opacity-0 transition-opacity duration-hover hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 group-hover:opacity-100"
+                    aria-label="Предыдущее изображение"
+                  >
+                    <ChevronLeft className="h-6 w-6" />
+                  </button>
+                  <button
+                    onClick={handleNextImage}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-small bg-black/50 p-2 text-white opacity-0 transition-opacity duration-hover hover:bg-black/70 focus:outline-none focus:ring-2 focus:ring-white focus:ring-offset-2 group-hover:opacity-100"
+                    aria-label="Следующее изображение"
+                  >
+                    <ChevronRight className="h-6 w-6" />
+                  </button>
+                  
+                  {/* Image Counter */}
+                  <div className="absolute bottom-2 left-1/2 -translate-x-1/2 rounded-small bg-black/50 px-3 py-1 text-small text-white opacity-0 transition-opacity duration-hover group-hover:opacity-100">
+                    {currentImageIndex + 1} / {images.length}
+                  </div>
+                </>
+              )}
             </div>
           )}
-          {item.images && item.images.length > 1 && (
+          
+          {/* Thumbnails */}
+          {hasMultipleImages && (
             <div className="grid grid-cols-4 gap-2">
-              {item.images.slice(1, 5).map((image, index) => (
-                <div
+              {images.slice(0, 4).map((image, index) => (
+                <button
                   key={index}
-                  className="aspect-square overflow-hidden rounded-small bg-background"
+                  onClick={() => handleThumbnailClick(index)}
+                  className={`
+                    aspect-square overflow-hidden rounded-small bg-background transition-all duration-hover
+                    ${currentImageIndex === index 
+                      ? 'ring-2 ring-primary ring-offset-2' 
+                      : 'hover:opacity-80'
+                    }
+                  `}
+                  aria-label={`Показать изображение ${index + 1}`}
                 >
                   <img
                     src={getImageUrl(image)}
-                    alt={`${item.title} ${index + 2}`}
+                    alt={`${item.title} ${index + 1}`}
                     className="h-full w-full object-cover"
                   />
-                </div>
+                </button>
               ))}
             </div>
           )}
