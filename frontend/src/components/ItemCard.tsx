@@ -1,4 +1,4 @@
-import React from 'react'
+import { type FC, type MouseEvent } from 'react'
 import { MapPin, Calendar } from 'lucide-react'
 import { Item } from '@/lib/api'
 import { formatPrice, truncateText, getImageUrl, cn } from '@/lib/utils'
@@ -25,7 +25,7 @@ export interface ItemCardProps {
  * @param onRent - Callback when rent button is clicked
  * @param onClick - Callback when card is clicked
  */
-export const ItemCard: React.FC<ItemCardProps> = ({
+export const ItemCard: FC<ItemCardProps> = ({
   item,
   onRent,
   onClick,
@@ -35,7 +35,7 @@ export const ItemCard: React.FC<ItemCardProps> = ({
     onClick?.(item)
   }
 
-  const handleRentClick = (e: React.MouseEvent) => {
+  const handleRentClick = (e: MouseEvent) => {
     e.stopPropagation()
     onRent?.(item)
   }

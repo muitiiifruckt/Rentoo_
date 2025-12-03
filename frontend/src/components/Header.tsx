@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'
+import { useState, useEffect, useRef, type FC, type FormEvent } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { Search, User, LogOut, Menu, X } from 'lucide-react'
 import { useAuth } from '@/contexts/AuthContext'
@@ -14,14 +14,14 @@ import { cn } from '@/lib/utils'
  * - User menu
  * - Keyboard accessible
  */
-export const Header: React.FC = () => {
+export const Header: FC = () => {
   const { user, isAuthenticated, logout } = useAuth()
   const navigate = useNavigate()
   const [searchQuery, setSearchQuery] = useState('')
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const searchInputRef = useRef<HTMLInputElement>(null)
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault()
     if (searchQuery.trim()) {
       navigate(`/?query=${encodeURIComponent(searchQuery.trim())}`)

@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react'
+import { useState, useRef, type FC, type FormEvent } from 'react'
 import { Upload, X } from 'lucide-react'
 import { Button } from './Button'
 import { cn } from '@/lib/utils'
@@ -41,7 +41,7 @@ export interface FormProps {
  * @param submitLabel - Submit button text
  * @param loading - Loading state
  */
-export const Form: React.FC<FormProps> = ({
+export const Form: FC<FormProps> = ({
   fields,
   onSubmit,
   initialData = {},
@@ -205,7 +205,7 @@ export const Form: React.FC<FormProps> = ({
     }
   }
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
     
     // Validate all fields

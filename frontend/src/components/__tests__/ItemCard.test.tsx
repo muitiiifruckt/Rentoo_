@@ -3,7 +3,6 @@ import { render, screen } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { ItemCard } from '../ItemCard'
 import { Item } from '@/lib/api'
-import React from 'react'
 
 const mockItem: Item = {
   id: '1',

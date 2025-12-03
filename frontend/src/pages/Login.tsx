@@ -1,16 +1,15 @@
-import React from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate, Link } from 'react-router-dom'
 import { useAuth } from '@/contexts/AuthContext'
 import { Form, FormField } from '@/components/Form'
-import { Button } from '@/components/Button'
 
 export default function Login() {
   const { login, isAuthenticated } = useAuth()
   const navigate = useNavigate()
-  const [loading, setLoading] = React.useState(false)
-  const [error, setError] = React.useState<string>('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState<string>('')
 
-  React.useEffect(() => {
+  useEffect(() => {
     // Не перенаправляем сразу, даем время на рендеринг формы
     // Также не перенаправляем во время загрузки, чтобы форма успела отобразиться
     // Увеличиваем задержку, чтобы тесты успели увидеть форму

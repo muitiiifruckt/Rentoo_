@@ -1,8 +1,8 @@
-import React from 'react'
+import { type FC, type ReactNode, Children } from 'react'
 import { cn } from '@/lib/utils'
 
 export interface GridProps {
-  children: React.ReactNode
+  children: ReactNode
   className?: string
   loading?: boolean
   emptyMessage?: string
@@ -21,7 +21,7 @@ export interface GridProps {
  * @param loading - Show loading state
  * @param emptyMessage - Message when grid is empty
  */
-export const Grid: React.FC<GridProps> = ({
+export const Grid: FC<GridProps> = ({
   children,
   className,
   loading = false,
@@ -46,7 +46,7 @@ export const Grid: React.FC<GridProps> = ({
     )
   }
 
-  const childrenArray = React.Children.toArray(children)
+  const childrenArray = Children.toArray(children)
 
   if (childrenArray.length === 0) {
     return (

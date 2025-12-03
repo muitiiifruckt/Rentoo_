@@ -1,11 +1,11 @@
-import React from 'react'
+import { type FC, type ReactNode, type ButtonHTMLAttributes, isValidElement, cloneElement } from 'react'
 import { Loader2 } from 'lucide-react'
 import { cn } from '@/lib/utils'
 
-export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'ghost' | 'outline' | 'danger'
   loading?: boolean
-  children: React.ReactNode
+  children: ReactNode
   asChild?: boolean
 }
 
@@ -17,7 +17,7 @@ export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElemen
  * @param children - Button content
  * @param asChild - Render as child element (for Link components)
  */
-export const Button: React.FC<ButtonProps> = ({
+export const Button: FC<ButtonProps> = ({
   variant = 'primary',
   loading = false,
   disabled,
@@ -37,8 +37,8 @@ export const Button: React.FC<ButtonProps> = ({
 
   const buttonClasses = cn(baseStyles, variants[variant] || variants.primary, className)
 
-  if (asChild && React.isValidElement(children)) {
-    return React.cloneElement(children, {
+  if (asChild && isValidElement(children)) {
+    return cloneElement(children, {
       className: cn(buttonClasses, children.props.className),
       disabled: disabled || loading,
       ...props,
