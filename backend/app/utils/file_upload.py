@@ -80,18 +80,39 @@ async def save_uploaded_file(file: UploadFile, subdir: str) -> Optional[str]:
 def delete_file(file_url: str) -> bool:
     """Delete a file by URL."""
     try:
+        logger.info(f"🗑️ [FileUpload] delete_file called: file_url={file_url}")
+        
+        # Get absolute path to uploads directory (same logic as in main.py)
+        from pathlib import Path as PathLib
+        import os
+        # Get backend directory (assuming this file is in app/utils/)
+        backend_dir = PathLib(__file__).parent.parent.parent.resolve()
+        upload_dir_path = (backend_dir / settings.upload_dir).resolve()
+        
         # Remove /static prefix if present
         if file_url.startswith("/static/"):
             # Remove /static/ prefix to get relative path from upload_dir
-            file_path = Path(settings.upload_dir) / file_url.replace("/static/", "")
+            relative_path = file_url.replace("/static/", "")
         else:
-            file_path = Path(settings.upload_dir) / file_url
+            relative_path = file_url
+        
+        file_path = upload_dir_path / relative_path
+        
+        logger.info(f"🗑️ [FileUpload] Backend dir: {backend_dir}")
+        logger.info(f"🗑️ [FileUpload] Upload dir: {upload_dir_path}")
+        logger.info(f"🗑️ [FileUpload] Relative path: {relative_path}")
+        logger.info(f"🗑️ [FileUpload] Resolved file path: {file_path}")
         
         if file_path.exists():
+            logger.info(f"🗑️ [FileUpload] File exists, deleting...")
             file_path.unlink()
+            logger.info(f"🗑️ [FileUpload] ✅ File deleted successfully: {file_path}")
             return True
-        return False
-    except Exception:
+        else:
+            logger.warning(f"🗑️ [FileUpload] ⚠️ File not found: {file_path}")
+            return False
+    except Exception as e:
+        logger.error(f"🗑️ [FileUpload] ❌ Exception while deleting file: {e}", exc_info=True)
         return False
 
 

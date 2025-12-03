@@ -152,12 +152,50 @@ async def delete_item_endpoint(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Delete item."""
-    deleted = await delete_item(db, item_id, str(current_user["_id"]))
-    if not deleted:
+    logger.info(f"🗑️ [Items Router] delete_item_endpoint called: item_id={item_id}, user_id={current_user.get('_id')}")
+    
+    # Get item first to delete associated images
+    item = await get_item_by_id(db, item_id)
+    if not item:
+        logger.warning(f"🗑️ [Items Router] ❌ Item not found: {item_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Item not found or not authorized"
         )
+    
+    if str(item["owner_id"]) != str(current_user["_id"]):
+        logger.warning(f"🗑️ [Items Router] ❌ Unauthorized: item owner={item['owner_id']}, user={current_user['_id']}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Item not found or not authorized"
+        )
+    
+    logger.info(f"🗑️ [Items Router] ✅ Ownership verified, deleting item and images...")
+    
+    # Delete associated images
+    images = item.get("images", [])
+    if images:
+        logger.info(f"🗑️ [Items Router] Deleting {len(images)} image files...")
+        from app.utils.file_upload import delete_file
+        deleted_count = 0
+        for image_url in images:
+            if delete_file(image_url):
+                deleted_count += 1
+                logger.info(f"🗑️ [Items Router] ✅ Deleted image: {image_url}")
+            else:
+                logger.warning(f"🗑️ [Items Router] ⚠️ Failed to delete image: {image_url}")
+        logger.info(f"🗑️ [Items Router] Deleted {deleted_count}/{len(images)} image files")
+    
+    # Delete item from database
+    deleted = await delete_item(db, item_id, str(current_user["_id"]))
+    if not deleted:
+        logger.error(f"🗑️ [Items Router] ❌ Failed to delete item from database: {item_id}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Item not found or not authorized"
+        )
+    
+    logger.info(f"🗑️ [Items Router] ✅ Item deleted successfully: {item_id}")
 
 
 @router.post("/{item_id}/images", response_model=ItemResponse)

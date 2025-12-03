@@ -5,13 +5,17 @@ import { usersAPI, itemsAPI, Item } from '@/lib/api'
 import { ItemCard } from '@/components/ItemCard'
 import { Grid } from '@/components/Grid'
 import { Button } from '@/components/Button'
-import { User } from 'lucide-react'
+import { Modal } from '@/components/Modal'
+import { User, Trash2 } from 'lucide-react'
 
 export default function Profile() {
   const { user, isAuthenticated } = useAuth()
   const navigate = useNavigate()
   const [myItems, setMyItems] = useState<Item[]>([])
   const [loading, setLoading] = useState(true)
+  const [deleteModalOpen, setDeleteModalOpen] = useState(false)
+  const [itemToDelete, setItemToDelete] = useState<Item | null>(null)
+  const [deleting, setDeleting] = useState(false)
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -52,6 +56,49 @@ export default function Profile() {
       return
     }
     navigate(`/items/${item.id}`)
+  }
+
+  const handleDeleteClick = (e: React.MouseEvent, item: Item) => {
+    e.stopPropagation()
+    if (!item.id) {
+      console.error('Item has no ID!', item)
+      alert('Ошибка: товар не имеет ID. Попробуйте обновить страницу.')
+      return
+    }
+    setItemToDelete(item)
+    setDeleteModalOpen(true)
+  }
+
+  const handleDeleteConfirm = async () => {
+    if (!itemToDelete || !itemToDelete.id) {
+      console.error('No item to delete')
+      return
+    }
+
+    setDeleting(true)
+    try {
+      console.log('Deleting item:', itemToDelete.id)
+      await itemsAPI.deleteItem(itemToDelete.id)
+      console.log('Item deleted successfully')
+      
+      // Remove item from list
+      setMyItems((prev) => prev.filter((item) => item.id !== itemToDelete.id))
+      
+      // Close modal
+      setDeleteModalOpen(false)
+      setItemToDelete(null)
+    } catch (error: any) {
+      console.error('Failed to delete item:', error)
+      const errorMessage = error.response?.data?.detail || error.message || 'Не удалось удалить товар'
+      alert(errorMessage)
+    } finally {
+      setDeleting(false)
+    }
+  }
+
+  const handleDeleteCancel = () => {
+    setDeleteModalOpen(false)
+    setItemToDelete(null)
   }
 
   if (!user) {
@@ -100,14 +147,56 @@ export default function Profile() {
             return null
           }
           return (
-            <ItemCard 
-              key={itemId} 
-              item={{ ...item, id: itemId }} 
-              onClick={handleItemClick} 
-            />
+            <div key={itemId} className="relative group">
+              <ItemCard 
+                item={{ ...item, id: itemId }} 
+                onClick={handleItemClick} 
+              />
+              <button
+                onClick={(e) => handleDeleteClick(e, { ...item, id: itemId })}
+                className="absolute top-2 right-2 z-10 rounded-small bg-error/90 p-2 text-white opacity-0 transition-opacity duration-hover hover:bg-error focus:outline-none focus:ring-2 focus:ring-error focus:ring-offset-2 group-hover:opacity-100"
+                aria-label={`Удалить ${item.title}`}
+                title="Удалить товар"
+              >
+                <Trash2 className="h-4 w-4" />
+              </button>
+            </div>
           )
         })}
       </Grid>
+
+      {/* Delete Confirmation Modal */}
+      <Modal
+        isOpen={deleteModalOpen}
+        onClose={handleDeleteCancel}
+        title="Удалить товар"
+        size="sm"
+      >
+        <div className="space-y-4">
+          <p className="text-body text-text-primary">
+            Вы уверены, что хотите удалить товар <strong>"{itemToDelete?.title}"</strong>?
+          </p>
+          <p className="text-small text-text-secondary">
+            Это действие нельзя отменить. Все данные о товаре будут удалены безвозвратно.
+          </p>
+          <div className="flex justify-end gap-3">
+            <Button
+              variant="outline"
+              onClick={handleDeleteCancel}
+              disabled={deleting}
+            >
+              Отмена
+            </Button>
+            <Button
+              variant="danger"
+              onClick={handleDeleteConfirm}
+              disabled={deleting}
+            >
+              {deleting ? 'Удаление...' : 'Удалить'}
+            </Button>
+          </div>
+        </div>
+      </Modal>
     </div>
   )
 }
