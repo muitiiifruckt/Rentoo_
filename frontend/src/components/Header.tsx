@@ -84,6 +84,12 @@ export const Header: React.FC = () => {
 
           {/* Actions - Desktop */}
           <nav className="hidden items-center gap-4 md:flex" aria-label="Навигация">
+            <Link
+              to="/"
+              className="text-body text-text-primary hover:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 rounded-small px-2 py-1"
+            >
+              Товары
+            </Link>
             {isAuthenticated ? (
               <>
                 <Link
@@ -176,6 +182,13 @@ export const Header: React.FC = () => {
           aria-label="Мобильная навигация"
         >
           <div className="flex flex-col gap-2 py-4">
+            <Link
+              to="/"
+              onClick={() => setIsMobileMenuOpen(false)}
+              className="rounded-small px-4 py-2 text-body text-text-primary hover:bg-background focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2"
+            >
+              Товары
+            </Link>
             {isAuthenticated ? (
               <>
                 <Link
