@@ -97,38 +97,69 @@ export const Form: React.FC<FormProps> = ({
   }
 
   const handleFileChange = (name: string, files: FileList | null) => {
-    if (!files || files.length === 0) return
+    console.log('📁 [Form] handleFileChange called:', { name, filesCount: files?.length || 0 })
+    
+    if (!files || files.length === 0) {
+      console.log('📁 [Form] No files provided, returning')
+      return
+    }
 
     const fileArray = Array.from(files)
+    console.log('📁 [Form] File array:', fileArray.map(f => ({
+      name: f.name,
+      type: f.type,
+      size: f.size,
+      lastModified: f.lastModified
+    })))
+    
     const field = fields.find((f) => f.name === name)
+    console.log('📁 [Form] Field config:', { 
+      name: field?.name, 
+      accept: field?.accept, 
+      multiple: field?.multiple 
+    })
     
     // Validate file types
     if (field?.accept) {
       const acceptedTypes = field.accept.split(',').map((t) => t.trim())
+      console.log('📁 [Form] Accepted types:', acceptedTypes)
+      
       const invalidFiles = fileArray.filter(
         (file) => !acceptedTypes.some((type) => file.type.match(type.replace('*', '.*')))
       )
       if (invalidFiles.length > 0) {
+        console.error('📁 [Form] Invalid file types detected:', invalidFiles.map(f => ({
+          name: f.name,
+          type: f.type
+        })))
         setErrors((prev) => ({
           ...prev,
           [name]: `Недопустимый тип файла. Разрешены: ${field.accept}`,
         }))
         return
       }
+      console.log('📁 [Form] ✅ All files passed type validation')
     }
 
     // Create previews for images
     const imageFiles = fileArray.filter((file) => file.type.startsWith('image/'))
+    console.log('📁 [Form] Image files filtered:', imageFiles.length, 'out of', fileArray.length)
     const previews: string[] = []
     
-    imageFiles.forEach((file) => {
+    imageFiles.forEach((file, index) => {
+      console.log(`📁 [Form] Creating preview for file ${index + 1}/${imageFiles.length}:`, file.name)
       const reader = new FileReader()
       reader.onload = (e) => {
         const result = e.target?.result as string
+        console.log(`📁 [Form] Preview created for ${file.name}, size: ${result.length} chars`)
         previews.push(result)
         if (previews.length === imageFiles.length) {
+          console.log('📁 [Form] ✅ All previews created, updating state')
           setImagePreviews((prev) => ({ ...prev, [name]: previews }))
         }
+      }
+      reader.onerror = (e) => {
+        console.error('📁 [Form] ❌ Error reading file for preview:', file.name, e)
       }
       reader.readAsDataURL(file)
     })
@@ -136,12 +167,21 @@ export const Form: React.FC<FormProps> = ({
     // Store files
     if (field?.multiple) {
       const existingFiles = formData[name] || []
-      setFormData((prev) => ({
-        ...prev,
-        [name]: [...existingFiles, ...fileArray],
-      }))
+      console.log('📁 [Form] Multiple files mode, existing files:', existingFiles.length)
+      setFormData((prev) => {
+        const newFiles = [...existingFiles, ...fileArray]
+        console.log('📁 [Form] ✅ Stored', newFiles.length, 'files in formData')
+        return {
+          ...prev,
+          [name]: newFiles,
+        }
+      })
     } else {
-      setFormData((prev) => ({ ...prev, [name]: fileArray[0] }))
+      console.log('📁 [Form] Single file mode')
+      setFormData((prev) => {
+        console.log('📁 [Form] ✅ Stored single file in formData:', fileArray[0].name)
+        return { ...prev, [name]: fileArray[0] }
+      })
       setImagePreviews((prev) => ({ ...prev, [name]: previews.slice(0, 1) }))
     }
   }

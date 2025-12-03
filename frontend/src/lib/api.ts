@@ -294,14 +294,43 @@ export const itemsAPI = {
   },
 
   uploadImage: async (itemId: string, file: File): Promise<Item> => {
+    console.log('📤 [API] uploadImage called:', {
+      itemId,
+      fileName: file.name,
+      fileType: file.type,
+      fileSize: file.size,
+      url: `/api/items/${itemId}/images`
+    })
+    
     const formData = new FormData()
     formData.append('file', file)
-    const response = await api.post(`/api/items/${itemId}/images`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    })
-    return response.data
+    console.log('📤 [API] FormData created, entries:', Array.from(formData.entries()).map(([k, v]) => ({
+      key: k,
+      value: v instanceof File ? { name: v.name, type: v.type, size: v.size } : v
+    })))
+    
+    try {
+      console.log('📤 [API] Sending POST request...')
+      const response = await api.post(`/api/items/${itemId}/images`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+      console.log('📤 [API] ✅ Upload successful, response:', {
+        status: response.status,
+        data: response.data
+      })
+      return response.data
+    } catch (error: any) {
+      console.error('📤 [API] ❌ Upload failed:', {
+        error,
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        statusText: error.response?.statusText
+      })
+      throw error
+    }
   },
 }
 

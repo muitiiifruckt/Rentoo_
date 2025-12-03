@@ -63,9 +63,22 @@ export default function AddItem() {
   }
 
   const handleSubmit = async (data: Record<string, any>) => {
+    console.log('🚀 [AddItem] handleSubmit called with data:', {
+      ...data,
+      images: data.images ? (Array.isArray(data.images) ? `${data.images.length} files` : '1 file') : 'no images'
+    })
+    
     setLoading(true)
     try {
       const imageFiles = data.images || []
+      console.log('🚀 [AddItem] Image files from form:', {
+        count: imageFiles.length,
+        files: imageFiles.map((f: any) => f instanceof File ? {
+          name: f.name,
+          type: f.type,
+          size: f.size
+        } : f)
+      })
       const imageUrls: string[] = []
 
       // Create item
@@ -92,40 +105,75 @@ export default function AddItem() {
         images: imageUrls,
       }
 
+      console.log('🚀 [AddItem] Creating item with data:', { ...itemData, images: '[] (empty)' })
       const newItem = await itemsAPI.createItem(itemData)
-      console.log('Created item response:', newItem)
+      console.log('🚀 [AddItem] ✅ Item created, response:', newItem)
       
       // Item ID should be normalized by API client
       const itemId = newItem.id
       if (!itemId) {
-        console.error('Item ID not found in response:', newItem)
+        console.error('🚀 [AddItem] ❌ Item ID not found in response:', newItem)
         throw new Error('Не удалось получить ID созданного товара. Попробуйте обновить страницу.')
       }
       
-      console.log('Using item ID:', itemId)
+      console.log('🚀 [AddItem] ✅ Using item ID:', itemId)
 
       // Upload images after item creation
-      if (imageFiles.length > 0 && imageFiles[0] instanceof File) {
-        setUploadingImages(true)
-        try {
-          for (const file of imageFiles) {
-            if (file instanceof File) {
-              console.log('Uploading image for item:', itemId)
-              await itemsAPI.uploadImage(itemId, file)
+      if (imageFiles.length > 0) {
+        console.log('🚀 [AddItem] Starting image upload process...')
+        console.log('🚀 [AddItem] First file check:', {
+          isFile: imageFiles[0] instanceof File,
+          type: typeof imageFiles[0],
+          value: imageFiles[0]
+        })
+        
+        if (imageFiles[0] instanceof File) {
+          setUploadingImages(true)
+          try {
+            for (let i = 0; i < imageFiles.length; i++) {
+              const file = imageFiles[i]
+              if (file instanceof File) {
+                console.log(`🚀 [AddItem] Uploading image ${i + 1}/${imageFiles.length}:`, {
+                  name: file.name,
+                  type: file.type,
+                  size: file.size,
+                  itemId
+                })
+                const result = await itemsAPI.uploadImage(itemId, file)
+                console.log(`🚀 [AddItem] ✅ Image ${i + 1} uploaded successfully:`, result)
+              } else {
+                console.warn(`🚀 [AddItem] ⚠️ Skipping non-File object at index ${i}:`, file)
+              }
             }
+            console.log('🚀 [AddItem] ✅ All images uploaded successfully')
+          } catch (error: any) {
+            console.error('🚀 [AddItem] ❌ Failed to upload some images:', {
+              error,
+              message: error.message,
+              response: error.response?.data,
+              status: error.response?.status
+            })
+            // Don't throw - images are optional, but show warning
+            alert('Товар создан, но не удалось загрузить некоторые изображения. Вы можете добавить их позже.')
+          } finally {
+            setUploadingImages(false)
           }
-        } catch (error: any) {
-          console.error('Failed to upload some images:', error)
-          // Don't throw - images are optional, but show warning
-          alert('Товар создан, но не удалось загрузить некоторые изображения. Вы можете добавить их позже.')
-        } finally {
-          setUploadingImages(false)
+        } else {
+          console.warn('🚀 [AddItem] ⚠️ First image is not a File instance:', imageFiles[0])
         }
+      } else {
+        console.log('🚀 [AddItem] No images to upload')
       }
 
+      console.log('🚀 [AddItem] ✅ Navigation to item page:', itemId)
       navigate(`/items/${itemId}`)
     } catch (error: any) {
-      console.error('Failed to create item:', error)
+      console.error('🚀 [AddItem] ❌ Failed to create item:', {
+        error,
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      })
       // Show user-friendly error message
       const errorMessage = error.response?.data?.detail || error.message || 'Не удалось создать товар'
       alert(errorMessage)

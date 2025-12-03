@@ -168,26 +168,47 @@ async def upload_item_image(
     db: AsyncIOMotorDatabase = Depends(get_database)
 ):
     """Upload image for item."""
+    logger.info(f"🖼️ [Items Router] upload_item_image called: item_id={item_id}, user_id={current_user.get('_id')}")
+    logger.info(f"🖼️ [Items Router] File info: filename={file.filename}, content_type={file.content_type}, size={file.size if hasattr(file, 'size') else 'unknown'}")
+    
     # Check ownership
+    logger.info(f"🖼️ [Items Router] Checking item ownership...")
     item = await get_item_by_id(db, item_id)
-    if not item or str(item["owner_id"]) != str(current_user["_id"]):
+    if not item:
+        logger.warning(f"🖼️ [Items Router] ❌ Item not found: {item_id}")
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail="Item not found or not authorized"
         )
     
+    if str(item["owner_id"]) != str(current_user["_id"]):
+        logger.warning(f"🖼️ [Items Router] ❌ Unauthorized: item owner={item['owner_id']}, user={current_user['_id']}")
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Item not found or not authorized"
+        )
+    
+    logger.info(f"🖼️ [Items Router] ✅ Ownership verified, saving file...")
+    
     # Save file
     file_url = await save_uploaded_file(file, "items")
     if not file_url:
+        logger.error(f"🖼️ [Items Router] ❌ Failed to save file: filename={file.filename}, content_type={file.content_type}")
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Invalid file type or size"
         )
     
+    logger.info(f"🖼️ [Items Router] ✅ File saved, URL: {file_url}")
+    
     # Update item
     images = item.get("images", [])
+    logger.info(f"🖼️ [Items Router] Current images count: {len(images)}")
     images.append(file_url)
+    logger.info(f"🖼️ [Items Router] New images count: {len(images)}, updating item...")
+    
     updated_item = await update_item(db, item_id, str(current_user["_id"]), {"images": images})
+    logger.info(f"🖼️ [Items Router] ✅ Item updated successfully")
     
     updated_item["_id"] = str(updated_item["_id"])
     updated_item["owner_id"] = str(updated_item["owner_id"])
@@ -196,5 +217,7 @@ async def upload_item_image(
         updated_item["created_at"] = updated_item["created_at"].isoformat()
     if "updated_at" in updated_item and hasattr(updated_item["updated_at"], "isoformat"):
         updated_item["updated_at"] = updated_item["updated_at"].isoformat()
+    
+    logger.info(f"🖼️ [Items Router] ✅ Returning updated item with {len(updated_item.get('images', []))} images")
     return updated_item
 
