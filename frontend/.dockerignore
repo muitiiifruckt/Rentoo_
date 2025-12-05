@@ -33,6 +33,11 @@ Thumbs.db
 # Testing
 coverage/
 .nyc_output/
+**/__tests__/
+**/*.test.ts
+**/*.test.tsx
+vitest.config.ts
+src/test/
 
 # Logs
 *.log
@@ -40,6 +45,9 @@ coverage/
 # Documentation
 *.md
 README*
+
+# Source maps (not needed in production)
+*.map
 
 
 
