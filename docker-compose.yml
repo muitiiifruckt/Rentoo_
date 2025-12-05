@@ -37,7 +37,9 @@ services:
       - MONGODB_DB_NAME=rentoo
       - SECRET_KEY=${SECRET_KEY:-your-secret-key-change-in-production}
       - DEBUG=${DEBUG:-false}
-      - 'CORS_ORIGINS=["http://localhost:3000","http://localhost:80","http://localhost"]'
+      # CORS origins: for server deployment, add your domain/IP here
+      # Example: 'CORS_ORIGINS=["http://your-server-ip:3000","http://your-domain.com"]'
+      - 'CORS_ORIGINS=${CORS_ORIGINS:-["*"]}'
     depends_on:
       mongodb:
         condition: service_healthy
@@ -55,18 +57,18 @@ services:
     build:
       context: ./frontend
       dockerfile: Dockerfile
+      # Use empty string to enable relative URLs (nginx proxy will handle /api and /static)
       args:
-        - VITE_API_URL=http://localhost:8000
+        - VITE_API_URL=
     container_name: rentoo-frontend
     restart: unless-stopped
     ports:
       - "3000:80"
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
     networks:
       - rentoo-network
-    environment:
-      - VITE_API_URL=http://localhost:8000
 
 volumes:
   mongodb_data:

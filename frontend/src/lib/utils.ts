@@ -40,7 +40,9 @@ export function getImageUrl(imagePath: string): string {
   if (imagePath.startsWith('http')) {
     return imagePath
   }
-  const baseUrl = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+  // Use relative URL if VITE_API_URL is not set (production with nginx proxy)
+  // Otherwise use the specified base URL
+  const baseUrl = import.meta.env.VITE_API_URL || ''
   return `${baseUrl}${imagePath.startsWith('/') ? '' : '/'}${imagePath}`
 }
 

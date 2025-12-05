@@ -1,6 +1,8 @@
 import axios, { AxiosInstance } from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000'
+// Use relative URLs in production (via nginx proxy) or absolute URL if specified
+// Empty string means relative URLs, which works with nginx proxy in Docker
+const API_BASE_URL = import.meta.env.VITE_API_URL || ''
 
 // Create axios instance
 const api: AxiosInstance = axios.create({
