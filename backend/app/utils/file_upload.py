@@ -12,7 +12,10 @@ logger = logging.getLogger(__name__)
 
 def ensure_upload_dir(subdir: str) -> Path:
     """Ensure upload directory exists."""
-    upload_path = Path(settings.upload_dir) / subdir
+    # Use absolute path like in main.py
+    backend_dir = Path(__file__).parent.parent.parent.resolve()
+    upload_dir_path = (backend_dir / settings.upload_dir).resolve()
+    upload_path = upload_dir_path / subdir
     logger.info(f"💾 [FileUpload] ensure_upload_dir: subdir={subdir}, path={upload_path}")
     upload_path.mkdir(parents=True, exist_ok=True)
     logger.info(f"💾 [FileUpload] ✅ Directory exists: {upload_path.exists()}")
