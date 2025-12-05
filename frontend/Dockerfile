@@ -15,7 +15,8 @@ RUN npm ci
 COPY . .
 
 # Build arguments for environment variables
-ARG VITE_API_URL=http://localhost:8000
+# Default to empty string for relative URLs (nginx proxy)
+ARG VITE_API_URL=
 ENV VITE_API_URL=$VITE_API_URL
 
 # Build the application

@@ -2,7 +2,15 @@ import axios, { AxiosInstance } from 'axios'
 
 // Use relative URLs in production (via nginx proxy) or absolute URL if specified
 // Empty string means relative URLs, which works with nginx proxy in Docker
-const API_BASE_URL = import.meta.env.VITE_API_URL || ''
+// Vite replaces import.meta.env.VITE_API_URL at build time
+const API_BASE_URL = (import.meta.env.VITE_API_URL && import.meta.env.VITE_API_URL.trim() !== '') 
+  ? import.meta.env.VITE_API_URL 
+  : ''
+
+// Log API base URL in development (will be removed in production build)
+if (import.meta.env.DEV) {
+  console.log('API Base URL:', API_BASE_URL || '(relative URLs - using nginx proxy)')
+}
 
 // Create axios instance
 const api: AxiosInstance = axios.create({

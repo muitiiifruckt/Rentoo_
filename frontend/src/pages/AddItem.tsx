@@ -50,7 +50,7 @@ export default function AddItem() {
         errorMessage = `Ошибка сервера: ${error.response.status}. ${error.response.data?.detail || 'Проверьте подключение к серверу.'}`
       } else if (error.request) {
         console.error('Request made but no response received:', error.request)
-        errorMessage = 'Не удалось подключиться к серверу. Убедитесь, что бэкенд запущен на http://localhost:8000'
+        errorMessage = 'Не удалось подключиться к серверу. Проверьте подключение к API.'
       } else {
         console.error('Error setting up request:', error.message)
         errorMessage = `Ошибка: ${error.message}`
